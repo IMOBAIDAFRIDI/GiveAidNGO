@@ -1,0 +1,117 @@
+@model GiveAid.Web.Models.ViewModels.Queries.QueryCreateViewModel
+@{
+    ViewData["Title"] = "Help Centre & Support Desk";
+}
+
+<!-- Page Header Banner -->
+<div class="page-header-banner text-white mb-5">
+    <div class="container text-center">
+        <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Support &amp; Inquiries</span>
+        <h1 class="display-5 fw-bold text-white mb-2">GIVE-AID Help Centre</h1>
+        <p class="lead text-muted mx-auto" style="max-width: 650px;">
+            Submit a question regarding ongoing relief campaigns, volunteering opportunities, or donation confirmations.
+        </p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row g-4 justify-content-center">
+        <!-- Quick FAQs Column -->
+        <div class="col-lg-5">
+            <h4 class="fw-bold text-white mb-3"><i class="bi bi-patch-question-fill text-warning me-2"></i> Frequently Asked Questions</h4>
+            <div class="accordion" id="helpFaq">
+                <div class="accordion-item rounded-3 mb-2 overflow-hidden border">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            How are my donations allocated?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#helpFaq">
+                        <div class="accordion-body text-muted small">
+                            100% of public donations directly fund field procurements (medical supplies, food packets, solar equipment). Administrative overhead is covered by founding partner grants.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item rounded-3 mb-2 overflow-hidden border">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Can I register as an on-ground volunteer?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#helpFaq">
+                        <div class="accordion-body text-muted small">
+                            Yes! Simply create an account, browse our active field programmes, and click "I'm Interested" to join our localized volunteer caravans.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item rounded-3 mb-2 overflow-hidden border">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Is this payment gateway secure?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#helpFaq">
+                        <div class="accordion-body text-muted small">
+                            Yes, absolutely. All payment transactions are processed through bank-grade 256-bit SSL encryption and strict PCI-DSS compliance standards. Card details are tokenized securely and full CVV numbers are never retained on our servers.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticket Form Column -->
+        <div class="col-lg-7">
+            <div class="custom-card p-4 p-md-5 shadow-lg">
+                <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+                    <div class="p-3 bg-primary-light text-primary-custom rounded-circle fs-3">
+                        <i class="bi bi-ticket-detailed-fill"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-1 text-white">Submit a Support Ticket</h4>
+                        <p class="text-muted small mb-0">Our operations team will review your inquiry and reply promptly.</p>
+                    </div>
+                </div>
+
+                <form asp-controller="HelpCentre" asp-action="Index" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Name" class="form-label fw-semibold text-muted"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Full name" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-semibold text-muted"></label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Your contact email" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Subject" class="form-label fw-semibold text-muted"></label>
+                        <input asp-for="Subject" class="form-control" placeholder="e.g. Volunteer verification, food drive question" />
+                        <span asp-validation-for="Subject" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Message" class="form-label fw-semibold text-muted"></label>
+                        <textarea asp-for="Message" rows="5" class="form-control" placeholder="Please provide detailed information..."></textarea>
+                        <span asp-validation-for="Message" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom btn-lg w-100 py-3 fw-bold rounded-pill shadow">
+                        <i class="bi bi-send-fill me-2"></i> Submit Help Ticket
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

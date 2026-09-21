@@ -1,0 +1,56 @@
+@model List<GiveAid.Web.Models.Entities.Partner>
+@{
+    ViewData["Title"] = "Our Strategic Partners";
+}
+
+<!-- Page Header Banner -->
+<div class="page-header-banner text-white mb-5">
+    <div class="container text-center text-md-start">
+        <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Coalition &amp; Alliances</span>
+        <h1 class="display-5 fw-bold text-white mb-2">Our Strategic Partners</h1>
+        <p class="lead text-muted mb-0">Institutions, philanthropic foundations, and corporate CSR alliances collaborating with GIVE-AID.</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row g-4">
+        @if (Model.Any())
+        {
+            @foreach (var partner in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="custom-card h-100 p-4 d-flex flex-column justify-content-between shadow-sm">
+                        <div>
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="p-3 bg-surface rounded-circle text-primary fs-3 border">
+                                    <i class="bi bi-building"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1 text-white">@partner.Name</h5>
+                                    <span class="badge bg-primary-light text-primary-custom small rounded-pill">Verified Alliance</span>
+                                </div>
+                            </div>
+                            <p class="text-muted small mb-3">@partner.Description</p>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(partner.Website))
+                        {
+                            <div class="pt-3 border-top">
+                                <a href="@partner.Website" target="_blank" rel="noopener noreferrer" class="btn btn-outline-custom btn-sm w-100 rounded-pill">
+                                    <span>Visit Partner Website</span>
+                                    <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No partners listed yet.</p>
+            </div>
+        }
+    </div>
+</div>

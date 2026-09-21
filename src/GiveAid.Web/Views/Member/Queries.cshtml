@@ -1,0 +1,81 @@
+@model List<GiveAid.Web.Models.Entities.Query>
+@{
+    Layout = "_MemberLayout";
+    ViewData["Title"] = "My Support Tickets & Inquiries";
+}
+
+<div class="custom-card p-4 p-lg-5 shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+        <div>
+            <h4 class="fw-bold mb-1">My Support Tickets &amp; Inquiries</h4>
+            <p class="text-muted small mb-0">Track questions submitted to our help desk and view administrator replies.</p>
+        </div>
+        <a asp-controller="HelpCentre" asp-action="Index" class="btn btn-sm btn-primary-custom">
+            <i class="bi bi-plus-circle me-1"></i> New Inquiry
+        </a>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="accordion" id="queriesAccordion">
+            @foreach (var query in Model)
+            {
+                <div class="accordion-item mb-3 border rounded shadow-sm overflow-hidden">
+                    <h2 class="accordion-header" id="heading-@query.Id">
+                        <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@query.Id">
+                            <div class="d-flex justify-content-between align-items-center w-100 me-3">
+                                <div>
+                                    <span class="fw-bold text-dark">Ticket #@query.Id: @query.Subject</span>
+                                    <div class="text-muted small">Submitted on @query.CreatedAt.ToString("dd MMM yyyy, HH:mm")</div>
+                                </div>
+                                <span class="badge @(query.Status == "Answered" ? "badge-status-successful" : query.Status == "Open" ? "badge-status-pending" : "badge-status-closed")">
+                                    @query.Status
+                                </span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse-@query.Id" class="accordion-collapse collapse" data-bs-parent="#queriesAccordion">
+                        <div class="accordion-body bg-light">
+                            <!-- Original Question -->
+                            <div class="p-3 bg-white rounded border mb-3">
+                                <h6 class="fw-bold text-muted small text-uppercase">Your Query:</h6>
+                                <p class="mb-0 text-dark">@query.Message</p>
+                            </div>
+
+                            <!-- Replies Stream -->
+                            @if (query.Replies.Any())
+                            {
+                                <h6 class="fw-bold text-primary small text-uppercase mb-2">Administrator Replies:</h6>
+                                @foreach (var reply in query.Replies)
+                                {
+                                    <div class="p-3 bg-white rounded border border-primary border-opacity-25 mb-2">
+                                        <div class="d-flex justify-content-between text-muted small mb-2">
+                                            <span><strong>@(reply.AdminUser?.FullName ?? "Support Officer")</strong> (GIVE-AID Help Desk)</span>
+                                            <span>@reply.RepliedAt.ToString("g")</span>
+                                        </div>
+                                        <p class="mb-0 text-secondary">@reply.Message</p>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="alert alert-info py-2 small mb-0">
+                                    <i class="bi bi-clock-history me-1"></i> A support officer has received your query and is reviewing the details.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 text-muted">
+            <i class="bi bi-chat-left-dots fs-1 d-block mb-2 text-primary"></i>
+            <h5>No Inquiries Yet</h5>
+            <p class="small">Have a question about campaigns, donations, or volunteering? Submit a ticket anytime.</p>
+            <a asp-controller="HelpCentre" asp-action="Index" class="btn btn-outline-custom btn-sm">Submit New Ticket</a>
+        </div>
+    }
+</div>

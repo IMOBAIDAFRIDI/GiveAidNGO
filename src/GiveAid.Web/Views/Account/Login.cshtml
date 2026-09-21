@@ -1,0 +1,99 @@
+@model GiveAid.Web.Models.ViewModels.Account.LoginViewModel
+@{
+    Layout = "_CleanLayout";
+    ViewData["Title"] = "Sign In";
+}
+
+<div class="container-fluid p-0 auth-split-wrapper">
+    <div class="row g-0 w-100 h-100">
+        <!-- Left Side: Login Form Card (Fitted, No Page Scroll) -->
+        <div class="col-lg-6 col-xl-5 auth-form-column">
+            <div class="w-100 mx-auto" style="max-width: 440px;">
+                <div class="custom-card p-4 p-xl-4 shadow-2xl border">
+                    <!-- Top Header Inside Card: Title & Back to Website Button -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                        <div>
+                            <h4 class="fw-bold text-white mb-0">Sign In</h4>
+                            <small class="text-muted">Enter your credentials</small>
+                        </div>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-custom rounded-pill px-3 py-1 text-nowrap" style="font-size: 0.8rem;">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Website
+                        </a>
+                    </div>
+
+                    <form asp-controller="Account" asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="ReturnUrl" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label small fw-semibold text-muted mb-1"></label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-surface border-0"><i class="bi bi-envelope text-muted"></i></span>
+                                <input asp-for="Email" class="form-control form-control-lg border-0 fs-6" id="loginEmail" placeholder="name@example.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small" style="font-size: 0.75rem;"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label small fw-semibold text-muted mb-1"></label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-surface border-0"><i class="bi bi-lock text-muted"></i></span>
+                                <input asp-for="Password" class="form-control form-control-lg border-0 fs-6" id="loginPassword" placeholder="Your password" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small" style="font-size: 0.75rem;"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input asp-for="RememberMe" class="form-check-input" />
+                                <label asp-for="RememberMe" class="form-check-label small text-muted" style="font-size: 0.82rem;"></label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom btn-lg w-100 fw-bold py-2 mb-3 rounded-pill shadow">
+                            Sign In
+                        </button>
+
+                        <div class="text-center small text-muted pt-2 border-top border-secondary border-opacity-25" style="font-size: 0.82rem;">
+                            Don't have an account yet? 
+                            <a asp-controller="Account" asp-action="Register" class="text-primary-custom fw-bold">Register as Member</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Humanitarian Aid & Donation Visual -->
+        <div class="col-lg-6 col-xl-7 d-none d-lg-block">
+            <div class="auth-image-column" style="background-image: url('https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=1400&auto=format&fit=crop');">
+                <div class="auth-image-overlay"></div>
+                <div class="auth-image-content">
+                    <span class="badge bg-secondary-custom text-dark fw-bold px-3 py-1 rounded-pill text-uppercase mb-2 small">
+                        <i class="bi bi-shield-heart-fill me-1"></i> Grassroots Action
+                    </span>
+                    <h2 class="fw-bold text-white mb-2">
+                        "Small acts of kindness multiply into oceans of transformation."
+                    </h2>
+                    <p class="text-white-50 small mb-3" style="max-width: 580px;">
+                        GIVE-AID bridges the gap between generous supporters and ground relief workers with complete relational transparency.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <div class="p-2 px-3 rounded-3 bg-surface bg-opacity-75 border border-secondary border-opacity-25">
+                            <span class="d-block fs-5 fw-bold text-primary">25,000+</span>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Lives Impacted</span>
+                        </div>
+                        <div class="p-2 px-3 rounded-3 bg-surface bg-opacity-75 border border-secondary border-opacity-25">
+                            <span class="d-block fs-5 fw-bold text-warning">100%</span>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Audited Operations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

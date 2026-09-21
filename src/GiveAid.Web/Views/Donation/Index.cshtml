@@ -1,0 +1,219 @@
+@model GiveAid.Web.Models.ViewModels.Donations.DonationCreateViewModel
+@{
+    Layout = "_CleanLayout";
+    ViewData["Title"] = "Make a Donation";
+}
+
+<div class="container-fluid p-0 auth-split-wrapper">
+    <div class="row g-0 w-100 h-100">
+        <!-- Left Side: Compact Donation Form Card (Fitted, No Page Scroll) -->
+        <div class="col-lg-6 col-xl-6 auth-form-column">
+            <div class="w-100 mx-auto" style="max-width: 580px;">
+                <div class="custom-card p-3 p-md-4 shadow-2xl border">
+                    <!-- Top Header Inside Card: Title & Back to Website Button -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                        <div>
+                            <h4 class="fw-bold text-white mb-0">Relief Contribution</h4>
+                            <small class="text-muted">Secure SSL Gateway &bull; 100% Direct Allocation</small>
+                        </div>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-custom rounded-pill px-3 py-1 text-nowrap" style="font-size: 0.8rem;">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Website
+                        </a>
+                    </div>
+
+                    <form asp-controller="Donation" asp-action="Index" method="post" id="donationForm">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-1 px-3 small mb-2"></div>
+
+                        <!-- 1. Cause Selection -->
+                        <div class="mb-2">
+                            <label asp-for="CauseId" class="form-label small fw-semibold text-muted mb-1">Select Relief Cause</label>
+                            <select asp-for="CauseId" asp-items="Model.AvailableCauses" class="form-select form-select-sm border-0">
+                                <option value="">-- Choose an active cause to fund --</option>
+                            </select>
+                            <span asp-validation-for="CauseId" class="text-danger small" style="font-size: 0.72rem;"></span>
+                        </div>
+
+                        <!-- 2. Donation Amount (Chips + Input in one compact row) -->
+                        <div class="mb-2">
+                            <label asp-for="Amount" class="form-label small fw-semibold text-muted mb-1">Contribution Amount (USD)</label>
+                            <div class="d-flex align-items-center gap-1 flex-wrap mb-1">
+                                <button type="button" class="amount-chip py-1 px-2" style="font-size: 0.85rem;" data-val="10">$10</button>
+                                <button type="button" class="amount-chip py-1 px-2" style="font-size: 0.85rem;" data-val="25">$25</button>
+                                <button type="button" class="amount-chip active py-1 px-2" style="font-size: 0.85rem;" data-val="50">$50</button>
+                                <button type="button" class="amount-chip py-1 px-2" style="font-size: 0.85rem;" data-val="100">$100</button>
+                                <button type="button" class="amount-chip py-1 px-2" style="font-size: 0.85rem;" data-val="250">$250</button>
+                                <div class="input-group input-group-sm ms-auto" style="max-width: 140px;">
+                                    <span class="input-group-text py-0">$</span>
+                                    <input asp-for="Amount" type="number" step="1.00" min="5.00" max="100000.00" class="form-control form-control-sm" id="customAmountInput" value="50" />
+                                </div>
+                            </div>
+                            <span asp-validation-for="Amount" class="text-danger small" style="font-size: 0.72rem;"></span>
+
+                            <!-- Compact 1-Line Impact Pill -->
+                            <div class="p-1 px-2 rounded-2 bg-surface border d-flex align-items-center gap-2" style="font-size: 0.78rem;">
+                                <i class="bi bi-heart-pulse-fill text-primary" id="impactIcon"></i>
+                                <span class="fw-bold text-white" id="impactTitle">Medical Aid:</span>
+                                <span class="text-muted text-truncate" id="impactDescription">Provides 10 sterile dressing packs for patients.</span>
+                            </div>
+                        </div>
+
+                        <!-- 3. Donor Details Row -->
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label asp-for="DonorName" class="form-label small fw-semibold text-muted mb-1"></label>
+                                <input asp-for="DonorName" class="form-control form-control-sm border-0" id="donorNameInput" placeholder="Full name" />
+                                <span asp-validation-for="DonorName" class="text-danger small" style="font-size: 0.72rem;"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="DonorEmail" class="form-label small fw-semibold text-muted mb-1"></label>
+                                <input asp-for="DonorEmail" type="email" class="form-control form-control-sm border-0" id="donorEmailInput" placeholder="donor@example.com" />
+                                <span asp-validation-for="DonorEmail" class="text-danger small" style="font-size: 0.72rem;"></span>
+                            </div>
+                        </div>
+
+                        <!-- 4. Payment Details Row -->
+                        <div class="p-2 bg-surface rounded-3 border mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="text-muted small fw-bold" style="font-size: 0.75rem;"><i class="bi bi-credit-card-2-front me-1"></i> Credit / Debit Card</span>
+                                <span class="text-muted small" style="font-size: 0.72rem;"><i class="bi bi-shield-lock-fill text-success me-1"></i> 256-Bit SSL Encrypted</span>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input asp-for="CardNumber" class="form-control form-control-sm border-0 font-monospace" id="cardNumberInput" placeholder="Card Number (16 digits)" />
+                                    <span asp-validation-for="CardNumber" class="text-danger small" style="font-size: 0.7rem;"></span>
+                                </div>
+                                <div class="col-3">
+                                    <input asp-for="ExpirationDate" class="form-control form-control-sm border-0 font-monospace" id="cardExpiryInput" placeholder="MM/YY" />
+                                    <span asp-validation-for="ExpirationDate" class="text-danger small" style="font-size: 0.7rem;"></span>
+                                </div>
+                                <div class="col-3">
+                                    <input asp-for="Cvv" type="password" maxlength="4" class="form-control form-control-sm border-0 font-monospace" id="cardCvvInput" placeholder="CVV" />
+                                    <span asp-validation-for="Cvv" class="text-danger small" style="font-size: 0.7rem;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-secondary-custom w-100 py-2 fw-bold rounded-pill shadow mb-1" id="btnSubmitDonation">
+                            <i class="bi bi-lock-fill me-1"></i> Confirm Donation
+                        </button>
+
+                        <div class="text-center text-muted" style="font-size: 0.72rem;">
+                            <i class="bi bi-shield-check text-success me-1"></i> Bank-Grade 256-Bit SSL Encryption &bull; PCI-DSS Compliant &bull; Official Tax Receipt Provided
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Dedicated Donation & Aid Imagery with Real-Time Impact Highlights -->
+        <div class="col-lg-6 col-xl-6 d-none d-lg-block">
+            <div class="auth-image-column" style="background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1600&auto=format&fit=crop');">
+                <div class="auth-image-overlay"></div>
+                <div class="auth-image-content">
+                    <span class="badge bg-secondary-custom text-dark fw-bold px-3 py-1 rounded-pill text-uppercase mb-2 small">
+                        <i class="bi bi-heart-fill me-1 text-danger"></i> Verified Relief Pipeline
+                    </span>
+                    <h2 class="fw-bold text-white mb-2">
+                        "Your generosity lights up the darkest corners of humanity."
+                    </h2>
+                    <p class="text-white-50 small mb-3" style="max-width: 580px;">
+                        Every single dollar contributed directly funds verified on-ground operations, educational toolkits, solar water pumps, and emergency field rations.
+                    </p>
+
+                    <!-- Trust Cards Grid -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-sm-6">
+                            <div class="p-2 px-3 rounded-3 bg-surface bg-opacity-75 border border-secondary border-opacity-25">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-shield-check text-success fs-5"></i>
+                                    <h6 class="fw-bold text-white mb-0 small">Direct Procurement</h6>
+                                </div>
+                                <small class="text-muted" style="font-size: 0.72rem;">Zero middlemen overhead</small>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-2 px-3 rounded-3 bg-surface bg-opacity-75 border border-secondary border-opacity-25">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-file-earmark-check text-primary fs-5"></i>
+                                    <h6 class="fw-bold text-white mb-0 small">Verified Financial Audit</h6>
+                                </div>
+                                <small class="text-muted" style="font-size: 0.72rem;">Transparent donor reporting</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-2 px-3 rounded-3 bg-surface bg-opacity-75 border border-secondary border-opacity-25">
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" class="rounded-circle border border-1 border-primary" style="width: 36px; height: 36px; object-fit: cover;" alt="Dr. Fatima" />
+                            <div>
+                                <p class="text-white-50 mb-0 fst-italic" style="font-size: 0.75rem;">"The medical caravan reached our village within 48 hours of funding. Real lives are being saved."</p>
+                                <span class="fw-bold text-primary small d-block" style="font-size: 0.7rem;">— Dr. Fatima Al-Zahra, Field Clinic Physician</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const amountInput = document.getElementById('customAmountInput');
+            const chips = document.querySelectorAll('.amount-chip');
+            const impactTitle = document.getElementById('impactTitle');
+            const impactDesc = document.getElementById('impactDescription');
+            const impactIcon = document.getElementById('impactIcon');
+
+            // Impact Matrix based on Amount
+            function updateImpact(amt) {
+                const val = parseFloat(amt) || 0;
+                if (val < 25) {
+                    impactTitle.innerText = "Child Nutrition:";
+                    impactDesc.innerText = "Clean water & micro-nutrient packs for an orphaned child.";
+                    impactIcon.className = "bi bi-cup-straw text-warning";
+                } else if (val < 50) {
+                    impactTitle.innerText = "Learning Kit:";
+                    impactDesc.innerText = "Textbooks, stationery & uniform for 1 primary student.";
+                    impactIcon.className = "bi bi-book-half text-info";
+                } else if (val < 100) {
+                    impactTitle.innerText = "Medical Aid:";
+                    impactDesc.innerText = "10 sterile dressing packs & hygiene kits for clinic.";
+                    impactIcon.className = "bi bi-heart-pulse-fill text-danger";
+                } else if (val < 250) {
+                    impactTitle.innerText = "Food Ration:";
+                    impactDesc.innerText = "Full monthly ration box for a displaced family of 5.";
+                    impactIcon.className = "bi bi-box-seam-fill text-warning";
+                } else {
+                    impactTitle.innerText = "Water System:";
+                    impactDesc.innerText = "Solar water filtration maintenance for 200+ villagers.";
+                    impactIcon.className = "bi bi-droplet-fill text-primary";
+                }
+            }
+
+            // Amount chip clicks
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    chips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    amountInput.value = chip.dataset.val;
+                    updateImpact(chip.dataset.val);
+                });
+            });
+
+            amountInput.addEventListener('input', () => {
+                const val = amountInput.value;
+                chips.forEach(c => {
+                    c.classList.toggle('active', c.dataset.val === val);
+                });
+                updateImpact(val);
+            });
+
+            updateImpact(amountInput.value);
+        });
+    </script>
+}

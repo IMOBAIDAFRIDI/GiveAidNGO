@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Access Restricted";
+}
+
+<div class="container py-5 text-center">
+    <div class="py-5">
+        <div class="d-inline-flex justify-content-center align-items-center bg-danger bg-opacity-10 text-danger rounded-circle p-4 mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-shield-lock-fill fs-1"></i>
+        </div>
+        <h2 class="fw-bold mb-2">Access Restricted</h2>
+        <p class="text-muted mx-auto mb-4" style="max-width: 500px;">
+            You do not have the required role permissions to access this administrative resource. If you believe this is an error, please contact the secretariat.
+        </p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary-custom">Return to Safety (Home)</a>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+@model GiveAid.Web.Models.ViewModels.Programmes.ProgrammeEditViewModel
+@{
+    ViewData["Title"] = "Edit Programme - " + Model.Title;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Edit Programme</h3>
+        <p class="text-muted small mb-0">Modify schedule, location, or replace campaign image.</p>
+    </div>
+    <a asp-area="Admin" asp-controller="Programmes" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        &larr; Back to Programmes
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="custom-card p-4 p-md-5 shadow-sm">
+            <form asp-area="Admin" asp-controller="Programmes" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ExistingImagePath" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-semibold"></label>
+                    <input asp-for="Title" class="form-control form-control-lg" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Category" class="form-label fw-semibold"></label>
+                        <select asp-for="Category" class="form-select">
+                            <option value="Education">Education</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Disaster Relief">Disaster Relief</option>
+                            <option value="Water Sanitation">Water Sanitation</option>
+                            <option value="Youth & Skills">Youth &amp; Skills</option>
+                            <option value="Community Welfare">Community Welfare</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Location" class="form-label fw-semibold"></label>
+                        <input asp-for="Location" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="StartAt" class="form-label fw-semibold"></label>
+                        <input asp-for="StartAt" type="datetime-local" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="EndAt" class="form-label fw-semibold"></label>
+                        <input asp-for="EndAt" type="datetime-local" class="form-control" />
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.ExistingImagePath))
+                {
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Current Image Banner:</label>
+                        <div>
+                            <img src="@Model.ExistingImagePath" alt="Programme Image" class="img-thumbnail" style="max-height: 120px;" />
+                        </div>
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label asp-for="ImageFile" class="form-label fw-semibold">Replace Banner Image (Optional)</label>
+                    <input asp-for="ImageFile" type="file" accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Description" rows="5" class="form-control"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Status" class="form-label fw-semibold">Publication Status</label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="Published">Published</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-bold">
+                    <i class="bi bi-check2-circle me-1"></i> Update Programme
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+@model GiveAid.Web.Models.ViewModels.Queries.QueryReplyViewModel
+@{
+    ViewData["Title"] = "Ticket #" + Model.Query.Id + " - " + Model.Query.Subject;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Ticket #@Model.Query.Id: @Model.Query.Subject</h3>
+        <p class="text-muted small mb-0">Submitted by: @Model.Query.Name (@Model.Query.Email)</p>
+    </div>
+    <div class="d-flex gap-2">
+        @if (Model.Query.Status != "Closed")
+        {
+            <form asp-area="Admin" asp-controller="Queries" asp-action="CloseQuery" asp-route-id="@Model.Query.Id" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-x-circle me-1"></i> Close Ticket
+                </button>
+            </form>
+        }
+        <a asp-area="Admin" asp-controller="Queries" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            &larr; Back to Tickets
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Conversation Thread -->
+    <div class="col-lg-7">
+        <!-- Original Question -->
+        <div class="custom-card p-4 shadow-sm mb-4">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                <span class="badge bg-primary">Original Inquiry</span>
+                <span class="text-muted small">@Model.Query.CreatedAt.ToString("f")</span>
+            </div>
+            <p class="text-dark lead fs-6 mb-0" style="white-space: pre-wrap;">@Model.Query.Message</p>
+        </div>
+
+        <!-- Replies History -->
+        <h5 class="fw-bold mb-3"><i class="bi bi-chat-left-dots text-primary me-2"></i> Reply Thread</h5>
+        @if (Model.Query.Replies.Any())
+        {
+            @foreach (var reply in Model.Query.Replies)
+            {
+                <div class="custom-card p-3 shadow-sm border-start border-success border-4 mb-3">
+                    <div class="d-flex justify-content-between text-muted small mb-2">
+                        <strong>@(reply.AdminUser?.FullName ?? "Admin") (Official Response)</strong>
+                        <span>@reply.RepliedAt.ToString("g")</span>
+                    </div>
+                    <p class="mb-0 text-secondary" style="white-space: pre-wrap;">@reply.Message</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted small">No replies sent yet.</p>
+        }
+    </div>
+
+    <!-- Reply Form -->
+    <div class="col-lg-5">
+        <div class="custom-card p-4 shadow-sm sticky-top" style="top: 20px;">
+            <h5 class="fw-bold mb-3"><i class="bi bi-reply-fill text-primary me-1"></i> Post Official Reply</h5>
+            <form asp-area="Admin" asp-controller="Queries" asp-action="Reply" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="QueryId" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="ReplyMessage" class="form-label fw-semibold">Your Message to Donor/User</label>
+                    <textarea asp-for="ReplyMessage" rows="6" class="form-control" placeholder="Write your official response here..."></textarea>
+                    <span asp-validation-for="ReplyMessage" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom w-100 py-2 fw-bold">
+                    <i class="bi bi-send-fill me-1"></i> Submit Reply &amp; Update Status
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<footer class="bg-dark text-white pt-5 pb-4 mt-auto border-top border-secondary">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="d-inline-flex justify-content-center align-items-center bg-primary-custom text-white rounded-circle" style="width: 34px; height: 34px;">
+                        <i class="bi bi-heart-fill"></i>
+                    </span>
+                    <span class="fs-4 fw-bold text-white">GIVE-AID</span>
+                </div>
+                <p class="text-secondary small pe-lg-4">
+                    GIVE-AID is an independent, non-profit humanitarian organization dedicated to protecting human dignity, advancing education, and empowering vulnerable communities across the country.
+                </p>
+                <div class="d-flex gap-3 text-secondary fs-5 mt-3">
+                    <a href="#" class="text-secondary hover-white"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-secondary hover-white"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="text-secondary hover-white"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-secondary hover-white"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <h6 class="text-white fw-bold mb-3 text-uppercase fs-6">Quick Links</h6>
+                <ul class="list-unstyled text-secondary small d-flex flex-column gap-2">
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="About" asp-action="Index">About Us</a></li>
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="Programme" asp-action="Index">Programmes</a></li>
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="Partner" asp-action="Index">Our Partners</a></li>
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="NGO" asp-action="Index">Associated NGOs</a></li>
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="Gallery" asp-action="Index">Photo Gallery</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h6 class="text-white fw-bold mb-3 text-uppercase fs-6">Get Involved</h6>
+                <ul class="list-unstyled text-secondary small d-flex flex-column gap-2">
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="Donation" asp-action="Index">Make a Donation</a></li>
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="Account" asp-action="Register">Join As Volunteer</a></li>
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="HelpCentre" asp-action="Index">Help Centre & FAQs</a></li>
+                    <li><a class="text-secondary text-decoration-none hover-white" asp-controller="Contact" asp-action="Index">Contact Support</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h6 class="text-white fw-bold mb-3 text-uppercase fs-6">Headquarters</h6>
+                <p class="text-secondary small mb-1"><i class="bi bi-geo-alt me-2 text-primary"></i> 12 Blue Area, Islamabad</p>
+                <p class="text-secondary small mb-1"><i class="bi bi-telephone me-2 text-primary"></i> +92 (051) 234-5678</p>
+                <p class="text-secondary small mb-3"><i class="bi bi-envelope me-2 text-primary"></i> support@giveaid.org</p>
+                <a class="btn btn-secondary-custom btn-sm w-100" asp-controller="Donation" asp-action="Index">
+                    <i class="bi bi-heart-fill me-1"></i> Donate to Active Causes
+                </a>
+            </div>
+        </div>
+
+        <hr class="border-secondary my-4">
+
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center text-secondary small">
+            <p class="mb-0">&copy; @DateTime.UtcNow.Year GIVE-AID NGO Management System. All rights reserved.</p>
+            <p class="mb-0">Powered by ASP.NET Core MVC &amp; Microsoft SQL Server</p>
+        </div>
+    </div>
+</footer>

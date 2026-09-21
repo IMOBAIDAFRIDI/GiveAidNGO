@@ -1,0 +1,208 @@
+@using GiveAid.Web.Models.Enums
+
+<!-- Top Announcement & Contact Bar -->
+<div class="top-bar py-1 d-none d-lg-block bg-dark text-white border-bottom border-secondary border-opacity-25" style="font-size: 0.82rem;">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3 text-secondary">
+            <span><i class="bi bi-telephone-fill text-primary-custom me-1"></i> +92 (051) 234-5678</span>
+            <span>&bull;</span>
+            <span><i class="bi bi-envelope-fill text-primary-custom me-1"></i> support@giveaid.org</span>
+            <span>&bull;</span>
+            <span class="text-white-50"><i class="bi bi-shield-check text-success me-1"></i> Verified Non-Profit NGO</span>
+        </div>
+        <div class="d-flex align-items-center gap-3 text-secondary">
+            <a asp-controller="HelpCentre" asp-action="Index" class="text-secondary text-decoration-none hover-white">
+                <i class="bi bi-life-preserver me-1"></i> Support Desk
+            </a>
+            <span>&bull;</span>
+            <div class="d-flex gap-2">
+                <a href="#" class="text-secondary hover-white"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-secondary hover-white"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="text-secondary hover-white"><i class="bi bi-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Executive Navbar -->
+<nav class="navbar navbar-expand-xl navbar-dark sticky-top shadow-sm py-2" id="mainNav">
+    <div class="container">
+        <!-- Brand Logo -->
+        <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none py-1" asp-controller="Home" asp-action="Index">
+            <span class="d-inline-flex justify-content-center align-items-center bg-primary-custom text-white rounded-3 shadow-sm" style="width: 40px; height: 40px;">
+                <i class="bi bi-heart-pulse-fill fs-5"></i>
+            </span>
+            <div class="d-flex flex-column">
+                <span class="fs-4 fw-black text-primary-custom lh-1" style="letter-spacing: -0.5px;">GIVE-AID</span>
+                <span class="text-muted text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.08em;">Humanitarian Org</span>
+            </div>
+        </a>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav mx-auto mb-2 mb-xl-0 d-flex flex-row flex-wrap align-items-center gap-1">
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold px-3 text-nowrap" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-house-door me-1 text-primary-custom d-xl-none"></i> Home
+                    </a>
+                </li>
+
+                <!-- About Us Dropdown with 7 Sections -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-semibold px-3 text-nowrap" href="#" role="button" data-bs-toggle="dropdown">
+                        About Us
+                    </a>
+                    <ul class="dropdown-menu shadow-lg border-0 rounded-3 mt-2 p-2" style="min-width: 250px;">
+                        <li><h6 class="dropdown-header text-uppercase small fw-bold text-primary-custom">Our Organization</h6></li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="what-we-do">
+                                <i class="bi bi-compass text-primary"></i> What We Do
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="our-mission">
+                                <i class="bi bi-bullseye text-primary"></i> Our Mission &amp; Vision
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="our-team">
+                                <i class="bi bi-people text-primary"></i> Leadership &amp; Team
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="our-achievements">
+                                <i class="bi bi-trophy text-primary"></i> Our Achievements
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="our-supporters">
+                                <i class="bi bi-stars text-primary"></i> Our Supporters
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="career-with-us">
+                                <i class="bi bi-briefcase text-primary"></i> Career With Us
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded fw-bold text-primary-custom d-flex align-items-center gap-2" asp-controller="About" asp-action="Index">
+                                <i class="bi bi-book-half"></i> Read Full Impact Story
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Our Work & Programmes Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-semibold px-3 text-nowrap" href="#" role="button" data-bs-toggle="dropdown">
+                        Our Work
+                    </a>
+                    <ul class="dropdown-menu shadow-lg border-0 rounded-3 mt-2 p-2" style="min-width: 250px;">
+                        <li><h6 class="dropdown-header text-uppercase small fw-bold text-primary-custom">Field Operations</h6></li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="Programme" asp-action="Index">
+                                <i class="bi bi-calendar-event text-primary"></i> Field Programmes
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="Gallery" asp-action="Index">
+                                <i class="bi bi-images text-primary"></i> Mission Photo Gallery
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li><h6 class="dropdown-header text-uppercase small fw-bold text-primary-custom">Network Directory</h6></li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="Partner" asp-action="Index">
+                                <i class="bi bi-building text-primary"></i> Strategic Partners
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="NGO" asp-action="Index">
+                                <i class="bi bi-globe2 text-primary"></i> Associated NGOs
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold px-3 text-nowrap" asp-controller="HelpCentre" asp-action="Index">Help Centre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold px-3 text-nowrap" asp-controller="Contact" asp-action="Index">Contact</a>
+                </li>
+            </ul>
+
+            <!-- Right Action Area: Single line aligned buttons -->
+            <div class="d-flex align-items-center gap-2 mt-3 mt-xl-0 flex-nowrap">
+                <!-- Glowing Donate CTA Button -->
+                <a class="btn btn-secondary-custom d-flex align-items-center gap-2 shadow-sm px-3 py-2 text-nowrap fw-bold rounded-pill" asp-controller="Donation" asp-action="Index">
+                    <i class="bi bi-heart-fill"></i>
+                    <span>Donate Now</span>
+                </a>
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-outline-custom dropdown-toggle px-3 py-2 text-nowrap rounded-pill d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
+                            <span class="d-inline-flex justify-content-center align-items-center bg-primary-custom text-white rounded-circle" style="width: 22px; height: 22px; font-size: 0.75rem;">
+                                <i class="bi bi-person-fill"></i>
+                            </span>
+                            <span>@(User.Identity.Name?.Split('@')[0] ?? "Account")</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2 p-2">
+                            @if (User.IsInRole(SystemRoles.Admin))
+                            {
+                                <li>
+                                    <a class="dropdown-item py-2 fw-bold text-danger d-flex align-items-center gap-2 rounded" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                                        <i class="bi bi-speedometer2"></i> Admin Portal
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                            }
+                            <li>
+                                <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="Member" asp-action="Index">
+                                    <i class="bi bi-grid text-primary"></i> My Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="Member" asp-action="Profile">
+                                    <i class="bi bi-person-gear text-primary"></i> My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="Member" asp-action="Queries">
+                                    <i class="bi bi-chat-left-text text-primary"></i> My Tickets
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="Member" asp-action="Invitations">
+                                    <i class="bi bi-envelope-heart text-primary"></i> Invite Friends
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                            <li>
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="dropdown-item py-2 text-danger rounded d-flex align-items-center gap-2">
+                                        <i class="bi bi-box-arrow-right"></i> Sign Out
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="btn btn-outline-custom px-3 py-2 text-nowrap rounded-pill" asp-controller="Account" asp-action="Login">Sign In</a>
+                    <a class="btn btn-primary-custom px-3 py-2 text-nowrap rounded-pill d-none d-sm-inline-block" asp-controller="Account" asp-action="Register">Join Us</a>
+                }
+            </div>
+        </div>
+    </div>
+</nav>

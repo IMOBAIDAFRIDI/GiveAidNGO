@@ -1,0 +1,78 @@
+@model List<GiveAid.Web.Models.Entities.ProgrammeInterest>
+@{
+    ViewData["Title"] = "Programme Member Registrations";
+    var programmes = ViewBag.Programmes as List<Programme> ?? new();
+    var selectedProgrammeId = ViewBag.SelectedProgrammeId as int?;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Registered Programme Interests</h3>
+        <p class="text-muted small mb-0">Review members who clicked 'I'm Interested' for field initiatives.</p>
+    </div>
+</div>
+
+<!-- Filter by Programme -->
+<div class="custom-card p-3 mb-4 shadow-sm">
+    <form method="get" asp-area="Admin" asp-controller="Interests" asp-action="Index" class="row g-2 align-items-center">
+        <div class="col-md-9">
+            <select name="programmeId" class="form-select">
+                <option value="">-- All Field Programmes --</option>
+                @foreach (var p in programmes)
+                {
+                    <option value="@p.Id" selected="@(selectedProgrammeId == p.Id)">@p.Title</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary-custom w-100">Filter</button>
+            @if (selectedProgrammeId.HasValue)
+            {
+                <a asp-area="Admin" asp-controller="Interests" asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+            }
+        </div>
+    </form>
+</div>
+
+<div class="custom-card p-4 shadow-sm">
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th>Member Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Programme Title</th>
+                        <th>Registered Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var interest in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@interest.User.FullName</td>
+                            <td>@interest.User.Email</td>
+                            <td class="small text-muted">@(interest.User.PhoneNumber ?? "N/A")</td>
+                            <td>
+                                <span class="badge bg-light text-primary border">@interest.Programme.Title</span>
+                            </td>
+                            <td class="small text-muted">@interest.InterestedAt.ToString("dd MMM yyyy, HH:mm")</td>
+                            <td>
+                                <span class="badge bg-success">@interest.Status</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 text-muted">
+            <p class="mb-0">No member interest registrations recorded for this selection.</p>
+        </div>
+    }
+</div>

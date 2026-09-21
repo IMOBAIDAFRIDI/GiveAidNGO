@@ -1,0 +1,62 @@
+@model GiveAid.Web.Models.Entities.ContactInfo
+@{
+    ViewData["Title"] = "Headquarters Contact Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Headquarters Contact Information</h3>
+        <p class="text-muted small mb-0">Update the primary organization contact information displayed across the website.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="custom-card p-4 p-md-5 shadow-sm">
+            <form asp-area="Admin" asp-controller="Contact" asp-action="Index" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Label" class="form-label fw-semibold">Location / Office Label</label>
+                    <input asp-for="Label" class="form-control form-control-lg" />
+                    <span asp-validation-for="Label" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" type="email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Address" rows="3" class="form-control"></textarea>
+                    <span asp-validation-for="Address" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MapUrl" class="form-label fw-semibold">Google Maps Embed URL</label>
+                    <input asp-for="MapUrl" class="form-control" />
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="SocialLinksJson" class="form-label fw-semibold">Social Links JSON</label>
+                    <textarea asp-for="SocialLinksJson" rows="2" class="form-control font-monospace small"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-bold">
+                    <i class="bi bi-save me-1"></i> Update Contact Details
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

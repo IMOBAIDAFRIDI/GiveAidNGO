@@ -1,0 +1,99 @@
+@model List<GiveAid.Web.Models.Entities.Donation>
+@{
+    ViewData["Title"] = "Manage Donations";
+    var causes = ViewBag.Causes as List<Cause> ?? new();
+    var selectedStatus = ViewBag.SelectedStatus as string;
+    var selectedCauseId = ViewBag.SelectedCauseId as int?;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Financial Donation Records</h3>
+        <p class="text-muted small mb-0">Auditable log of all verified donor contributions (financial records preserved).</p>
+    </div>
+</div>
+
+<!-- Filters Card -->
+<div class="custom-card p-3 mb-4 shadow-sm">
+    <form method="get" asp-area="Admin" asp-controller="Donations" asp-action="Index" class="row g-2 align-items-center">
+        <div class="col-md-4">
+            <select name="status" class="form-select">
+                <option value="">-- All Payment Statuses --</option>
+                <option value="Successful" selected="@(selectedStatus == "Successful")">Successful</option>
+                <option value="Pending" selected="@(selectedStatus == "Pending")">Pending</option>
+                <option value="Failed" selected="@(selectedStatus == "Failed")">Failed</option>
+            </select>
+        </div>
+        <div class="col-md-5">
+            <select name="causeId" class="form-select">
+                <option value="">-- Filter by Cause --</option>
+                @foreach (var cause in causes)
+                {
+                    <option value="@cause.Id" selected="@(selectedCauseId == cause.Id)">@cause.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary-custom w-100">Filter Records</button>
+            @if (!string.IsNullOrEmpty(selectedStatus) || selectedCauseId.HasValue)
+            {
+                <a asp-area="Admin" asp-controller="Donations" asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+            }
+        </div>
+    </form>
+</div>
+
+<!-- Donations Table -->
+<div class="custom-card p-4 shadow-sm">
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th>Reference</th>
+                        <th>Donor</th>
+                        <th>Cause</th>
+                        <th>Amount</th>
+                        <th>Card (Masked)</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th class="text-end">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var don in Model)
+                    {
+                        <tr>
+                            <td class="font-monospace small fw-bold text-primary">@don.ReferenceNo</td>
+                            <td>
+                                <div>@(don.DonorName ?? "Anonymous")</div>
+                                <small class="text-muted">@don.DonorEmail</small>
+                            </td>
+                            <td>@don.Cause.Name</td>
+                            <td class="fw-bold text-success">$@don.Amount.ToString("N2")</td>
+                            <td class="font-monospace small text-muted">@don.MaskedCard</td>
+                            <td>
+                                <span class="badge @(don.Status == "Successful" ? "badge-status-successful" : "badge-status-failed")">
+                                    @don.Status
+                                </span>
+                            </td>
+                            <td class="small text-muted">@don.CreatedAt.ToString("dd MMM yyyy, HH:mm")</td>
+                            <td class="text-end">
+                                <a asp-area="Admin" asp-controller="Donations" asp-action="Details" asp-route-id="@don.Id" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-eye"></i> Inspect
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 text-muted">
+            <p class="mb-0">No donation transactions match the specified filter criteria.</p>
+        </div>
+    }
+</div>

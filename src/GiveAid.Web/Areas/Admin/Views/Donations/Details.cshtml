@@ -1,0 +1,76 @@
+@model GiveAid.Web.Models.Entities.Donation
+@{
+    ViewData["Title"] = "Donation Inspection - " + Model.ReferenceNo;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Donation Record Inspection</h3>
+        <p class="text-muted small mb-0">Verified audit record for transaction reference: <code>@Model.ReferenceNo</code></p>
+    </div>
+    <a asp-area="Admin" asp-controller="Donations" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        &larr; Back to Donations
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="custom-card p-4 p-md-5 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                <div>
+                    <span class="text-muted small text-uppercase">Reference No.</span>
+                    <h4 class="fw-bold font-monospace text-primary mb-0">@Model.ReferenceNo</h4>
+                </div>
+                <span class="badge fs-6 @(Model.Status == "Successful" ? "badge-status-successful" : "badge-status-failed")">
+                    @Model.Status
+                </span>
+            </div>
+
+            <div class="row g-3 small">
+                <div class="col-sm-6">
+                    <label class="text-muted fw-semibold">Beneficiary Cause:</label>
+                    <div class="fw-bold fs-6">@Model.Cause.Name</div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="text-muted fw-semibold">Contribution Amount:</label>
+                    <div class="fw-bold fs-5 text-success">$@Model.Amount.ToString("N2") @Model.Currency</div>
+                </div>
+
+                <div class="col-sm-6 pt-3">
+                    <label class="text-muted fw-semibold">Donor Name:</label>
+                    <div class="fw-bold">@(Model.DonorName ?? "Anonymous Giver")</div>
+                </div>
+                <div class="col-sm-6 pt-3">
+                    <label class="text-muted fw-semibold">Donor Email Address:</label>
+                    <div>@(Model.DonorEmail ?? "N/A")</div>
+                </div>
+
+                <div class="col-sm-6 pt-3">
+                    <label class="text-muted fw-semibold">Card Representation (Masked):</label>
+                    <div class="font-monospace">@(Model.MaskedCard ?? "**** **** **** ****")</div>
+                </div>
+                <div class="col-sm-6 pt-3">
+                    <label class="text-muted fw-semibold">Payment Gateway Reference:</label>
+                    <div class="font-monospace text-muted">@(Model.GatewayReference ?? "N/A")</div>
+                </div>
+
+                <div class="col-sm-6 pt-3">
+                    <label class="text-muted fw-semibold">Transaction Created (UTC):</label>
+                    <div>@Model.CreatedAt.ToString("f")</div>
+                </div>
+                <div class="col-sm-6 pt-3">
+                    <label class="text-muted fw-semibold">Payment Completed (UTC):</label>
+                    <div>@(Model.PaidAt?.ToString("f") ?? "N/A")</div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.FailureReason))
+                {
+                    <div class="col-12 pt-3">
+                        <label class="text-danger fw-semibold">Failure / Decline Reason:</label>
+                        <div class="alert alert-danger mb-0 py-2">@Model.FailureReason</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

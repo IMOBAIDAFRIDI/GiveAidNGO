@@ -1,0 +1,92 @@
+@model List<GiveAid.Web.Models.Entities.GalleryImage>
+@{
+    ViewData["Title"] = "Media & Field Photo Gallery";
+    var programmes = ViewBag.Programmes as List<Programme> ?? new();
+    var selectedProgrammeId = ViewBag.SelectedProgrammeId as int?;
+}
+
+<!-- Page Header Banner -->
+<div class="page-header-banner text-white mb-5">
+    <div class="container text-center">
+        <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Visual Evidence of Hope</span>
+        <h1 class="display-5 fw-bold text-white mb-2">Field Mission Photo Gallery</h1>
+        <p class="lead text-muted mx-auto" style="max-width: 650px;">
+            Documenting our community healthcare clinics, mobile digital vans, solar water pumps, and emergency field relief operations.
+        </p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <!-- Advanced Gallery Grid -->
+    <div class="row g-4" id="galleryGrid">
+        @if (Model.Any())
+        {
+            @foreach (var img in Model)
+            {
+                var displayUrl = !string.IsNullOrEmpty(img.ImagePath) ? img.ImagePath : "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=900&auto=format&fit=crop";
+
+                <div class="col-lg-4 col-md-6 gallery-item" data-title="@(img.Title?.ToLower() ?? "")" data-caption="@(img.Caption?.ToLower() ?? "")" data-prog="@(img.Programme?.Title?.ToLower() ?? "")">
+                    <div class="gallery-card shadow-sm" style="cursor: pointer;" onclick="openImageModal('@displayUrl', '@(img.Title ?? "Field Photo")', '@(img.Caption ?? "")', '@(img.Programme?.Title ?? "Field Action")')">
+                        <img src="@displayUrl" alt="@(img.Title ?? "GIVE-AID Humanitarian Mission")" loading="lazy" />
+                        <div class="gallery-overlay">
+                            <span class="badge bg-primary-custom align-self-start mb-2 rounded-pill small">
+                                @(img.Programme?.Title ?? "Field Action")
+                            </span>
+                            <h5 class="fw-bold mb-1 text-white">@(img.Title ?? "Humanitarian Mission")</h5>
+                            <p class="small text-muted mb-0">@(img.Caption ?? "Click to view full resolution")</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info py-4 rounded-4">
+                    <i class="bi bi-images fs-1 d-block mb-2 text-primary"></i>
+                    <h5 class="fw-bold">No Gallery Photos Found</h5>
+                    <p class="text-muted">Images for this category will be uploaded shortly by our field teams.</p>
+                    <a asp-controller="Gallery" asp-action="Index" class="btn btn-outline-custom rounded-pill mt-2">View All Photos</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div id="noSearchResults" class="text-center py-5 d-none">
+        <i class="bi bi-search fs-1 text-muted d-block mb-2"></i>
+        <h5 class="fw-bold text-white">No Matching Photos Found</h5>
+        <p class="text-muted">Try typing a different keyword or resetting your search.</p>
+    </div>
+</div>
+
+<!-- Modal Lightbox for High-Res View -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content text-white border-0 overflow-hidden shadow-2xl">
+            <div class="modal-header border-0 pb-0">
+                <div>
+                    <span class="badge bg-primary-custom rounded-pill mb-1" id="modalBadge">Mission</span>
+                    <h5 class="modal-title fw-bold text-white" id="modalTitle"></h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-3">
+                <img src="" id="modalImage" class="img-fluid rounded-3 mb-3 shadow" style="max-height: 550px; width: 100%; object-fit: contain;" alt="Preview" />
+                <p id="modalCaption" class="text-muted small mb-0"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openImageModal(url, title, caption, prog) {
+            document.getElementById('modalImage').src = url;
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalCaption').innerText = caption;
+            document.getElementById('modalBadge').innerText = prog;
+            var modal = new bootstrap.Modal(document.getElementById('imageModal'));
+            modal.show();
+        }
+    </script>
+}

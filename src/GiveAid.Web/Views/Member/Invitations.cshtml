@@ -1,0 +1,107 @@
+@model GiveAid.Web.Models.ViewModels.Queries.InvitationCreateViewModel
+@{
+    Layout = "_MemberLayout";
+    ViewData["Title"] = "Invite Friends to GIVE-AID";
+    var invitations = ViewBag.Invitations as List<GiveAid.Web.Models.Entities.Invitation> ?? new();
+}
+
+<!-- Quick Share Link Box -->
+<div class="custom-card p-4 shadow-sm mb-4">
+    <h5 class="fw-bold text-white mb-2"><i class="bi bi-link-45deg text-warning me-1"></i> Your Personal Referral Link</h5>
+    <p class="text-muted small mb-3">Share this direct link with your network to invite them to join as volunteers.</p>
+    <div class="input-group">
+        <input type="text" class="form-control" id="referralLinkInput" value="https://giveaid.org/register?ref=@(User.Identity?.Name?.Split('@')[0] ?? "member")" readonly />
+        <button type="button" class="btn btn-outline-custom" id="btnCopyReferral">
+            <i class="bi bi-clipboard me-1"></i> Copy Link
+        </button>
+    </div>
+</div>
+
+<div class="custom-card p-4 p-lg-5 shadow-sm mb-4">
+    <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+        <div class="p-3 bg-primary-light text-primary-custom rounded-circle fs-3">
+            <i class="bi bi-envelope-heart-fill"></i>
+        </div>
+        <div>
+            <h4 class="fw-bold mb-1 text-white">Send Official Email Invitation</h4>
+            <p class="text-muted small mb-0">Our system will generate a cryptographic token and dispatch an official invitation.</p>
+        </div>
+    </div>
+
+    <form asp-controller="Member" asp-action="SendInvitation" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="RecipientEmail" class="form-label fw-semibold text-muted"></label>
+            <input asp-for="RecipientEmail" type="email" class="form-control form-control-lg" placeholder="friend@example.com" />
+            <span asp-validation-for="RecipientEmail" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Message" class="form-label fw-semibold text-muted"></label>
+            <textarea asp-for="Message" rows="3" class="form-control" placeholder="Add an optional personal message to encourage your friend..."></textarea>
+            <span asp-validation-for="Message" class="text-danger small"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-bold rounded-pill shadow">
+            <i class="bi bi-send-fill me-1"></i> Dispatch Invitation
+        </button>
+    </form>
+</div>
+
+<!-- Invitation History Table -->
+<div class="custom-card p-4 shadow-sm">
+    <h5 class="fw-bold mb-3 text-white"><i class="bi bi-clock-history text-primary me-2"></i> Sent Invitations</h5>
+
+    @if (invitations.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th>Recipient Email</th>
+                        <th>Security Token</th>
+                        <th>Status</th>
+                        <th>Sent On</th>
+                        <th>Expires On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var inv in invitations)
+                    {
+                        <tr>
+                            <td class="fw-bold text-white">@inv.RecipientEmail</td>
+                            <td class="font-monospace text-muted small">@inv.Token[..12]...</td>
+                            <td><span class="badge bg-success rounded-pill">@inv.Status</span></td>
+                            <td class="text-muted">@inv.SentAt?.ToString("dd MMM yyyy")</td>
+                            <td class="text-muted">@inv.ExpiresAt?.ToString("dd MMM yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4 text-muted small">
+            No friend invitations sent yet. Send your first invitation using the form above!
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('btnCopyReferral').addEventListener('click', () => {
+            const input = document.getElementById('referralLinkInput');
+            navigator.clipboard.writeText(input.value).then(() => {
+                const btn = document.getElementById('btnCopyReferral');
+                btn.innerHTML = '<i class="bi bi-check2 me-1 text-success"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> Copy Link';
+                }, 2000);
+            });
+        });
+    </script>
+}

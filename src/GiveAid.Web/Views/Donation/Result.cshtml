@@ -1,0 +1,86 @@
+@model GiveAid.Web.Models.ViewModels.Donations.DonationResultViewModel
+@{
+    Layout = "_CleanLayout";
+    ViewData["Title"] = Model.IsSuccess ? "Contribution Successful" : "Contribution Failed";
+}
+
+<div class="container py-5 min-vh-100 d-flex flex-column justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-xl-6">
+            <!-- Top Return Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand d-flex align-items-center gap-2 text-decoration-none">
+                    <span class="d-inline-flex justify-content-center align-items-center bg-primary-custom text-white rounded-3 shadow-sm" style="width: 38px; height: 38px;">
+                        <i class="bi bi-heart-pulse-fill fs-5"></i>
+                    </span>
+                    <span class="fs-4 fw-black text-primary-custom" style="letter-spacing: -0.5px;">GIVE-AID</span>
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="back-home-link">
+                    <i class="bi bi-arrow-left"></i> Back to Website
+                </a>
+            </div>
+
+            <div class="custom-card p-4 p-md-5 shadow-2xl text-center">
+                @if (Model.IsSuccess)
+                {
+                    <div class="d-inline-flex justify-content-center align-items-center bg-success bg-opacity-10 text-success rounded-circle p-4 mb-3 shadow" style="width: 80px; height: 80px;">
+                        <i class="bi bi-check-circle-fill fs-1"></i>
+                    </div>
+                    <span class="badge bg-success-subtle text-success border px-3 py-1 text-uppercase fw-bold mb-2 rounded-pill">Payment Authorized</span>
+                    <h2 class="fw-bold mb-2 text-white">Thank You For Your Support!</h2>
+                    <p class="text-muted mb-4">Your donation has been securely processed and allocated to the selected humanitarian cause.</p>
+                }
+                else
+                {
+                    <div class="d-inline-flex justify-content-center align-items-center bg-danger bg-opacity-10 text-danger rounded-circle p-4 mb-3 shadow" style="width: 80px; height: 80px;">
+                        <i class="bi bi-x-circle-fill fs-1"></i>
+                    </div>
+                    <span class="badge bg-danger-subtle text-danger border px-3 py-1 text-uppercase fw-bold mb-2 rounded-pill">Declined</span>
+                    <h2 class="fw-bold mb-2 text-white">Donation Unsuccessful</h2>
+                    <p class="text-muted mb-4">@(Model.FailureReason ?? "The payment network was unable to authorize the transaction. Please check your card details and try again.")</p>
+                }
+
+                <!-- Receipt Table -->
+                <div class="p-4 bg-surface rounded-4 text-start border mb-4">
+                    <h6 class="fw-bold text-white text-uppercase small border-bottom pb-2 mb-3">
+                        <i class="bi bi-receipt-cutoff text-primary me-1"></i> Official Transaction Receipt
+                    </h6>
+                    <div class="row g-2 small">
+                        <div class="col-sm-5 text-muted">Donation Reference:</div>
+                        <div class="col-sm-7 fw-bold font-monospace text-primary">@Model.ReferenceNo</div>
+
+                        <div class="col-sm-5 text-muted">Beneficiary Cause:</div>
+                        <div class="col-sm-7 fw-bold text-white">@Model.CauseName</div>
+
+                        <div class="col-sm-5 text-muted">Contribution Amount:</div>
+                        <div class="col-sm-7 fw-bold text-success fs-6">$@Model.Amount.ToString("N2") @Model.Currency</div>
+
+                        <div class="col-sm-5 text-muted">Donor Name:</div>
+                        <div class="col-sm-7 text-white">@(Model.DonorName ?? "Anonymous Giver")</div>
+
+                        <div class="col-sm-5 text-muted">Receipt Sent To:</div>
+                        <div class="col-sm-7 text-white">@(Model.DonorEmail ?? "N/A")</div>
+
+                        <div class="col-sm-5 text-muted">Card Used (Masked):</div>
+                        <div class="col-sm-7 font-monospace text-white">@(Model.MaskedCard ?? "**** **** **** ****")</div>
+
+                        <div class="col-sm-5 text-muted">Gateway Auth Ref:</div>
+                        <div class="col-sm-7 font-monospace text-muted">@(Model.GatewayReference ?? "N/A")</div>
+
+                        <div class="col-sm-5 text-muted">Timestamp (UTC):</div>
+                        <div class="col-sm-7 text-muted">@(Model.PaidAt?.ToString("f") ?? Model.CreatedAt.ToString("f"))</div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                    <button type="button" class="btn btn-outline-custom rounded-pill" onclick="window.print()">
+                        <i class="bi bi-printer me-1"></i> Print Receipt
+                    </button>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary-custom rounded-pill">
+                        Return to Home Page
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

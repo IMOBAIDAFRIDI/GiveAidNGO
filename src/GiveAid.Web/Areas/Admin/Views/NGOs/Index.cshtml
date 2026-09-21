@@ -1,0 +1,60 @@
+@model List<GiveAid.Web.Models.Entities.NGO>
+@{
+    ViewData["Title"] = "Manage Associated NGOs";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Associated NGOs Directory</h3>
+        <p class="text-muted small mb-0">Maintain records of accredited non-profit organizations and alliances.</p>
+    </div>
+    <a asp-area="Admin" asp-controller="NGOs" asp-action="Create" class="btn btn-primary-custom">
+        <i class="bi bi-plus-circle me-1"></i> Add NGO
+    </a>
+</div>
+
+<div class="custom-card p-4 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small">
+                <tr>
+                    <th>NGO Name</th>
+                    <th>City / Location</th>
+                    <th>Contact Phone</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ngo in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@ngo.Name</td>
+                        <td>@(ngo.City ?? "National")</td>
+                        <td class="small text-muted">@(ngo.Phone ?? "N/A")</td>
+                        <td class="small text-muted">@(ngo.Email ?? "N/A")</td>
+                        <td>
+                            <span class="badge @(ngo.IsActive ? "badge-status-active" : "badge-status-closed")">
+                                @(ngo.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                                <a asp-area="Admin" asp-controller="NGOs" asp-action="Edit" asp-route-id="@ngo.Id" class="btn btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form asp-area="Admin" asp-controller="NGOs" asp-action="Delete" asp-route-id="@ngo.Id" method="post" onsubmit="return confirm('Remove this NGO from directory?');" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

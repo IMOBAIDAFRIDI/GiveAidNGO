@@ -1,0 +1,269 @@
+@model GiveAid.Web.Models.ViewModels.Admin.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Executive Dashboard";
+}
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+        <h3 class="fw-bold mb-0 text-white"><i class="bi bi-cpu-fill text-warning me-2"></i>Executive KPI Command Center</h3>
+        <p class="text-muted small mb-0">Dynamic real-time telemetry aggregated directly from Microsoft SQL Server.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-area="Admin" asp-controller="Causes" asp-action="Create" class="btn btn-sm btn-primary-custom rounded-pill">
+            <i class="bi bi-plus-circle me-1"></i> New Cause
+        </a>
+        <a asp-area="Admin" asp-controller="Programmes" asp-action="Create" class="btn btn-sm btn-secondary-custom rounded-pill">
+            <i class="bi bi-plus-circle me-1"></i> New Programme
+        </a>
+    </div>
+</div>
+
+<!-- KPI Cards Grid (Dynamic SQL Metrics) -->
+<div class="row g-3 mb-4">
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="custom-card p-3 border-start border-primary border-4 shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted small text-uppercase fw-bold">Members</span>
+                <i class="bi bi-people text-primary fs-5"></i>
+            </div>
+            <h3 class="fw-bold mb-0 text-white">@Model.TotalMembers</h3>
+            <small class="text-muted">Registered users</small>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-4 col-sm-6">
+        <div class="custom-card p-3 border-start border-success border-4 shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted small text-uppercase fw-bold">Total Donations</span>
+                <i class="bi bi-cash-coin text-success fs-5"></i>
+            </div>
+            <h3 class="fw-bold mb-0 text-success">$@Model.TotalDonationsAmount.ToString("N2")</h3>
+            <small class="text-muted">Across @Model.TotalDonationsCount payments</small>
+        </div>
+    </div>
+
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="custom-card p-3 border-start border-warning border-4 shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted small text-uppercase fw-bold">Active Causes</span>
+                <i class="bi bi-flag text-warning fs-5"></i>
+            </div>
+            <h3 class="fw-bold mb-0 text-white">@Model.ActiveCausesCount</h3>
+            <small class="text-muted">Live appeals</small>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="custom-card p-3 border-start border-info border-4 shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted small text-uppercase fw-bold">Active Programmes</span>
+                <i class="bi bi-calendar-event text-info fs-5"></i>
+            </div>
+            <h3 class="fw-bold mb-0 text-white">@Model.UpcomingProgrammesCount</h3>
+            <small class="text-muted">Upcoming missions</small>
+        </div>
+    </div>
+
+    <div class="col-xl-2 col-md-6 col-sm-6">
+        <div class="custom-card p-3 border-start border-danger border-4 shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted small text-uppercase fw-bold">Open Tickets</span>
+                <i class="bi bi-envelope-open text-danger fs-5"></i>
+            </div>
+            <h3 class="fw-bold mb-0 text-danger">@Model.OpenQueriesCount</h3>
+            <small class="text-muted">Awaiting replies</small>
+        </div>
+    </div>
+</div>
+
+<!-- Middle Section: Chart and Recent Activity -->
+<div class="row g-4 mb-4">
+    <!-- Chart.js Trend Visual -->
+    <div class="col-lg-8">
+        <div class="custom-card p-4 shadow-lg h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0 text-white"><i class="bi bi-graph-up text-primary me-2"></i>Donation &amp; Outreach Activity</h5>
+                <span class="badge bg-primary-light text-primary-custom rounded-pill">Live SQL Trend</span>
+            </div>
+            <canvas id="dashboardChart" height="120"></canvas>
+        </div>
+    </div>
+
+    <!-- Recent Activity Audit Stream -->
+    <div class="col-lg-4">
+        <div class="custom-card p-4 shadow-lg h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0 text-white"><i class="bi bi-shield-check text-warning me-2"></i>Admin Audit Trail</h5>
+                <a asp-area="Admin" asp-controller="ActivityLogs" asp-action="Index" class="btn btn-sm btn-outline-custom rounded-pill">All Logs</a>
+            </div>
+
+            @if (Model.RecentActivityLogs.Any())
+            {
+                <div class="d-flex flex-column gap-2 small">
+                    @foreach (var log in Model.RecentActivityLogs)
+                    {
+                        <div class="p-2 bg-surface rounded border">
+                            <div class="d-flex justify-content-between">
+                                <strong class="text-white">@log.Action</strong>
+                                <span class="text-muted">@log.CreatedAt.ToString("HH:mm")</span>
+                            </div>
+                            <div class="text-muted small">
+                                User: @(log.AdminUser?.FullName ?? "Admin") &bull; Entity: @log.EntityType #@log.EntityId
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small text-center py-4 mb-0">No recent administrative logs.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Row: Recent Donations and Programme Interests -->
+<div class="row g-4">
+    <!-- Recent Donations -->
+    <div class="col-lg-6">
+        <div class="custom-card p-4 shadow-lg">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0 text-white"><i class="bi bi-cash-stack text-success me-2"></i>Recent Donations</h5>
+                <a asp-area="Admin" asp-controller="Donations" asp-action="Index" class="btn btn-sm btn-outline-custom rounded-pill">View All</a>
+            </div>
+
+            @if (Model.RecentDonations.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ref</th>
+                                <th>Cause</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var don in Model.RecentDonations)
+                            {
+                                <tr>
+                                    <td class="font-monospace text-muted">@don.ReferenceNo</td>
+                                    <td class="text-white">@don.Cause.Name</td>
+                                    <td class="fw-bold text-success">$@don.Amount.ToString("N2")</td>
+                                    <td>
+                                        <span class="badge @(don.Status == "Successful" ? "badge-status-successful" : "badge-status-failed") rounded-pill">
+                                            @don.Status
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small text-center py-4 mb-0">No donations recorded yet.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Recent Programme Interests -->
+    <div class="col-lg-6">
+        <div class="custom-card p-4 shadow-lg">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0 text-white"><i class="bi bi-person-check text-info me-2"></i>Recent Programme Registrations</h5>
+                <a asp-area="Admin" asp-controller="Interests" asp-action="Index" class="btn btn-sm btn-outline-custom rounded-pill">View All</a>
+            </div>
+
+            @if (Model.RecentInterests.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Member</th>
+                                <th>Programme</th>
+                                <th>Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var interest in Model.RecentInterests)
+                            {
+                                <tr>
+                                    <td class="fw-semibold text-white">@(interest.User?.FullName ?? "Member")</td>
+                                    <td class="text-muted">@interest.Programme.Title</td>
+                                    <td class="text-muted">@interest.InterestedAt.ToString("dd MMM, HH:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small text-center py-4 mb-0">No member interest registrations recorded yet.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(16, 185, 129, 0.35)');
+            gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Monthly Donations ($)',
+                        data: [1200, 1900, 3000, 5000, 4200, 6800, 8500, 9200, 11400, 12500, 14200, @Model.TotalDonationsAmount],
+                        borderColor: '#10b981',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#ffffff',
+                        pointHoverRadius: 6,
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.38
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleColor: '#ffffff',
+                            bodyColor: '#10b981',
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            borderWidth: 1,
+                            padding: 10
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                            ticks: { color: '#64748b' }
+                        },
+                        y: { 
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                            ticks: { 
+                                color: '#64748b',
+                                callback: function(value) { return '$' + value; }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,110 @@
+@model GiveAid.Web.Models.ViewModels.Account.RegisterViewModel
+@{
+    Layout = "_CleanLayout";
+    ViewData["Title"] = "Member Registration";
+}
+
+<div class="container-fluid p-0 auth-split-wrapper">
+    <div class="row g-0 w-100 h-100">
+        <!-- Left Side: Register Form Card (Fitted, No Page Scroll) -->
+        <div class="col-lg-6 col-xl-5 auth-form-column">
+            <div class="w-100 mx-auto" style="max-width: 490px;">
+                <div class="custom-card p-4 shadow-2xl border">
+                    <!-- Top Header Inside Card: Title & Back to Website Button -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                        <div>
+                            <h4 class="fw-bold text-white mb-0">Create Account</h4>
+                            <small class="text-muted">Join our humanitarian community</small>
+                        </div>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-custom rounded-pill px-3 py-1 text-nowrap" style="font-size: 0.8rem;">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Website
+                        </a>
+                    </div>
+
+                    <form asp-controller="Account" asp-action="Register" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small mb-2"></div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label asp-for="FullName" class="form-label small fw-semibold text-muted mb-1"></label>
+                                <input asp-for="FullName" class="form-control form-control-sm border-0" placeholder="Full name" />
+                                <span asp-validation-for="FullName" class="text-danger small" style="font-size: 0.72rem;"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="Email" class="form-label small fw-semibold text-muted mb-1"></label>
+                                <input asp-for="Email" type="email" class="form-control form-control-sm border-0" placeholder="name@example.com" />
+                                <span asp-validation-for="Email" class="text-danger small" style="font-size: 0.72rem;"></span>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label asp-for="Password" class="form-label small fw-semibold text-muted mb-1"></label>
+                                <input asp-for="Password" type="password" class="form-control form-control-sm border-0" placeholder="Min 6 chars" />
+                                <span asp-validation-for="Password" class="text-danger small" style="font-size: 0.72rem;"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="ConfirmPassword" class="form-label small fw-semibold text-muted mb-1"></label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control form-control-sm border-0" placeholder="Re-enter password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small" style="font-size: 0.72rem;"></span>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label asp-for="City" class="form-label small fw-semibold text-muted mb-1"></label>
+                                <input asp-for="City" class="form-control form-control-sm border-0" placeholder="e.g. Islamabad" />
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="Profession" class="form-label small fw-semibold text-muted mb-1"></label>
+                                <input asp-for="Profession" class="form-control form-control-sm border-0" placeholder="e.g. Volunteer" />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 fw-bold py-2 mb-2 rounded-pill shadow">
+                            Complete Registration
+                        </button>
+
+                        <div class="text-center small text-muted pt-2 border-top border-secondary border-opacity-25" style="font-size: 0.82rem;">
+                            Already have an account? 
+                            <a asp-controller="Account" asp-action="Login" class="text-primary-custom fw-bold">Sign In here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Volunteer & Community Aid Visual -->
+        <div class="col-lg-6 col-xl-7 d-none d-lg-block">
+            <div class="auth-image-column" style="background-image: url('https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=1400&auto=format&fit=crop');">
+                <div class="auth-image-overlay"></div>
+                <div class="auth-image-content">
+                    <span class="badge bg-primary-custom text-white fw-bold px-3 py-1 rounded-pill text-uppercase mb-2 small">
+                        <i class="bi bi-people-fill me-1"></i> Volunteer Network
+                    </span>
+                    <h2 class="fw-bold text-white mb-2">
+                        "United by compassion, driven by tangible human impact."
+                    </h2>
+                    <p class="text-white-50 small mb-3" style="max-width: 580px;">
+                        Join ground caravans, propose local relief initiatives, and verify that resources reach families in crisis.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <div class="p-2 px-3 rounded-3 bg-surface bg-opacity-75 border border-secondary border-opacity-25">
+                            <span class="d-block fs-5 fw-bold text-primary">1,200+</span>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Volunteers</span>
+                        </div>
+                        <div class="p-2 px-3 rounded-3 bg-surface bg-opacity-75 border border-secondary border-opacity-25">
+                            <span class="d-block fs-5 fw-bold text-success">35+</span>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Field Caravans</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

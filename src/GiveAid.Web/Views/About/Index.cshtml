@@ -1,0 +1,75 @@
+@model GiveAid.Web.Models.ViewModels.About.AboutPageViewModel
+@{
+    ViewData["Title"] = "About Us - GIVE-AID";
+}
+
+<!-- Page Header Banner -->
+<div class="page-header-banner text-white mb-5">
+    <div class="container text-center text-md-start">
+        <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Our Identity &amp; Purpose</span>
+        <h1 class="display-5 fw-bold text-white mb-2">About GIVE-AID</h1>
+        <p class="lead text-muted mb-0">Learn about our mission, leadership, achievements, and grassroots initiatives.</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row justify-content-center">
+        <!-- Main Content Area for the selected section (Full-Width / Centered Layout) -->
+        <div class="col-lg-10 col-xl-9">
+            @if (Model.CurrentSection != null)
+            {
+                var secImg = !string.IsNullOrEmpty(Model.CurrentSection.ImagePath) 
+                    ? Model.CurrentSection.ImagePath 
+                    : "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=900&auto=format&fit=crop";
+
+                <div class="custom-card p-0 shadow-lg overflow-hidden mb-4">
+                    <!-- High-Res Cover Photo for the Section -->
+                    <div style="height: 300px; width: 100%; overflow: hidden;">
+                        <img src="@secImg" alt="@Model.CurrentSection.Title" style="width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
+
+                    <div class="p-4 p-lg-5">
+                        <span class="badge bg-primary-light text-primary-custom px-3 py-1 fw-bold text-uppercase rounded-pill mb-3">
+                            Core Mission Pillar
+                        </span>
+                        <h2 class="fw-bold mb-4 text-white">@Model.CurrentSection.Title</h2>
+
+                        <div class="lead text-muted mb-4" style="line-height: 1.85;">
+                            @Model.CurrentSection.Content
+                        </div>
+
+                        <div class="row g-3 pt-4 border-top mt-4">
+                            <div class="col-sm-4">
+                                <div class="p-3 bg-surface rounded-3 text-center border">
+                                    <i class="bi bi-check2-all text-success fs-3 mb-1"></i>
+                                    <h6 class="fw-bold mb-0 text-white">Verified Impact</h6>
+                                    <small class="text-muted">Direct community aid</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="p-3 bg-surface rounded-3 text-center border">
+                                    <i class="bi bi-shield-lock text-primary fs-3 mb-1"></i>
+                                    <h6 class="fw-bold mb-0 text-white">Full Accountability</h6>
+                                    <small class="text-muted">Published financial audits</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="p-3 bg-surface rounded-3 text-center border">
+                                    <i class="bi bi-people text-warning fs-3 mb-1"></i>
+                                    <h6 class="fw-bold mb-0 text-white">Local Leadership</h6>
+                                    <small class="text-muted">Community-led action</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    Section content is currently unavailable.
+                </div>
+            }
+        </div>
+    </div>
+</div>

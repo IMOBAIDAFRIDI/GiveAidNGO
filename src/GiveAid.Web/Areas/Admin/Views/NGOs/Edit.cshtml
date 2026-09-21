@@ -1,0 +1,71 @@
+@model GiveAid.Web.Models.Entities.NGO
+@{
+    ViewData["Title"] = "Edit NGO - " + Model.Name;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Edit NGO Record</h3>
+    </div>
+    <a asp-area="Admin" asp-controller="NGOs" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        &larr; Back to NGOs
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="custom-card p-4 p-md-5 shadow-sm">
+            <form asp-area="Admin" asp-controller="NGOs" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Slug" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold"></label>
+                    <input asp-for="Name" class="form-control form-control-lg" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="City" class="form-label fw-semibold"></label>
+                        <input asp-for="City" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                        <input asp-for="Phone" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" type="email" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Website" class="form-label fw-semibold"></label>
+                        <input asp-for="Website" type="url" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Address" rows="2" class="form-control"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Description" rows="4" class="form-control"></textarea>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label fw-semibold">Active</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-bold">Update Record</button>
+            </form>
+        </div>
+    </div>
+</div>

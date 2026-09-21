@@ -1,0 +1,141 @@
+@{
+    Layout = "_MemberLayout";
+    ViewData["Title"] = "Member Dashboard";
+    var user = ViewBag.User as GiveAid.Web.Models.Entities.ApplicationUser;
+    var donations = ViewBag.Donations as List<GiveAid.Web.Models.Entities.Donation> ?? new();
+    var interests = ViewBag.Interests as List<GiveAid.Web.Models.Entities.ProgrammeInterest> ?? new();
+    var queries = ViewBag.Queries as List<GiveAid.Web.Models.Entities.Query> ?? new();
+}
+
+<div class="mb-4">
+    <h3 class="fw-bold mb-1">Welcome back, @(user?.FullName ?? "Member")!</h3>
+    <p class="text-muted small">Here is a real-time summary of your engagement, relief contributions, and registered missions.</p>
+</div>
+
+<!-- Member Stats Row -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="custom-card p-3 border-start border-primary border-4">
+            <span class="text-muted small text-uppercase fw-bold">Total Donated</span>
+            <h4 class="fw-bold text-primary-custom mb-0 mt-1">
+                $@donations.Where(d => d.Status == "Successful").Sum(d => d.Amount).ToString("N2")
+            </h4>
+            <small class="text-muted">Across @donations.Count contributions</small>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="custom-card p-3 border-start border-success border-4">
+            <span class="text-muted small text-uppercase fw-bold">Registered Missions</span>
+            <h4 class="fw-bold text-success mb-0 mt-1">@interests.Count</h4>
+            <small class="text-muted">Field programmes supported</small>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="custom-card p-3 border-start border-warning border-4">
+            <span class="text-muted small text-uppercase fw-bold">Support Queries</span>
+            <h4 class="fw-bold text-warning mb-0 mt-1">@queries.Count</h4>
+            <small class="text-muted">Tickets logged with help desk</small>
+        </div>
+    </div>
+</div>
+
+<!-- Registered Programmes Table -->
+<div class="custom-card p-4 mb-4 shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0"><i class="bi bi-calendar-check text-primary me-2"></i> My Registered Programmes</h5>
+        <a asp-controller="Programme" asp-action="Index" class="btn btn-sm btn-outline-custom">Explore More</a>
+    </div>
+
+    @if (interests.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th>Mission Title</th>
+                        <th>Category</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in interests)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.Programme.Title</td>
+                            <td><span class="badge bg-light text-dark border">@item.Programme.Category</span></td>
+                            <td class="small">@item.Programme.StartAt.ToString("dd MMM yyyy")</td>
+                            <td><span class="badge bg-success">@item.Status</span></td>
+                            <td class="text-end">
+                                <a asp-controller="Programme" asp-action="Details" asp-route-id="@item.ProgrammeId" class="btn btn-sm btn-outline-secondary">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4 text-muted small">
+            You have not registered interest in any upcoming programmes yet.
+            <div class="mt-2"><a asp-controller="Programme" asp-action="Index" class="btn btn-sm btn-primary-custom">Browse Available Programmes</a></div>
+        </div>
+    }
+</div>
+
+<!-- Recent Donations Table -->
+<div class="custom-card p-4 shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0"><i class="bi bi-cash-stack text-success me-2"></i> My Contribution History</h5>
+        <a asp-controller="Donation" asp-action="Index" class="btn btn-sm btn-secondary-custom">Make a Contribution</a>
+    </div>
+
+    @if (donations.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th>Reference</th>
+                        <th>Cause</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th class="text-end">Receipt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var don in donations)
+                    {
+                        <tr>
+                            <td class="font-monospace small">@don.ReferenceNo</td>
+                            <td class="fw-semibold">@don.Cause.Name</td>
+                            <td class="fw-bold text-success">$@don.Amount.ToString("N2")</td>
+                            <td>
+                                <span class="badge @(don.Status == "Successful" ? "badge-status-successful" : "badge-status-failed")">
+                                    @don.Status
+                                </span>
+                            </td>
+                            <td class="small text-muted">@don.CreatedAt.ToString("dd MMM yyyy")</td>
+                            <td class="text-end">
+                                <a asp-controller="Donation" asp-action="Result" asp-route-reference="@don.ReferenceNo" class="btn btn-sm btn-outline-secondary">
+                                    Receipt
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4 text-muted small">
+            No donation transactions recorded on this account yet.
+        </div>
+    }
+</div>

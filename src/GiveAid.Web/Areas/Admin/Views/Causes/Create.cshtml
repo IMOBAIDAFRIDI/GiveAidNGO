@@ -1,0 +1,58 @@
+@model GiveAid.Web.Models.Entities.Cause
+@{
+    ViewData["Title"] = "Create New Cause";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Create New Cause</h3>
+        <p class="text-muted small mb-0">Add a new relief appeal to the platform.</p>
+    </div>
+    <a asp-area="Admin" asp-controller="Causes" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        &larr; Back to Causes
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="custom-card p-4 p-md-5 shadow-sm">
+            <form asp-area="Admin" asp-controller="Causes" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold">Cause Name</label>
+                    <input asp-for="Name" class="form-control form-control-lg" placeholder="e.g. Rural Water Filtration Wells" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Slug" class="form-label fw-semibold">Slug (Unique URL identifier)</label>
+                    <input asp-for="Slug" class="form-control" placeholder="Leave blank to auto-generate from name" />
+                    <span asp-validation-for="Slug" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TargetAmount" class="form-label fw-semibold">Funding Target ($)</label>
+                    <input asp-for="TargetAmount" type="number" step="100.00" class="form-control" />
+                    <span asp-validation-for="TargetAmount" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="form-label fw-semibold">Detailed Description</label>
+                    <textarea asp-for="Description" rows="4" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label fw-semibold">Make this cause active and visible immediately</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-bold">
+                    <i class="bi bi-check-circle me-1"></i> Save Cause
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

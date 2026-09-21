@@ -1,0 +1,328 @@
+@{
+    ViewData["Title"] = "Empowering Communities, Transforming Lives";
+    var causes = ViewBag.Causes as List<Cause> ?? new();
+    var programmes = ViewBag.Programmes as List<Programme> ?? new();
+    var partners = ViewBag.Partners as List<Partner> ?? new();
+}
+
+<!-- Hero Section with GSAP Animations and High-Res Backdrop -->
+<section class="hero-banner text-center text-lg-start">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="badge bg-secondary-custom px-3 py-2 text-uppercase fw-semibold mb-3 rounded-pill">
+                    <i class="bi bi-geo-alt-fill me-1"></i> Grassroots Humanitarian Mission
+                </span>
+                <h1 class="gsap-hero-title mb-3">Empowering Communities, Protecting Human Dignity</h1>
+                <p class="gsap-hero-subtitle lead text-muted mb-4 pe-lg-5">
+                    GIVE-AID delivers direct interventions in education, primary healthcare, clean water, and disaster relief. We bridge the gap between compassionate donors and verified community projects.
+                </p>
+                <div class="gsap-hero-actions d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                    <a class="btn btn-secondary-custom btn-lg d-flex align-items-center gap-2 shadow rounded-pill px-4" asp-controller="Donation" asp-action="Index">
+                        <i class="bi bi-heart-fill"></i> Donate to Active Causes
+                    </a>
+                    <a class="btn btn-outline-custom btn-lg rounded-pill px-4" asp-controller="Programme" asp-action="Index">
+                        Explore Programmes
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center">
+                <div class="p-4 p-md-5 rounded-4 border border-white border-opacity-10 shadow-2xl backdrop-blur" style="background: rgba(15, 23, 42, 0.75);">
+                    <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+                        <div class="p-3 rounded-circle text-warning fs-2" style="background: rgba(245, 158, 11, 0.15);">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <div class="text-start">
+                            <h5 class="text-white fw-bold mb-0">100% Relational Transparency</h5>
+                            <small class="text-muted">Direct SQL-Audited Fund Allocation</small>
+                        </div>
+                    </div>
+                    <hr class="border-white border-opacity-10 my-3">
+                    <p class="text-muted small mb-4">
+                        Every single dollar contributed directly funds verified on-ground operations, educational toolkits, solar water pumps, and emergency field rations.
+                    </p>
+                    <a asp-controller="About" asp-action="Index" class="btn btn-outline-custom w-100 fw-bold rounded-pill shadow-sm">
+                        Read Our Impact Story
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Stats Strip (Animated Counters via GSAP) -->
+<section class="stats-strip">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3 stat-item">
+                <div class="stat-num counter-val" data-target="@ViewBag.TotalLivesImpacted">0</div>
+                <div class="text-muted fw-bold small text-uppercase mt-2">Lives Impacted</div>
+            </div>
+            <div class="col-6 col-md-3 stat-item">
+                <div class="stat-num counter-val" data-target="@ViewBag.TotalDonationsRaised" data-currency="true">0</div>
+                <div class="text-muted fw-bold small text-uppercase mt-2">Relief Funds Raised</div>
+            </div>
+            <div class="col-6 col-md-3 stat-item">
+                <div class="stat-num counter-val" data-target="@ViewBag.TotalProgrammesCount">0</div>
+                <div class="text-muted fw-bold small text-uppercase mt-2">Active Field Missions</div>
+            </div>
+            <div class="col-6 col-md-3 stat-item">
+                <div class="stat-num counter-val" data-target="@ViewBag.ActiveVolunteersCount">0</div>
+                <div class="text-muted fw-bold small text-uppercase mt-2">Community Volunteers</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Active Causes Section with High-Res Image Cards & Interactive Tab Filter -->
+<section class="py-5" style="background-color: var(--bg-base);">
+    <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="badge bg-primary-light text-primary-custom px-3 py-1 fw-bold text-uppercase rounded-pill">Urgent Appeals</span>
+                <h2 class="fw-bold mt-2 mb-1 text-white">Causes Needing Your Support</h2>
+                <p class="text-muted mb-0">Select an active cause to make an immediate, life-changing impact today.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Donation" asp-action="Index" class="btn btn-outline-custom rounded-pill">
+                    View All Appeals &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- Dynamic Category Tabs -->
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <button type="button" class="btn btn-sm rounded-pill btn-primary-custom cause-filter-btn active" data-filter="all">All Appeals</button>
+            <button type="button" class="btn btn-sm rounded-pill btn-outline-custom cause-filter-btn" data-filter="health">Health &amp; Medical</button>
+            <button type="button" class="btn btn-sm rounded-pill btn-outline-custom cause-filter-btn" data-filter="education">Education</button>
+            <button type="button" class="btn btn-sm rounded-pill btn-outline-custom cause-filter-btn" data-filter="relief">Emergency Relief</button>
+            <button type="button" class="btn btn-sm rounded-pill btn-outline-custom cause-filter-btn" data-filter="water">Clean Water</button>
+        </div>
+
+        <div class="row g-4" id="causesContainer">
+            @foreach (var cause in causes)
+            {
+                var percent = cause.TargetAmount > 0 ? (int)((cause.RaisedAmount / cause.TargetAmount) * 100) : 0;
+                percent = Math.Min(percent, 100);
+                var imageUrl = !string.IsNullOrEmpty(cause.ImagePath) ? cause.ImagePath : "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop";
+                var lowerName = cause.Name.ToLower();
+                var categoryTag = lowerName.Contains("health") || lowerName.Contains("medic") ? "health" :
+                                  lowerName.Contains("educat") || lowerName.Contains("school") ? "education" :
+                                  lowerName.Contains("water") ? "water" : "relief";
+
+                <div class="col-lg-4 col-md-6 cause-item" data-category="@categoryTag">
+                    <div class="custom-card h-100 d-flex flex-column shadow-sm">
+                        <div class="card-img-wrapper">
+                            <img src="@imageUrl" alt="@cause.Name" />
+                            <span class="badge bg-secondary-custom position-absolute top-0 start-0 m-3 shadow-sm rounded-pill">
+                                Active Appeal
+                            </span>
+                        </div>
+                        <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="fw-bold mb-2 text-white">@cause.Name</h5>
+                                <p class="text-muted small mb-3">@cause.Description</p>
+                            </div>
+
+                            <div>
+                                <div class="d-flex justify-content-between small fw-bold mb-1">
+                                    <span class="text-primary-custom">Raised: $@cause.RaisedAmount.ToString("N0")</span>
+                                    <span class="text-muted">Goal: $@cause.TargetAmount.ToString("N0")</span>
+                                </div>
+                                <div class="progress rounded-pill mb-3" style="height: 10px;">
+                                    <div class="progress-bar rounded-pill" role="progressbar" style="width: @percent%;" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+
+                                <a class="btn btn-primary-custom w-100 d-flex justify-content-center align-items-center gap-2 rounded-pill" 
+                                   asp-controller="Donation" asp-action="Index" asp-route-causeId="@cause.Id">
+                                    <i class="bi bi-heart-fill"></i> Donate to this Cause
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Programmes Section with Real Image Cards -->
+<section class="py-5" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+    <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="badge bg-primary-light text-primary-custom px-3 py-1 fw-bold text-uppercase rounded-pill">On-Ground Initiatives</span>
+                <h2 class="fw-bold mt-2 mb-1 text-white">Upcoming Field Programmes</h2>
+                <p class="text-muted mb-0">Join our upcoming humanitarian workshops, relief drives, and community events.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Programme" asp-action="Index" class="btn btn-outline-custom rounded-pill">
+                    All Programmes &rarr;
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var prog in programmes)
+            {
+                var pImage = !string.IsNullOrEmpty(prog.ImagePath) ? prog.ImagePath : "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop";
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="custom-card h-100 d-flex flex-column shadow-sm">
+                        <div class="card-img-wrapper">
+                            <img src="@pImage" alt="@prog.Title" />
+                            <span class="badge bg-dark bg-opacity-75 text-white position-absolute top-0 end-0 m-3 rounded-pill">
+                                <i class="bi bi-calendar3 me-1"></i> @prog.StartAt.ToString("dd MMM yyyy")
+                            </span>
+                        </div>
+                        <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-primary-light text-primary-custom fw-bold rounded-pill mb-2">@prog.Category</span>
+                                <h5 class="fw-bold mb-2 text-white">@prog.Title</h5>
+                                <p class="text-muted small mb-3">@prog.Description</p>
+                                @if (!string.IsNullOrEmpty(prog.Location))
+                                {
+                                    <div class="text-muted small mb-3">
+                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i> @prog.Location
+                                    </div>
+                                }
+                            </div>
+                            <div>
+                                <a class="btn btn-outline-custom w-100 rounded-pill" asp-controller="Programme" asp-action="Details" asp-route-id="@prog.Id">
+                                    View Details &amp; Register Interest
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Community Trust Testimonials in Sleek Dark Cards -->
+<section class="py-5" style="background-color: var(--bg-base);">
+    <div class="container py-4 text-center">
+        <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Community Voices</span>
+        <h2 class="fw-bold mb-4 text-white">What Our Supporters &amp; Volunteers Say</h2>
+
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <div class="custom-card p-4 h-100 shadow-sm text-start">
+                    <div class="text-warning mb-2 fs-5">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-muted small mb-3">
+                        "Seeing the direct transformation in remote school facilities through GIVE-AID's transparent model gave me complete confidence. Every dollar is visible."
+                    </p>
+                    <div class="d-flex align-items-center gap-2 pt-2 border-top">
+                        <i class="bi bi-person-circle fs-3 text-primary"></i>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">Dr. Tariq Mahmood</h6>
+                            <small class="text-muted">Education Philanthropist</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="custom-card p-4 h-100 shadow-sm text-start">
+                    <div class="text-warning mb-2 fs-5">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-muted small mb-3">
+                        "Joining as a volunteer in the Winter Warmth caravan was life changing. The organization is remarkably structured, disciplined, and genuinely compassionate."
+                    </p>
+                    <div class="d-flex align-items-center gap-2 pt-2 border-top">
+                        <i class="bi bi-person-circle fs-3 text-primary"></i>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">Zainab Raza</h6>
+                            <small class="text-muted">Youth Volunteer Lead</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="custom-card p-4 h-100 shadow-sm text-start">
+                    <div class="text-warning mb-2 fs-5">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-muted small mb-3">
+                        "Their immediate response during the monsoon floods helped set up clean water wells within days. Truly an indispensable grassroots humanitarian force."
+                    </p>
+                    <div class="d-flex align-items-center gap-2 pt-2 border-top">
+                        <i class="bi bi-person-circle fs-3 text-primary"></i>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">Hamza Siddiqui</h6>
+                            <small class="text-muted">Community Coordinator</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partners Strip -->
+<section class="py-5" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-subtle);">
+    <div class="container py-3 text-center">
+        <h6 class="text-uppercase text-muted fw-bold mb-4" style="letter-spacing: 0.1em;">Trusted By Leading Humanitarian Alliances</h6>
+        <div class="row justify-content-center align-items-center g-4">
+            @foreach (var partner in partners)
+            {
+                <div class="col-md-4 col-sm-6">
+                    <div class="p-3 custom-card shadow-sm h-100">
+                        <h6 class="fw-bold text-white mb-1">@partner.Name</h6>
+                        <p class="text-muted small mb-0">@partner.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Volunteer CTA Strip with Radiant Dark Backdrop -->
+<section class="py-5 text-center page-header-banner">
+    <div class="container py-4">
+        <h2 class="fw-bold text-white mb-3">Ready to Make a Lasting Difference?</h2>
+        <p class="lead text-muted mx-auto mb-4" style="max-width: 650px;">
+            Join our registered member network to participate in field missions, propose community drives, and track your humanitarian impact in real time.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a class="btn btn-secondary-custom btn-lg shadow rounded-pill px-4" asp-controller="Account" asp-action="Register">
+                Join GIVE-AID Today
+            </a>
+            <a class="btn btn-outline-custom btn-lg rounded-pill px-4" asp-controller="Contact" asp-action="Index">
+                Contact Our Field Team
+            </a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterButtons = document.querySelectorAll('.cause-filter-btn');
+            const causeItems = document.querySelectorAll('.cause-item');
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => {
+                        b.classList.remove('active', 'btn-primary-custom');
+                        b.classList.add('btn-outline-custom');
+                    });
+                    btn.classList.add('active', 'btn-primary-custom');
+                    btn.classList.remove('btn-outline-custom');
+
+                    const targetFilter = btn.dataset.filter;
+                    causeItems.forEach(item => {
+                        if (targetFilter === 'all' || item.dataset.category === targetFilter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

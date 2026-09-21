@@ -1,0 +1,69 @@
+@model List<GiveAid.Web.Models.Entities.Partner>
+@{
+    ViewData["Title"] = "Manage Partners";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Strategic Humanitarian Partners</h3>
+        <p class="text-muted small mb-0">Manage partner organizations, logos, and official websites.</p>
+    </div>
+    <a asp-area="Admin" asp-controller="Partners" asp-action="Create" class="btn btn-primary-custom">
+        <i class="bi bi-plus-circle me-1"></i> Add Partner
+    </a>
+</div>
+
+<div class="custom-card p-4 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small">
+                <tr>
+                    <th>Partner Name</th>
+                    <th>Slug</th>
+                    <th>Website</th>
+                    <th>Sort</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@p.Name</td>
+                        <td class="text-muted font-monospace small">@p.Slug</td>
+                        <td class="small">
+                            @if (!string.IsNullOrEmpty(p.Website))
+                            {
+                                <a href="@p.Website" target="_blank" class="text-decoration-none">@p.Website</a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">N/A</span>
+                            }
+                        </td>
+                        <td>@p.SortOrder</td>
+                        <td>
+                            <span class="badge @(p.IsActive ? "badge-status-active" : "badge-status-closed")">
+                                @(p.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                                <a asp-area="Admin" asp-controller="Partners" asp-action="Edit" asp-route-id="@p.Id" class="btn btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form asp-area="Admin" asp-controller="Partners" asp-action="Delete" asp-route-id="@p.Id" method="post" onsubmit="return confirm('Soft-delete this partner?');" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

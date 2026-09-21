@@ -1,0 +1,65 @@
+@model List<GiveAid.Web.Models.Entities.GalleryImage>
+@{
+    ViewData["Title"] = "Manage Gallery";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Field Media &amp; Gallery</h3>
+        <p class="text-muted small mb-0">Upload and curate high-resolution field photos linked to programmes.</p>
+    </div>
+    <a asp-area="Admin" asp-controller="Gallery" asp-action="Create" class="btn btn-primary-custom">
+        <i class="bi bi-cloud-arrow-up me-1"></i> Upload Image
+    </a>
+</div>
+
+<div class="custom-card p-4 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small">
+                <tr>
+                    <th>Preview</th>
+                    <th>Title &amp; Caption</th>
+                    <th>Linked Programme</th>
+                    <th>Uploaded By</th>
+                    <th>Date</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var img in Model)
+                {
+                    <tr>
+                        <td style="width: 80px;">
+                            <img src="@img.ImagePath" alt="Gallery Preview" class="rounded border" style="width: 60px; height: 45px; object-fit: cover;" />
+                        </td>
+                        <td>
+                            <div class="fw-bold">@(img.Title ?? "Untitled Image")</div>
+                            <small class="text-muted">@img.Caption</small>
+                        </td>
+                        <td>
+                            @if (img.Programme != null)
+                            {
+                                <span class="badge bg-light text-primary border">@img.Programme.Title</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted small">General Media</span>
+                            }
+                        </td>
+                        <td class="small">@(img.UploadedByUser?.FullName ?? "Admin")</td>
+                        <td class="small text-muted">@img.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td class="text-end">
+                            <form asp-area="Admin" asp-controller="Gallery" asp-action="Delete" asp-route-id="@img.Id" method="post" onsubmit="return confirm('Delete this image permanently from disk and database?');" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash me-1"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

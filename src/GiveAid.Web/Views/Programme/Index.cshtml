@@ -1,0 +1,100 @@
+@model List<GiveAid.Web.Models.Entities.Programme>
+@{
+    ViewData["Title"] = "Programmes & Field Missions";
+    var categories = ViewBag.Categories as List<string> ?? new();
+    var selectedCategory = ViewBag.SelectedCategory as string;
+    var searchTerm = ViewBag.SearchTerm as string;
+}
+
+<!-- Page Header Banner -->
+<div class="page-header-banner text-white mb-5">
+    <div class="container text-center">
+        <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Our Field Interventions</span>
+        <h1 class="display-5 fw-bold text-white mb-2">Active Field Programmes</h1>
+        <p class="lead text-muted mx-auto" style="max-width: 650px;">
+            Discover our humanitarian missions, educational workshops, healthcare camps, and sustainable community initiatives.
+        </p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <!-- Filter Bar -->
+    <div class="custom-card p-3 mb-4 shadow-sm">
+        <form method="get" asp-controller="Programme" asp-action="Index" class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-surface border-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" name="search" class="form-control border-0" placeholder="Search programmes by title, category, or location..." value="@searchTerm">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select name="category" class="form-select border-0">
+                    <option value="">-- All Categories --</option>
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat" selected="@(cat == selectedCategory)">@cat</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary-custom w-100 rounded-pill">Apply Filter</button>
+                @if (!string.IsNullOrEmpty(selectedCategory) || !string.IsNullOrEmpty(searchTerm))
+                {
+                    <a asp-controller="Programme" asp-action="Index" class="btn btn-outline-custom rounded-pill">Clear</a>
+                }
+            </div>
+        </form>
+    </div>
+
+    <!-- Programmes Grid with Real Images -->
+    <div class="row g-4">
+        @if (Model.Any())
+        {
+            @foreach (var prog in Model)
+            {
+                var pImg = !string.IsNullOrEmpty(prog.ImagePath) ? prog.ImagePath : "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=900&auto=format&fit=crop";
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="custom-card h-100 d-flex flex-column shadow-sm">
+                        <div class="card-img-wrapper">
+                            <img src="@pImg" alt="@prog.Title" />
+                            <span class="badge bg-dark bg-opacity-75 text-white position-absolute top-0 end-0 m-3 rounded-pill small">
+                                <i class="bi bi-calendar-check me-1"></i> @prog.StartAt.ToString("dd MMM yyyy")
+                            </span>
+                        </div>
+                        <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-primary-light text-primary-custom fw-bold rounded-pill mb-2">@prog.Category</span>
+                                <h5 class="fw-bold mb-2 text-white">@prog.Title</h5>
+                                <p class="text-muted small mb-3">@prog.Description</p>
+                                @if (!string.IsNullOrEmpty(prog.Location))
+                                {
+                                    <div class="text-muted small mb-3">
+                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i> @prog.Location
+                                    </div>
+                                }
+                            </div>
+                            <div class="pt-2">
+                                <a class="btn btn-outline-custom w-100 rounded-pill d-flex justify-content-center align-items-center gap-2" 
+                                   asp-controller="Programme" asp-action="Details" asp-route-id="@prog.Id">
+                                    <span>Learn More &amp; Register</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info py-4 rounded-4">
+                    <h5 class="fw-bold">No Programmes Found</h5>
+                    <p class="text-muted">There are currently no active programmes matching your criteria.</p>
+                    <a asp-controller="Programme" asp-action="Index" class="btn btn-outline-custom rounded-pill mt-2">Reset Filters</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

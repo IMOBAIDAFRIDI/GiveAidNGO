@@ -1,0 +1,105 @@
+@model List<GiveAid.Web.Models.Entities.NGO>
+@{
+    ViewData["Title"] = "Associated NGOs Directory";
+    var cities = ViewBag.Cities as List<string> ?? new();
+    var selectedCity = ViewBag.SelectedCity as string;
+    var searchTerm = ViewBag.SearchTerm as string;
+}
+
+<!-- Page Header Banner -->
+<div class="page-header-banner text-white mb-5">
+    <div class="container text-center text-md-start">
+        <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Network Directory</span>
+        <h1 class="display-5 fw-bold text-white mb-2">Associated NGOs Directory</h1>
+        <p class="lead text-muted mb-0">Browse affiliated grassroots organizations collaborating on provincial initiatives.</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <!-- Filter Bar -->
+    <div class="custom-card p-3 mb-4 shadow-sm">
+        <form method="get" asp-controller="NGO" asp-action="Index" class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-surface border-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" name="search" class="form-control border-0" placeholder="Search NGOs by name or mission..." value="@searchTerm">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select name="city" class="form-select border-0">
+                    <option value="">-- All Locations / Cities --</option>
+                    @foreach (var city in cities)
+                    {
+                        <option value="@city" selected="@(city == selectedCity)">@city</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary-custom w-100 rounded-pill">Filter</button>
+                @if (!string.IsNullOrEmpty(selectedCity) || !string.IsNullOrEmpty(searchTerm))
+                {
+                    <a asp-controller="NGO" asp-action="Index" class="btn btn-outline-custom rounded-pill">Clear</a>
+                }
+            </div>
+        </form>
+    </div>
+
+    <!-- NGO Cards Grid -->
+    <div class="row g-4">
+        @if (Model.Any())
+        {
+            @foreach (var ngo in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="custom-card h-100 p-4 d-flex flex-column justify-content-between shadow-sm">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge bg-primary-light text-primary-custom fw-bold rounded-pill">Associated NGO</span>
+                                @if (!string.IsNullOrEmpty(ngo.City))
+                                {
+                                    <span class="badge bg-surface text-muted border rounded-pill"><i class="bi bi-geo-alt me-1"></i>@ngo.City</span>
+                                }
+                            </div>
+                            <h5 class="fw-bold mb-2 text-white">@ngo.Name</h5>
+                            <p class="text-muted small mb-3">@ngo.Description</p>
+
+                            <div class="small text-muted d-flex flex-column gap-1 mb-3">
+                                @if (!string.IsNullOrEmpty(ngo.Address))
+                                {
+                                    <div><i class="bi bi-geo-alt me-1 text-primary"></i> @ngo.Address</div>
+                                }
+                                @if (!string.IsNullOrEmpty(ngo.Phone))
+                                {
+                                    <div><i class="bi bi-telephone me-1 text-primary"></i> @ngo.Phone</div>
+                                }
+                                @if (!string.IsNullOrEmpty(ngo.Email))
+                                {
+                                    <div><i class="bi bi-envelope me-1 text-primary"></i> @ngo.Email</div>
+                                }
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(ngo.Website))
+                        {
+                            <div class="pt-3 border-top">
+                                <a href="@ngo.Website" target="_blank" rel="noopener noreferrer" class="btn btn-outline-custom btn-sm w-100 rounded-pill">
+                                    <span>NGO Web Portal</span>
+                                    <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info py-4 rounded-4">
+                    <h5 class="fw-bold">No NGOs Found</h5>
+                    <p class="text-muted">No associated organizations match your search filter.</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

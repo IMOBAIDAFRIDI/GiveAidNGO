@@ -1,0 +1,56 @@
+@model GiveAid.Web.Models.Entities.GalleryImage
+@{
+    ViewData["Title"] = "Upload Gallery Photo";
+    var programmes = ViewBag.Programmes as List<Programme> ?? new();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Upload Photo to Field Gallery</h3>
+    </div>
+    <a asp-area="Admin" asp-controller="Gallery" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        &larr; Back to Gallery
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="custom-card p-4 p-md-5 shadow-sm">
+            <form asp-area="Admin" asp-controller="Gallery" asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label for="imageFile" class="form-label fw-semibold">Select Photo File (JPG, PNG, WEBP)</label>
+                    <input type="file" name="imageFile" id="imageFile" accept=".jpg,.jpeg,.png,.webp" class="form-control form-control-lg" required />
+                    <small class="text-muted">Maximum file size: 5 MB.</small>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-semibold">Photo Title (Optional)</label>
+                    <input asp-for="Title" class="form-control" placeholder="e.g. Students in digital literacy van" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ProgrammeId" class="form-label fw-semibold">Link to Field Programme (Optional)</label>
+                    <select asp-for="ProgrammeId" class="form-select">
+                        <option value="">-- General Gallery (No specific programme) --</option>
+                        @foreach (var prog in programmes)
+                        {
+                            <option value="@prog.Id">@prog.Title</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Caption" class="form-label fw-semibold">Caption / Story</label>
+                    <textarea asp-for="Caption" rows="3" class="form-control" placeholder="Short description of the photo..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-bold">
+                    <i class="bi bi-cloud-upload me-1"></i> Upload Image
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

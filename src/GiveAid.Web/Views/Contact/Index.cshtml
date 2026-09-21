@@ -1,0 +1,112 @@
+@model GiveAid.Web.Models.ViewModels.Queries.QueryCreateViewModel
+@{
+    ViewData["Title"] = "Contact Headquarters & Field Offices";
+    var contact = ViewBag.ContactInfo as GiveAid.Web.Models.Entities.ContactInfo;
+}
+
+<!-- Page Header Banner -->
+<div class="page-header-banner text-white mb-5">
+    <div class="container text-center text-md-start">
+        <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Reach Out</span>
+        <h1 class="display-5 fw-bold text-white mb-2">Contact Us</h1>
+        <p class="lead text-muted mb-0">Get in touch with our secretariat, media representatives, and partnership coordinators.</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row g-4">
+        <!-- Contact Info Side -->
+        <div class="col-lg-5">
+            <div class="custom-card p-4 h-100 shadow-lg">
+                <h4 class="fw-bold mb-3 text-white">Headquarters Information</h4>
+                <p class="text-muted small mb-4">
+                    Our central secretariat coordinates relief logistics, manages emergency operations, and publishes audits for all provincial programs.
+                </p>
+
+                <div class="d-flex flex-column gap-3 mb-4">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="p-3 bg-surface rounded text-primary fs-4 border">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">Office Address</h6>
+                            <p class="text-muted small mb-0">@(contact?.Address ?? "Suite 400, Humanity Tower, 12 Blue Area, Islamabad")</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="p-3 bg-surface rounded text-primary fs-4 border">
+                            <i class="bi bi-telephone-fill"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">Direct Telephone</h6>
+                            <p class="text-muted small mb-0">@(contact?.Phone ?? "+92 (051) 234-5678")</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="p-3 bg-surface rounded text-primary fs-4 border">
+                            <i class="bi bi-envelope-fill"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">Official Email</h6>
+                            <p class="text-muted small mb-0">@(contact?.Email ?? "support@giveaid.org")</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-surface rounded border">
+                    <h6 class="fw-bold mb-1 text-white">Looking for Help or Ticket Status?</h6>
+                    <p class="small text-muted mb-2">If you have an inquiry about ongoing relief drives, visit our Help Centre.</p>
+                    <a asp-controller="HelpCentre" asp-action="Index" class="btn btn-outline-custom btn-sm rounded-pill">Visit Help Centre</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form Side -->
+        <div class="col-lg-7">
+            <div class="custom-card p-4 p-md-5 shadow-lg">
+                <h4 class="fw-bold mb-2 text-white">Send a Message</h4>
+                <p class="text-muted small mb-4">Fill out the form below and our desk will respond within 24–48 hours.</p>
+
+                <form asp-controller="Contact" asp-action="Index" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Name" class="form-label fw-semibold text-muted"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Your name" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-semibold text-muted"></label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Your email address" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Subject" class="form-label fw-semibold text-muted"></label>
+                        <input asp-for="Subject" class="form-control" placeholder="Subject or matter of inquiry" />
+                        <span asp-validation-for="Subject" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Message" class="form-label fw-semibold text-muted"></label>
+                        <textarea asp-for="Message" rows="5" class="form-control" placeholder="Type your message here..."></textarea>
+                        <span asp-validation-for="Message" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom btn-lg w-100 py-3 fw-bold rounded-pill shadow">
+                        <i class="bi bi-send-fill me-2"></i> Dispatch Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
