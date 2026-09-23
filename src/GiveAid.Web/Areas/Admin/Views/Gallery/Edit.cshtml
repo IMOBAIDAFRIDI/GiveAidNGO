@@ -1,0 +1,89 @@
+@model GiveAid.Web.Models.Entities.GalleryImage
+@{
+    ViewData["Title"] = "Edit Gallery Photo";
+    var programmes = ViewBag.Programmes as List<Programme> ?? new();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Edit Gallery Photo</h3>
+        <p class="text-muted small mb-0">Update photo details, linked programme, or replace the photo.</p>
+    </div>
+    <a asp-area="Admin" asp-controller="Gallery" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Back to Gallery
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="custom-card p-4 p-md-5 shadow-sm">
+            <form asp-area="Admin" asp-controller="Gallery" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ImagePath" />
+                <input type="hidden" asp-for="UploadedByUserId" />
+                <input type="hidden" asp-for="CreatedAt" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                <!-- Current Image Preview -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold d-block">Current Photo</label>
+                    <div class="d-inline-block p-2 border rounded-3 bg-surface">
+                        <img src="@Model.ImagePath" alt="@(Model.Title ?? "Gallery Image")" class="rounded" style="max-height: 200px; max-width: 100%; object-fit: contain;" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="imageFile" class="form-label fw-semibold">Replace Photo File (Optional)</label>
+                    <input type="file" name="imageFile" id="imageFile" accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+                    <small class="text-muted">Leave empty to keep current photo. Maximum size: 5 MB.</small>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-semibold">Photo Title</label>
+                    <input asp-for="Title" class="form-control" placeholder="e.g. Students in digital literacy van" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ProgrammeId" class="form-label fw-semibold">Link to Field Programme</label>
+                    <select asp-for="ProgrammeId" class="form-select">
+                        <option value="">-- General Gallery (No specific programme) --</option>
+                        @foreach (var prog in programmes)
+                        {
+                            <option value="@prog.Id" selected="@(Model.ProgrammeId == prog.Id)">@prog.Title</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="SortOrder" class="form-label fw-semibold">Display Order</label>
+                        <input asp-for="SortOrder" type="number" class="form-control" />
+                        <span asp-validation-for="SortOrder" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="form-check mb-2">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label fw-semibold">Active &amp; Visible in Gallery</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Caption" class="form-label fw-semibold">Caption / Story</label>
+                    <textarea asp-for="Caption" rows="3" class="form-control" placeholder="Short description of the photo..."></textarea>
+                    <span asp-validation-for="Caption" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-bold">
+                    <i class="bi bi-check2-circle me-1"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

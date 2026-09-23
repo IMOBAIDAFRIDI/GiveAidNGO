@@ -37,6 +37,159 @@
     --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+/* ==========================================================================
+   Light Mode Theme Variables & Component Adaptations
+   ========================================================================== */
+[data-bs-theme="light"] {
+    --bg-base: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f1f5f9;
+    --bg-elevated: #f8fafc;
+    --bg-input: #ffffff;
+
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(16, 185, 129, 0.5);
+    --border-light: rgba(0, 0, 0, 0.12);
+
+    --text-pure: #0f172a;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --text-subtle: #94a3b8;
+
+    --admin-sidebar-bg: #0f172a;
+    --admin-topbar-bg: #ffffff;
+    --admin-content-bg: #f8fafc;
+}
+
+[data-bs-theme="light"] html,
+[data-bs-theme="light"] body {
+    background-color: var(--bg-base) !important;
+    color: var(--text-main) !important;
+}
+
+[data-bs-theme="light"] main {
+    background-color: var(--bg-base) !important;
+}
+
+[data-bs-theme="light"] h1,
+[data-bs-theme="light"] h2,
+[data-bs-theme="light"] h3,
+[data-bs-theme="light"] h4,
+[data-bs-theme="light"] h5,
+[data-bs-theme="light"] h6 {
+    color: var(--text-pure) !important;
+}
+
+[data-bs-theme="light"] .text-dark {
+    color: var(--text-pure) !important;
+}
+
+[data-bs-theme="light"] .text-white:not(.badge):not(.btn-primary-custom):not(.btn-danger):not(.bg-primary-custom):not(.badge-cause-pill):not(.page-header-banner *) {
+    color: var(--text-pure) !important;
+}
+
+[data-bs-theme="light"] .text-white-50 {
+    color: var(--text-muted) !important;
+}
+
+[data-bs-theme="light"] .bg-white,
+[data-bs-theme="light"] .bg-light {
+    background-color: #ffffff !important;
+    color: var(--text-main) !important;
+}
+
+[data-bs-theme="light"] .custom-card {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-bs-theme="light"] .bg-surface {
+    background-color: #f8fafc !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-bs-theme="light"] .navbar {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-bs-theme="light"] .navbar .nav-link {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .navbar .nav-link:hover,
+[data-bs-theme="light"] .navbar .nav-link.active {
+    color: var(--primary) !important;
+}
+
+[data-bs-theme="light"] .dropdown-menu {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-bs-theme="light"] .dropdown-item {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .dropdown-item:hover {
+    background-color: #f1f5f9 !important;
+    color: var(--primary) !important;
+}
+
+[data-bs-theme="light"] .form-control,
+[data-bs-theme="light"] .form-select {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+[data-bs-theme="light"] .form-control:focus,
+[data-bs-theme="light"] .form-select:focus {
+    background-color: #ffffff !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 0.25rem var(--primary-glow) !important;
+    color: #0f172a !important;
+}
+
+[data-bs-theme="light"] .btn-outline-custom {
+    color: #334155 !important;
+    border-color: #cbd5e1 !important;
+}
+
+[data-bs-theme="light"] .btn-outline-custom:hover {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+[data-bs-theme="light"] .table {
+    --bs-table-color: #1e293b;
+    --bs-table-bg: #ffffff;
+    --bs-table-border-color: #e2e8f0;
+}
+
+[data-bs-theme="light"] .table-light {
+    --bs-table-bg: #f8fafc;
+    --bs-table-color: #334155;
+}
+
+[data-bs-theme="light"] .admin-sidebar {
+    background-color: #0f172a !important;
+}
+
+[data-bs-theme="light"] .admin-topbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-bs-theme="light"] .admin-content {
+    background-color: #f8fafc !important;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;

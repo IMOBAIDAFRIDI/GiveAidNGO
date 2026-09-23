@@ -40,6 +40,73 @@ public class AboutController : Controller
     }
 
     [HttpGet]
+    public IActionResult Create()
+    {
+        return View(new AboutSectionCreateViewModel
+        {
+            SortOrder = (_context.AboutSections.Max(a => (int?)a.SortOrder) ?? 0) + 1,
+            IsActive = true
+        });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(AboutSectionCreateViewModel model)
+    {
+        model.Slug = model.Slug.Trim().ToLowerInvariant();
+
+        if (await _context.AboutSections.AnyAsync(a => a.Slug.ToLower() == model.Slug))
+        {
+            ModelState.AddModelError(nameof(model.Slug), "This slug is already in use. Please choose a unique slug.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        string? imagePath = null;
+        if (model.ImageFile != null)
+        {
+            try
+            {
+                imagePath = await _mediaService.UploadImageAsync(model.ImageFile, "about");
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError(nameof(model.ImageFile), ex.Message);
+                return View(model);
+            }
+        }
+
+        var admin = await _userManager.GetUserAsync(User);
+
+        var section = new AboutSection
+        {
+            Title = model.Title.Trim(),
+            Slug = model.Slug,
+            Content = model.Content.Trim(),
+            ImagePath = imagePath,
+            SortOrder = model.SortOrder,
+            IsActive = model.IsActive,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            UpdatedByUserId = admin?.Id
+        };
+
+        await _context.AboutSections.AddAsync(section);
+        await _context.SaveChangesAsync();
+
+        if (admin != null)
+        {
+            await _activityLogger.LogAsync(admin.Id, "Created About Section", "AboutSection", section.Id);
+        }
+
+        TempData["SuccessMessage"] = $"About Section '{section.Title}' created successfully.";
+        return RedirectToAction(nameof(Index), "About", new { area = "Admin" });
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
         var section = await _context.AboutSections.FindAsync(id);
@@ -64,6 +131,13 @@ public class AboutController : Controller
     public async Task<IActionResult> Edit(int id, AboutSectionEditViewModel model)
     {
         if (id != model.Id) return BadRequest();
+
+        model.Slug = model.Slug.Trim().ToLowerInvariant();
+
+        if (await _context.AboutSections.AnyAsync(a => a.Slug.ToLower() == model.Slug && a.Id != id))
+        {
+            ModelState.AddModelError(nameof(model.Slug), "This slug is already in use by another section.");
+        }
 
         if (!ModelState.IsValid)
         {
@@ -93,8 +167,9 @@ public class AboutController : Controller
 
         var admin = await _userManager.GetUserAsync(User);
 
-        section.Title = model.Title;
-        section.Content = model.Content;
+        section.Title = model.Title.Trim();
+        section.Slug = model.Slug;
+        section.Content = model.Content.Trim();
         section.SortOrder = model.SortOrder;
         section.IsActive = model.IsActive;
         section.UpdatedAt = DateTime.UtcNow;
@@ -108,6 +183,31 @@ public class AboutController : Controller
         }
 
         TempData["SuccessMessage"] = $"About Section '{section.Title}' updated successfully.";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), "About", new { area = "Admin" });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var section = await _context.AboutSections.FindAsync(id);
+        if (section == null) return NotFound();
+
+        if (!string.IsNullOrEmpty(section.ImagePath))
+        {
+            _mediaService.DeleteImage(section.ImagePath);
+        }
+
+        _context.AboutSections.Remove(section);
+        await _context.SaveChangesAsync();
+
+        var admin = await _userManager.GetUserAsync(User);
+        if (admin != null)
+        {
+            await _activityLogger.LogAsync(admin.Id, "Deleted About Section", "AboutSection", id);
+        }
+
+        TempData["SuccessMessage"] = $"About Section '{section.Title}' deleted successfully.";
+        return RedirectToAction(nameof(Index), "About", new { area = "Admin" });
     }
 }

@@ -49,7 +49,10 @@
                         </td>
                         <td class="small">@(img.UploadedByUser?.FullName ?? "Admin")</td>
                         <td class="small text-muted">@img.CreatedAt.ToString("dd MMM yyyy")</td>
-                        <td class="text-end">
+                        <td class="text-end text-nowrap">
+                            <a asp-area="Admin" asp-controller="Gallery" asp-action="Edit" asp-route-id="@img.Id" class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="bi bi-pencil me-1"></i> Edit
+                            </a>
                             <form asp-area="Admin" asp-controller="Gallery" asp-action="Delete" asp-route-id="@img.Id" method="post" onsubmit="return confirm('Delete this image permanently from disk and database?');" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <button type="submit" class="btn btn-sm btn-outline-danger">

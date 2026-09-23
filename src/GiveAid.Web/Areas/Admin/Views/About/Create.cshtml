@@ -1,30 +1,28 @@
-@model GiveAid.Web.Models.ViewModels.About.AboutSectionEditViewModel
+@model GiveAid.Web.Models.ViewModels.About.AboutSectionCreateViewModel
 @{
-    ViewData["Title"] = "Edit Section - " + Model.Title;
+    ViewData["Title"] = "Add New About Section";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0">Edit Section Content</h3>
-        <p class="text-muted small mb-0">Slug: <code>@Model.Slug</code></p>
+        <h3 class="fw-bold mb-0">Add New About Section</h3>
+        <p class="text-muted small mb-0">Create a new core pillar or informative section for the public About Us page.</p>
     </div>
     <a asp-area="Admin" asp-controller="About" asp-action="Index" class="btn btn-outline-secondary btn-sm">
-        &larr; Back to Sections
+        <i class="bi bi-arrow-left me-1"></i> Back to Sections
     </a>
 </div>
 
 <div class="row">
     <div class="col-lg-8">
         <div class="custom-card p-4 p-md-5 shadow-sm">
-            <form asp-area="Admin" asp-controller="About" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+            <form asp-area="Admin" asp-controller="About" asp-action="Create" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="ExistingImagePath" />
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
 
                 <div class="mb-3">
-                    <label asp-for="Title" class="form-label fw-semibold"></label>
-                    <input asp-for="Title" class="form-control form-control-lg" required />
+                    <label asp-for="Title" class="form-label fw-semibold">Section Title</label>
+                    <input asp-for="Title" class="form-control form-control-lg" id="sectionTitle" placeholder="e.g. Humanitarian Relief Caravans" required />
                     <span asp-validation-for="Title" class="text-danger small"></span>
                 </div>
 
@@ -32,7 +30,7 @@
                     <label asp-for="Slug" class="form-label fw-semibold">URL Slug</label>
                     <div class="input-group">
                         <span class="input-group-text bg-surface border-secondary border-opacity-25 text-muted">/about/</span>
-                        <input asp-for="Slug" class="form-control font-monospace" required />
+                        <input asp-for="Slug" class="form-control font-monospace" id="sectionSlug" placeholder="e.g. humanitarian-caravans" required />
                     </div>
                     <small class="text-muted d-block mt-1">Lowercase letters, numbers, and hyphens only.</small>
                     <span asp-validation-for="Slug" class="text-danger small"></span>
@@ -47,32 +45,26 @@
                     <div class="col-md-6 d-flex align-items-end">
                         <div class="form-check mb-2">
                             <input asp-for="IsActive" class="form-check-input" />
-                            <label asp-for="IsActive" class="form-check-label fw-semibold">Active &amp; Visible</label>
+                            <label asp-for="IsActive" class="form-check-label fw-semibold">Active &amp; Visible on Website</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Cover Photo</label>
-                    @if (!string.IsNullOrEmpty(Model.ExistingImagePath))
-                    {
-                        <div class="mb-2">
-                            <img src="@Model.ExistingImagePath" alt="Cover Preview" class="rounded border" style="max-height: 140px; max-width: 100%; object-fit: cover;" />
-                        </div>
-                    }
-                    <label for="ImageFile" class="form-label small text-muted">Upload New Photo (Replaces current photo)</label>
+                    <label for="ImageFile" class="form-label fw-semibold">Cover Photo (Optional)</label>
                     <input type="file" asp-for="ImageFile" accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+                    <small class="text-muted">High-resolution landscape image (JPG, PNG, WEBP, max 5MB).</small>
                     <span asp-validation-for="ImageFile" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-4">
                     <label asp-for="Content" class="form-label fw-semibold">Body Content / Description</label>
-                    <textarea asp-for="Content" rows="8" class="form-control" style="line-height: 1.6;" required></textarea>
+                    <textarea asp-for="Content" rows="8" class="form-control" placeholder="Provide full details, mission objectives, and impact figures for this section..." required style="line-height: 1.6;"></textarea>
                     <span asp-validation-for="Content" class="text-danger small"></span>
                 </div>
 
                 <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-bold">
-                    <i class="bi bi-check2-circle me-1"></i> Save Section
+                    <i class="bi bi-plus-circle me-1"></i> Create Section
                 </button>
             </form>
         </div>
@@ -81,4 +73,25 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const titleInput = document.getElementById('sectionTitle');
+            const slugInput = document.getElementById('sectionSlug');
+            let manualSlug = false;
+
+            slugInput.addEventListener('input', () => {
+                manualSlug = true;
+            });
+
+            titleInput.addEventListener('input', () => {
+                if (!manualSlug) {
+                    slugInput.value = titleInput.value
+                        .toLowerCase()
+                        .trim()
+                        .replace(/[^a-z0-9\s-]/g, '')
+                        .replace(/[\s-]+/g, '-');
+                }
+            });
+        });
+    </script>
 }

@@ -78,6 +78,9 @@ public class GalleryController : Controller
         model.CreatedAt = DateTime.UtcNow;
         model.UpdatedAt = DateTime.UtcNow;
 
+        ModelState.Remove(nameof(model.UploadedByUser));
+        ModelState.Remove(nameof(model.Programme));
+
         if (!ModelState.IsValid)
         {
             ViewBag.Programmes = await _context.Programmes.AsNoTracking().ToListAsync();
@@ -90,7 +93,72 @@ public class GalleryController : Controller
         await _activityLogger.LogAsync(admin.Id, "Uploaded Gallery Image", "GalleryImage", model.Id);
 
         TempData["SuccessMessage"] = "Image uploaded to gallery successfully.";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), "Gallery", new { area = "Admin" });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var image = await _context.GalleryImages.FindAsync(id);
+        if (image == null) return NotFound();
+
+        ViewBag.Programmes = await _context.Programmes.AsNoTracking().ToListAsync();
+        return View(image);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, GalleryImage model, IFormFile? imageFile)
+    {
+        if (id != model.Id) return BadRequest();
+
+        var image = await _context.GalleryImages.FindAsync(id);
+        if (image == null) return NotFound();
+
+        if (imageFile != null && imageFile.Length > 0)
+        {
+            try
+            {
+                var uploadedPath = await _mediaService.UploadImageAsync(imageFile, "gallery");
+                if (uploadedPath != null)
+                {
+                    _mediaService.DeleteImage(image.ImagePath);
+                    image.ImagePath = uploadedPath;
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("imageFile", ex.Message);
+            }
+        }
+
+        ModelState.Remove(nameof(model.UploadedByUser));
+        ModelState.Remove(nameof(model.Programme));
+        ModelState.Remove(nameof(model.ImagePath));
+
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Programmes = await _context.Programmes.AsNoTracking().ToListAsync();
+            return View(model);
+        }
+
+        image.Title = model.Title;
+        image.Caption = model.Caption;
+        image.ProgrammeId = model.ProgrammeId;
+        image.SortOrder = model.SortOrder;
+        image.IsActive = model.IsActive;
+        image.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        var admin = await _userManager.GetUserAsync(User);
+        if (admin != null)
+        {
+            await _activityLogger.LogAsync(admin.Id, "Updated Gallery Image", "GalleryImage", image.Id);
+        }
+
+        TempData["SuccessMessage"] = "Gallery image updated successfully.";
+        return RedirectToAction(nameof(Index), "Gallery", new { area = "Admin" });
     }
 
     [HttpPost]
@@ -111,6 +179,6 @@ public class GalleryController : Controller
         }
 
         TempData["SuccessMessage"] = "Gallery image deleted.";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), "Gallery", new { area = "Admin" });
     }
 }

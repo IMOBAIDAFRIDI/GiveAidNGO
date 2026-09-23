@@ -140,6 +140,11 @@
 
             <!-- Right Action Area: Single line aligned buttons -->
             <div class="d-flex align-items-center gap-2 mt-3 mt-xl-0 flex-nowrap">
+                <!-- Theme Toggle Button (Light/Dark Switcher) -->
+                <button class="btn btn-outline-custom rounded-circle p-0 d-flex align-items-center justify-content-center" id="themeToggleBtn" type="button" title="Switch between Light and Dark Mode" style="width: 38px; height: 38px; min-width: 38px;">
+                    <i class="bi bi-moon-stars-fill text-info" id="themeIcon"></i>
+                </button>
+
                 <!-- Glowing Donate CTA Button -->
                 <a class="btn btn-secondary-custom d-flex align-items-center gap-2 shadow-sm px-3 py-2 text-nowrap fw-bold rounded-pill" asp-controller="Donation" asp-action="Index">
                     <i class="bi bi-heart-fill"></i>

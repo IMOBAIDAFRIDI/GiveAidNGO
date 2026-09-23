@@ -13,7 +13,7 @@ public class GalleryImage
     public int SortOrder { get; set; }
 
     public int UploadedByUserId { get; set; }
-    public virtual ApplicationUser UploadedByUser { get; set; } = null!;
+    public virtual ApplicationUser? UploadedByUser { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

@@ -13,6 +13,21 @@
 </div>
 
 <div class="container pb-5">
+    <!-- Dynamic Section Navigation Pills -->
+    @if (Model.Sections.Any())
+    {
+        <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
+            @foreach (var sec in Model.Sections)
+            {
+                var isCurrent = string.Equals(Model.ActiveSlug, sec.Slug, StringComparison.OrdinalIgnoreCase);
+                <a asp-controller="About" asp-action="Index" asp-route-slug="@sec.Slug" 
+                   class="btn btn-sm rounded-pill px-3 py-2 text-nowrap @(isCurrent ? "btn-primary-custom shadow-sm fw-bold" : "btn-outline-custom")">
+                    @sec.Title
+                </a>
+            }
+        </div>
+    }
+
     <div class="row justify-content-center">
         <!-- Main Content Area for the selected section (Full-Width / Centered Layout) -->
         <div class="col-lg-10 col-xl-9">

@@ -5,9 +5,12 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0">About Us Content Model (7 Canonical Sections)</h3>
-        <p class="text-muted small mb-0">Manage the 7 unified sections rendered across the public About portal.</p>
+        <h3 class="fw-bold mb-0">About Us Content &amp; Pillars</h3>
+        <p class="text-muted small mb-0">Manage informative sections and core pillars rendered across the public About portal.</p>
     </div>
+    <a asp-area="Admin" asp-controller="About" asp-action="Create" class="btn btn-primary-custom">
+        <i class="bi bi-plus-circle me-1"></i> Add New Section
+    </a>
 </div>
 
 <div class="custom-card p-4 shadow-sm">
@@ -16,11 +19,12 @@
             <thead class="table-light small">
                 <tr>
                     <th>Order</th>
+                    <th>Cover</th>
                     <th>Section Title</th>
                     <th>Slug</th>
                     <th>Excerpt</th>
                     <th>Status</th>
-                    <th class="text-end">Action</th>
+                    <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,20 +32,38 @@
                 {
                     <tr>
                         <td class="fw-bold text-muted">#@sec.SortOrder</td>
+                        <td style="width: 70px;">
+                            @if (!string.IsNullOrEmpty(sec.ImagePath))
+                            {
+                                <img src="@sec.ImagePath" alt="@sec.Title" class="rounded border" style="width: 55px; height: 38px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <div class="rounded border bg-surface d-flex align-items-center justify-content-center text-muted" style="width: 55px; height: 38px; font-size: 0.75rem;">
+                                    <i class="bi bi-image"></i>
+                                </div>
+                            }
+                        </td>
                         <td class="fw-bold text-dark">@sec.Title</td>
                         <td><code class="text-primary">@sec.Slug</code></td>
-                        <td class="small text-muted" style="max-width: 320px;">
-                            @(sec.Content.Length > 85 ? sec.Content[..85] + "..." : sec.Content)
+                        <td class="small text-muted" style="max-width: 280px;">
+                            @(sec.Content.Length > 75 ? sec.Content[..75] + "..." : sec.Content)
                         </td>
                         <td>
                             <span class="badge @(sec.IsActive ? "badge-status-active" : "badge-status-closed")">
                                 @(sec.IsActive ? "Active" : "Hidden")
                             </span>
                         </td>
-                        <td class="text-end">
-                            <a asp-area="Admin" asp-controller="About" asp-action="Edit" asp-route-id="@sec.Id" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-pencil me-1"></i> Edit Content
+                        <td class="text-end text-nowrap">
+                            <a asp-area="Admin" asp-controller="About" asp-action="Edit" asp-route-id="@sec.Id" class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="bi bi-pencil me-1"></i> Edit
                             </a>
+                            <form asp-area="Admin" asp-controller="About" asp-action="Delete" asp-route-id="@sec.Id" method="post" onsubmit="return confirm('Are you sure you want to delete the section \'@sec.Title\'?');" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash me-1"></i> Delete
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 }
