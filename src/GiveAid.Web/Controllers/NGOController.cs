@@ -14,6 +14,7 @@ public class NGOController : Controller
     }
 
     [HttpGet("ngos")]
+    [HttpGet("ngo")]
     public async Task<IActionResult> Index(string? city = null, string? search = null)
     {
         var query = _context.NGOs

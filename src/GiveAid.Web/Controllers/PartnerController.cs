@@ -14,6 +14,7 @@ public class PartnerController : Controller
     }
 
     [HttpGet("partners")]
+    [HttpGet("partner")]
     public async Task<IActionResult> Index()
     {
         var partners = await _context.Partners

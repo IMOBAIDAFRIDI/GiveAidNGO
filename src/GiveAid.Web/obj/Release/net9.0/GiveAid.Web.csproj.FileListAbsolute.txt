@@ -157,9 +157,7 @@ C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\n
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\scopedcss\bundle\GiveAid.Web.styles.css
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\scopedcss\projectbundle\GiveAid.Web.bundle.scp.css
-C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\compressed\phywmvup1r-g9ti1b1xrj.gz
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\compressed\qxslore45v-61n19gt1b8.gz
-C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\compressed\zbonmdlq2c-6sjmh3jgc7.gz
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\compressed\fii89rz2fv-bqjiyaj88i.gz
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\compressed\cta8yr4myt-c2jlpeoesf.gz
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\compressed\caju3svriq-erw9l3u2r3.gz
@@ -237,9 +235,12 @@ C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\n
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\GiveAid.Web.deps.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\GiveAid.Web.runtimeconfig.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\GiveAid.Web.staticwebassets.endpoints.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\GiveAid.Web.sourcelink.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\compressed\zbonmdlq2c-7ej5hxocw6.gz
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\publish\web.config
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\publish\appsettings.Development.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\publish\appsettings.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\publish\GiveAid.Web.deps.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\publish\GiveAid.Web.runtimeconfig.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Release\net9.0\publish\publish\GiveAid.Web.staticwebassets.endpoints.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Release\net9.0\compressed\phywmvup1r-p1oz0xfd1u.gz

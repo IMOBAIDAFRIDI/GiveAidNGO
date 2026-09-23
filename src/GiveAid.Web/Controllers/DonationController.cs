@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace GiveAid.Web.Controllers;
 
 [Route("donate")]
+[Route("donation")]
 public class DonationController : Controller
 {
     private readonly ApplicationDbContext _context;

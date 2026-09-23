@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace GiveAid.Web.Controllers;
 
 [Route("programmes")]
+[Route("programme")]
 public class ProgrammeController : Controller
 {
     private readonly ApplicationDbContext _context;

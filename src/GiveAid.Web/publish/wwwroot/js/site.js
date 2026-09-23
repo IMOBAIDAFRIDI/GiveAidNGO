@@ -121,4 +121,30 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => alertBox.remove(), 300);
         }, 5000);
     }
+
+    // 5. Theme Switcher (Dark / Light Mode)
+    function updateThemeIcon(theme) {
+        const icons = document.querySelectorAll('#themeIcon');
+        icons.forEach(icon => {
+            if (theme === 'light') {
+                icon.className = 'bi bi-sun-fill text-warning';
+            } else {
+                icon.className = 'bi bi-moon-stars-fill text-info';
+            }
+        });
+    }
+
+    const savedTheme = localStorage.getItem('giveaid_theme') || 'dark';
+    updateThemeIcon(savedTheme);
+
+    const themeToggleBtns = document.querySelectorAll('#themeToggleBtn');
+    themeToggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('giveaid_theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+    });
 });

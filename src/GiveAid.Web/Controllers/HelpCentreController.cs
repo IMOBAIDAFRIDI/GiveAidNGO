@@ -8,6 +8,7 @@ namespace GiveAid.Web.Controllers;
 
 [Route("help")]
 [Route("help-centre")]
+[Route("helpcentre")]
 public class HelpCentreController : Controller
 {
     private readonly IQueryService _queryService;
