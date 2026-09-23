@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using GiveAid.Web.Common.ValidationAttributes;
 
 namespace GiveAid.Web.Models.ViewModels.Account;
 
@@ -10,15 +11,17 @@ public class RegisterViewModel
     public string FullName { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Email address is required.")]
-    [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+    [StrictEmailAddress]
     [Display(Name = "Email Address")]
     public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Password is required.")]
-    [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
+    [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]
+    [StrongPassword]
     [DataType(DataType.Password)]
     public string Password { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "Please confirm your password.")]
     [DataType(DataType.Password)]
     [Display(Name = "Confirm Password")]
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -34,7 +37,7 @@ public class RegisterViewModel
 public class LoginViewModel
 {
     [Required(ErrorMessage = "Email is required.")]
-    [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+    [StrictEmailAddress]
     public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Password is required.")]
@@ -51,11 +54,12 @@ public class ProfileViewModel
 {
     public int Id { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Full name is required.")]
     [Display(Name = "Full Name")]
     public string FullName { get; set; } = string.Empty;
 
-    [EmailAddress]
+    [Required(ErrorMessage = "Email is required.")]
+    [StrictEmailAddress]
     public string Email { get; set; } = string.Empty;
 
     [Phone]

@@ -79,7 +79,14 @@ public class DonationController : Controller
         try
         {
             var result = await _donationService.ProcessDemoDonationAsync(model, userId);
-            TempData["SuccessMessage"] = "Thank you for your generous contribution! Your payment has been authorized.";
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = "Thank you for your generous contribution! Your payment has been authorized.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.FailureReason ?? "Payment authorization was declined by the card network.";
+            }
             return RedirectToAction(nameof(Result), new { reference = result.ReferenceNo });
         }
         catch (InvalidOperationException ex)

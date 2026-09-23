@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using GiveAid.Web.Common.ValidationAttributes;
 using GiveAid.Web.Models.Entities;
 
 namespace GiveAid.Web.Models.ViewModels.Queries;
@@ -6,15 +7,15 @@ namespace GiveAid.Web.Models.ViewModels.Queries;
 public class QueryCreateViewModel
 {
     [Required(ErrorMessage = "Your name is required.")]
-    [StringLength(150)]
+    [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 150 characters.")]
     public string Name { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Email address is required.")]
-    [EmailAddress]
+    [StrictEmailAddress]
     public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Subject is required.")]
-    [StringLength(250)]
+    [StringLength(250, MinimumLength = 3, ErrorMessage = "Subject must be between 3 and 250 characters.")]
     public string Subject { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Message is required.")]
@@ -35,7 +36,7 @@ public class QueryReplyViewModel
 public class InvitationCreateViewModel
 {
     [Required(ErrorMessage = "Recipient email is required.")]
-    [EmailAddress(ErrorMessage = "Please enter a valid recipient email address.")]
+    [StrictEmailAddress]
     [Display(Name = "Friend's Email Address")]
     public string RecipientEmail { get; set; } = string.Empty;
 

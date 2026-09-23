@@ -38,10 +38,10 @@
                             </div>
                         </div>
 
-                        <div class="row g-2 mb-2">
+                        <div class="row g-2 mb-1">
                             <div class="col-6">
                                 <label asp-for="Password" class="form-label small fw-semibold text-muted mb-1"></label>
-                                <input asp-for="Password" type="password" class="form-control form-control-sm border-0" placeholder="Min 6 chars" />
+                                <input asp-for="Password" type="password" class="form-control form-control-sm border-0" placeholder="Min 8 characters" />
                                 <span asp-validation-for="Password" class="text-danger small" style="font-size: 0.72rem;"></span>
                             </div>
                             <div class="col-6">
@@ -49,6 +49,9 @@
                                 <input asp-for="ConfirmPassword" type="password" class="form-control form-control-sm border-0" placeholder="Re-enter password" />
                                 <span asp-validation-for="ConfirmPassword" class="text-danger small" style="font-size: 0.72rem;"></span>
                             </div>
+                        </div>
+                        <div class="text-muted mb-2" style="font-size: 0.68rem;">
+                            <i class="bi bi-info-circle me-1 text-primary"></i> Must include 8+ chars, uppercase, lowercase, number & special symbol.
                         </div>
 
                         <div class="row g-2 mb-3">

@@ -67,8 +67,8 @@
                             </div>
                             <div class="col-6">
                                 <label asp-for="DonorEmail" class="form-label small fw-semibold text-muted mb-1"></label>
-                                <input asp-for="DonorEmail" type="email" class="form-control form-control-sm border-0" id="donorEmailInput" placeholder="donor@example.com" />
-                                <span asp-validation-for="DonorEmail" class="text-danger small" style="font-size: 0.72rem;"></span>
+                                <input asp-for="DonorEmail" type="email" class="form-control form-control-sm border-0" id="donorEmailInput" placeholder="name@example.com" />
+                                <span asp-validation-for="DonorEmail" class="text-danger small d-block" id="emailValidationError" style="font-size: 0.72rem;"></span>
                             </div>
                         </div>
 
@@ -81,16 +81,16 @@
 
                             <div class="row g-2">
                                 <div class="col-6">
-                                    <input asp-for="CardNumber" class="form-control form-control-sm border-0 font-monospace" id="cardNumberInput" placeholder="Card Number (16 digits)" />
-                                    <span asp-validation-for="CardNumber" class="text-danger small" style="font-size: 0.7rem;"></span>
+                                    <input asp-for="CardNumber" class="form-control form-control-sm border-0 font-monospace" id="cardNumberInput" placeholder="Card Number (16 digits)" maxlength="19" autocomplete="cc-number" />
+                                    <span asp-validation-for="CardNumber" class="text-danger small d-block" id="cardValidationError" style="font-size: 0.7rem;"></span>
                                 </div>
                                 <div class="col-3">
-                                    <input asp-for="ExpirationDate" class="form-control form-control-sm border-0 font-monospace" id="cardExpiryInput" placeholder="MM/YY" />
-                                    <span asp-validation-for="ExpirationDate" class="text-danger small" style="font-size: 0.7rem;"></span>
+                                    <input asp-for="ExpirationDate" class="form-control form-control-sm border-0 font-monospace" id="cardExpiryInput" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp" />
+                                    <span asp-validation-for="ExpirationDate" class="text-danger small d-block" id="expiryValidationError" style="font-size: 0.7rem;"></span>
                                 </div>
                                 <div class="col-3">
-                                    <input asp-for="Cvv" type="password" maxlength="4" class="form-control form-control-sm border-0 font-monospace" id="cardCvvInput" placeholder="CVV" />
-                                    <span asp-validation-for="Cvv" class="text-danger small" style="font-size: 0.7rem;"></span>
+                                    <input asp-for="Cvv" type="password" maxlength="4" class="form-control form-control-sm border-0 font-monospace" id="cardCvvInput" placeholder="CVV" autocomplete="cc-csc" />
+                                    <span asp-validation-for="Cvv" class="text-danger small d-block" id="cvvValidationError" style="font-size: 0.7rem;"></span>
                                 </div>
                             </div>
                         </div>
@@ -214,6 +214,175 @@
             });
 
             updateImpact(amountInput.value);
+
+            // Card & Expiry & Email Client Validations
+            const cardNumberInput = document.getElementById('cardNumberInput');
+            const cardValidationError = document.getElementById('cardValidationError');
+            const cardExpiryInput = document.getElementById('cardExpiryInput');
+            const expiryValidationError = document.getElementById('expiryValidationError');
+            const cardCvvInput = document.getElementById('cardCvvInput');
+            const cvvValidationError = document.getElementById('cvvValidationError');
+            const donorEmailInput = document.getElementById('donorEmailInput');
+            const emailValidationError = document.getElementById('emailValidationError');
+            const donationForm = document.querySelector('form');
+
+            function isValidLuhn(numberString) {
+                const clean = numberString.replace(/\D/g, '');
+                if (clean.length < 13 || clean.length > 19) return false;
+                let sum = 0;
+                let alternate = false;
+                for (let i = clean.length - 1; i >= 0; i--) {
+                    let n = parseInt(clean.charAt(i), 10);
+                    if (alternate) {
+                        n *= 2;
+                        if (n > 9) n = (n % 10) + 1;
+                    }
+                    sum += n;
+                    alternate = !alternate;
+                }
+                return sum % 10 === 0;
+            }
+
+            function validateExpiry(val) {
+                if (!val) return { valid: false, message: 'Expiration date is required.' };
+                const cleaned = val.trim();
+                const match = cleaned.match(/^(0[1-9]|1[0-2])\/([0-9]{2}|[0-9]{4})$/);
+                if (!match) return { valid: false, message: 'Enter expiry as MM/YY.' };
+                
+                const month = parseInt(match[1], 10);
+                let year = parseInt(match[2], 10);
+                if (match[2].length === 2) {
+                    year += 2000;
+                }
+                
+                const now = new Date();
+                const curYear = now.getFullYear();
+                const curMonth = now.getMonth() + 1; // 1-12
+                
+                if (year < curYear || (year === curYear && month < curMonth)) {
+                    return { valid: false, message: 'Card has expired. Expiration date must be in the future.' };
+                }
+                return { valid: true };
+            }
+
+            // Card formatting & check
+            cardNumberInput.addEventListener('input', (e) => {
+                let digits = e.target.value.replace(/\D/g, '').substring(0, 16);
+                let formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
+                e.target.value = formatted;
+
+                if (digits.length >= 13) {
+                    if (!isValidLuhn(digits)) {
+                        cardValidationError.innerText = 'Invalid card number.';
+                    } else {
+                        cardValidationError.innerText = '';
+                    }
+                } else if (digits.length > 0) {
+                    cardValidationError.innerText = 'Card number must be 16 digits.';
+                } else {
+                    cardValidationError.innerText = '';
+                }
+            });
+
+            // Expiry auto-slash formatting & check
+            cardExpiryInput.addEventListener('input', (e) => {
+                let digits = e.target.value.replace(/\D/g, '').substring(0, 4);
+                if (digits.length >= 3) {
+                    digits = digits.substring(0, 2) + '/' + digits.substring(2);
+                }
+                e.target.value = digits;
+
+                if (digits.length === 5) {
+                    const res = validateExpiry(digits);
+                    expiryValidationError.innerText = res.valid ? '' : res.message;
+                } else {
+                    expiryValidationError.innerText = '';
+                }
+            });
+
+            cardExpiryInput.addEventListener('blur', () => {
+                if (cardExpiryInput.value.trim().length > 0) {
+                    const res = validateExpiry(cardExpiryInput.value.trim());
+                    expiryValidationError.innerText = res.valid ? '' : res.message;
+                }
+            });
+
+            // CVV numeric restriction
+            cardCvvInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+                if (e.target.value.length >= 3) {
+                    cvvValidationError.innerText = '';
+                }
+            });
+
+            // Email validation on blur
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            donorEmailInput.addEventListener('blur', () => {
+                const em = donorEmailInput.value.trim();
+                if (em && !emailRegex.test(em)) {
+                    emailValidationError.innerText = 'Enter a valid email address (e.g. name@domain.com).';
+                } else {
+                    emailValidationError.innerText = '';
+                }
+            });
+
+            // Prevent submit if invalid
+            donationForm.addEventListener('submit', (e) => {
+                let hasError = false;
+
+                // Validate Email
+                const em = donorEmailInput.value.trim();
+                if (!emailRegex.test(em)) {
+                    emailValidationError.innerText = 'Please enter a valid email address (e.g. name@domain.com).';
+                    donorEmailInput.classList.add('is-invalid');
+                    donorEmailInput.focus();
+                    hasError = true;
+                } else {
+                    donorEmailInput.classList.remove('is-invalid');
+                    emailValidationError.innerText = '';
+                }
+
+                // Validate Card
+                const digits = cardNumberInput.value.replace(/\D/g, '');
+                if (!isValidLuhn(digits)) {
+                    cardValidationError.innerText = 'Please enter a valid card number.';
+                    cardNumberInput.classList.add('is-invalid');
+                    if (!hasError) cardNumberInput.focus();
+                    hasError = true;
+                } else {
+                    cardNumberInput.classList.remove('is-invalid');
+                    cardValidationError.innerText = '';
+                }
+
+                // Validate Expiry
+                const expRes = validateExpiry(cardExpiryInput.value.trim());
+                if (!expRes.valid) {
+                    expiryValidationError.innerText = expRes.message;
+                    cardExpiryInput.classList.add('is-invalid');
+                    if (!hasError) cardExpiryInput.focus();
+                    hasError = true;
+                } else {
+                    cardExpiryInput.classList.remove('is-invalid');
+                    expiryValidationError.innerText = '';
+                }
+
+                // Validate CVV
+                const cvv = cardCvvInput.value.trim();
+                if (!/^\d{3,4}$/.test(cvv)) {
+                    cvvValidationError.innerText = 'CVV must be 3 or 4 digits.';
+                    cardCvvInput.classList.add('is-invalid');
+                    if (!hasError) cardCvvInput.focus();
+                    hasError = true;
+                } else {
+                    cardCvvInput.classList.remove('is-invalid');
+                    cvvValidationError.innerText = '';
+                }
+
+                if (hasError) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
         });
     </script>
 }
