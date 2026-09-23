@@ -68,7 +68,7 @@
     --text-subtle: #94a3b8;    /* Slate-400 */
 
     /* Admin Portal Variables */
-    --admin-sidebar-bg: #0f172a;
+    --admin-sidebar-bg: #ffffff;
     --admin-topbar-bg: #ffffff;
     --admin-content-bg: #f8fafc;
 }
@@ -121,30 +121,7 @@
     color: var(--text-muted) !important;
 }
 
-/* 4. Strict Whitelist: Containers and components that MUST keep white text */
-[data-bs-theme="light"] .hero-banner .text-white,
-[data-bs-theme="light"] .hero-banner h1,
-[data-bs-theme="light"] .hero-banner h2,
-[data-bs-theme="light"] .hero-banner h3,
-[data-bs-theme="light"] .hero-banner h4,
-[data-bs-theme="light"] .hero-banner h5,
-[data-bs-theme="light"] .hero-banner h6,
-[data-bs-theme="light"] .page-header-banner,
-[data-bs-theme="light"] .page-header-banner .text-white,
-[data-bs-theme="light"] .page-header-banner h1,
-[data-bs-theme="light"] .page-header-banner h2,
-[data-bs-theme="light"] .page-header-banner h3,
-[data-bs-theme="light"] .page-header-banner h4,
-[data-bs-theme="light"] .page-header-banner h5,
-[data-bs-theme="light"] .page-header-banner h6,
-[data-bs-theme="light"] .auth-image-column,
-[data-bs-theme="light"] .auth-image-column .text-white,
-[data-bs-theme="light"] .auth-image-column h1,
-[data-bs-theme="light"] .auth-image-column h2,
-[data-bs-theme="light"] .auth-image-column h3,
-[data-bs-theme="light"] .auth-image-column h4,
-[data-bs-theme="light"] .auth-image-column h5,
-[data-bs-theme="light"] .auth-image-column h6,
+/* 4. Strict Whitelist: Only components that genuinely need white text in light mode */
 [data-bs-theme="light"] .gallery-overlay,
 [data-bs-theme="light"] .gallery-overlay .text-white,
 [data-bs-theme="light"] .gallery-overlay h1,
@@ -153,71 +130,190 @@
 [data-bs-theme="light"] .gallery-overlay h4,
 [data-bs-theme="light"] .gallery-overlay h5,
 [data-bs-theme="light"] .gallery-overlay h6,
-[data-bs-theme="light"] footer,
-[data-bs-theme="light"] footer .text-white,
-[data-bs-theme="light"] footer h1,
-[data-bs-theme="light"] footer h2,
-[data-bs-theme="light"] footer h3,
-[data-bs-theme="light"] footer h4,
-[data-bs-theme="light"] footer h5,
-[data-bs-theme="light"] footer h6,
-[data-bs-theme="light"] .top-bar .text-white,
-[data-bs-theme="light"] .badge:not(.bg-light):not(.bg-white):not(.bg-surface):not(.bg-primary-light):not(.badge-status-pending),
-[data-bs-theme="light"] .badge.text-white,
+[data-bs-theme="light"] .gallery-overlay p,
 [data-bs-theme="light"] .btn-primary-custom,
 [data-bs-theme="light"] .btn-primary-custom *,
 [data-bs-theme="light"] .btn-danger,
 [data-bs-theme="light"] .btn-danger *,
 [data-bs-theme="light"] .btn-success,
 [data-bs-theme="light"] .btn-success *,
-[data-bs-theme="light"] .btn-dark,
-[data-bs-theme="light"] .btn-dark *,
 [data-bs-theme="light"] .bg-primary-custom,
 [data-bs-theme="light"] .bg-primary-custom *,
 [data-bs-theme="light"] .progress-bar,
-[data-bs-theme="light"] .text-bg-dark,
-[data-bs-theme="light"] .admin-sidebar .sidebar-brand {
+[data-bs-theme="light"] .badge:not(.bg-light):not(.bg-white):not(.bg-surface):not(.bg-primary-light):not(.badge-status-pending):not(.hero-shield-badge):not(.card-date-badge) {
     color: #ffffff !important;
 }
 
-/* Secondary & Muted text inside dark containers */
-[data-bs-theme="light"] .hero-banner .text-muted,
-[data-bs-theme="light"] .hero-banner p,
-[data-bs-theme="light"] .page-header-banner .text-muted,
-[data-bs-theme="light"] .page-header-banner p,
-[data-bs-theme="light"] .page-header-banner .lead,
-[data-bs-theme="light"] .auth-image-column .text-white-50,
-[data-bs-theme="light"] .auth-image-column p,
-[data-bs-theme="light"] .gallery-overlay .text-muted,
-[data-bs-theme="light"] .gallery-overlay p,
-[data-bs-theme="light"] footer .text-secondary,
+/* 4a. Light Mode: Clean White Footer */
+[data-bs-theme="light"] footer,
+[data-bs-theme="light"] footer.bg-dark {
+    background-color: #ffffff !important;
+    color: #334155 !important;
+    border-top: 1px solid #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] footer h1,
+[data-bs-theme="light"] footer h2,
+[data-bs-theme="light"] footer h3,
+[data-bs-theme="light"] footer h4,
+[data-bs-theme="light"] footer h5,
+[data-bs-theme="light"] footer h6,
+[data-bs-theme="light"] footer .text-white {
+    color: #0f172a !important;
+}
+
 [data-bs-theme="light"] footer p,
 [data-bs-theme="light"] footer li,
-[data-bs-theme="light"] footer a:not(.btn),
+[data-bs-theme="light"] footer span:not(.bg-primary-custom):not(.badge),
+[data-bs-theme="light"] footer .text-secondary {
+    color: #475569 !important;
+}
+
+[data-bs-theme="light"] footer a:not(.btn) {
+    color: #475569 !important;
+    transition: color 0.2s ease;
+}
+
+[data-bs-theme="light"] footer a:not(.btn):hover,
+[data-bs-theme="light"] footer a.hover-white:hover {
+    color: #059669 !important;
+}
+
+[data-bs-theme="light"] footer hr,
+[data-bs-theme="light"] footer .border-secondary {
+    border-color: #e2e8f0 !important;
+}
+
+/* 4b. Light Mode: Luminous Home Hero Section ("corsoual" / hero banner) */
+[data-bs-theme="light"] .hero-banner {
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(236, 253, 245, 0.92) 100%),
+                url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat !important;
+    color: #1e293b !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] .hero-banner h1,
+[data-bs-theme="light"] .hero-banner .gsap-hero-title {
+    color: #0f172a !important;
+}
+
+[data-bs-theme="light"] .hero-banner p,
+[data-bs-theme="light"] .hero-banner .gsap-hero-subtitle,
+[data-bs-theme="light"] .hero-banner .text-muted {
+    color: #475569 !important;
+}
+
+[data-bs-theme="light"] .hero-transparency-card {
+    background-color: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-bs-theme="light"] .hero-card-title {
+    color: #0f172a !important;
+}
+
+[data-bs-theme="light"] .hero-card-hr {
+    border-color: #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] .hero-shield-badge {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+    color: #d97706 !important;
+}
+
+/* 4c. Light Mode: Inner Page Header Banners & CTA Strips */
+[data-bs-theme="light"] .page-header-banner {
+    background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.12), transparent 60%),
+                radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.10), transparent 60%),
+                #f1f5f9 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] .page-header-banner h1,
+[data-bs-theme="light"] .page-header-banner h2,
+[data-bs-theme="light"] .page-header-banner h3,
+[data-bs-theme="light"] .page-header-banner .text-white {
+    color: #0f172a !important;
+}
+
+[data-bs-theme="light"] .page-header-banner p,
+[data-bs-theme="light"] .page-header-banner .lead,
+[data-bs-theme="light"] .page-header-banner .text-muted {
+    color: #475569 !important;
+}
+
+/* 4d. Light Mode: Top Announcement & Contact Bar */
+[data-bs-theme="light"] .top-bar,
+[data-bs-theme="light"] .top-bar.bg-dark {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    color: #475569 !important;
+}
+
 [data-bs-theme="light"] .top-bar span,
-[data-bs-theme="light"] .top-bar a {
-    color: #cbd5e1 !important;
+[data-bs-theme="light"] .top-bar a,
+[data-bs-theme="light"] .top-bar .text-secondary,
+[data-bs-theme="light"] .top-bar .text-white,
+[data-bs-theme="light"] .top-bar .text-white-50 {
+    color: #64748b !important;
 }
 
-[data-bs-theme="light"] footer a:not(.btn):hover {
-    color: #10b981 !important;
+[data-bs-theme="light"] .top-bar a:hover,
+[data-bs-theme="light"] .top-bar a.hover-white:hover {
+    color: #059669 !important;
 }
 
-[data-bs-theme="light"] footer hr {
-    border-color: rgba(255, 255, 255, 0.12) !important;
+/* 4e. Light Mode: Auth & Donation Split Image Column */
+[data-bs-theme="light"] .auth-image-column {
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e2e8f0 !important;
 }
 
-/* Inside auth/donation split image column, inner dark glass cards */
+[data-bs-theme="light"] .auth-image-overlay {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(248, 250, 252, 0.88) 55%, rgba(248, 250, 252, 0.98) 100%) !important;
+}
+
+[data-bs-theme="light"] .auth-image-content {
+    color: #1e293b !important;
+}
+
+[data-bs-theme="light"] .auth-image-content h1,
+[data-bs-theme="light"] .auth-image-content h2,
+[data-bs-theme="light"] .auth-image-content h3,
+[data-bs-theme="light"] .auth-image-content h4,
+[data-bs-theme="light"] .auth-image-content h5,
+[data-bs-theme="light"] .auth-image-content h6,
+[data-bs-theme="light"] .auth-image-content .text-white {
+    color: #0f172a !important;
+}
+
+[data-bs-theme="light"] .auth-image-content p,
+[data-bs-theme="light"] .auth-image-content .text-white-50 {
+    color: #475569 !important;
+}
+
 [data-bs-theme="light"] .auth-image-content .bg-surface {
-    background-color: rgba(15, 23, 42, 0.8) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.94) !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
 }
-[data-bs-theme="light"] .auth-image-content .bg-surface .text-white,
-[data-bs-theme="light"] .auth-image-content .bg-surface h6 {
-    color: #ffffff !important;
+
+[data-bs-theme="light"] .auth-image-content .bg-surface h6,
+[data-bs-theme="light"] .auth-image-content .bg-surface .text-white {
+    color: #0f172a !important;
 }
+
 [data-bs-theme="light"] .auth-image-content .bg-surface .text-muted {
-    color: #cbd5e1 !important;
+    color: #64748b !important;
+}
+
+/* 4f. Light Mode: Programme Card Date Badges */
+[data-bs-theme="light"] .card-img-wrapper .badge.bg-dark {
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* 5. Cards & Section Surfaces */
@@ -548,13 +644,13 @@
 
 /* 14. Admin Portal Specifics */
 [data-bs-theme="light"] .admin-sidebar {
-    background-color: #0f172a !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background-color: #ffffff !important;
+    border-right: 1px solid #e2e8f0 !important;
 }
 
 [data-bs-theme="light"] .admin-sidebar .sidebar-brand {
-    color: #ffffff !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #0f172a !important;
+    border-bottom: 1px solid #e2e8f0 !important;
 }
 
 [data-bs-theme="light"] .admin-sidebar .sidebar-heading {
@@ -562,13 +658,13 @@
 }
 
 [data-bs-theme="light"] .admin-sidebar .nav-link {
-    color: #94a3b8 !important;
+    color: #475569 !important;
 }
 
 [data-bs-theme="light"] .admin-sidebar .nav-link:hover,
 [data-bs-theme="light"] .admin-sidebar .nav-link.active {
-    color: #34d399 !important;
-    background-color: #1e293b !important;
+    color: #059669 !important;
+    background-color: #f1f5f9 !important;
 }
 
 [data-bs-theme="light"] .admin-topbar {
