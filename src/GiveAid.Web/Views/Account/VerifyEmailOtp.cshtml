@@ -6,66 +6,56 @@
 
 <div class="container-fluid p-0 auth-split-wrapper">
     <div class="row g-0 w-100 h-100">
-        <!-- Left Side: OTP Verification Card -->
+        <!-- Left Side: Compact OTP Verification Card (Fitted, Zero Scroll) -->
         <div class="col-lg-6 col-xl-5 auth-form-column">
-            <div class="w-100 mx-auto" style="max-width: 460px;">
-                <div class="custom-card p-4 p-xl-4 shadow-2xl border">
-                    <!-- Top Header -->
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+            <div class="w-100 mx-auto" style="max-width: 440px;">
+                <div class="custom-card p-3 p-xl-4 shadow-2xl border">
+                    <!-- Top Header: Title & Back to Website Button -->
+                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary border-opacity-25">
                         <div>
-                            <h4 class="fw-bold text-white mb-0">Email Verification</h4>
-                            <small class="text-muted">Enter one-time security code</small>
+                            <h5 class="fw-bold text-white mb-0">Email Verification</h5>
+                            <small class="text-muted" style="font-size: 0.75rem;">One-time registration code</small>
                         </div>
-                        <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-custom rounded-pill px-3 py-1 text-nowrap" style="font-size: 0.8rem;">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-custom rounded-pill px-3 py-1 text-nowrap" style="font-size: 0.75rem;">
                             <i class="bi bi-arrow-left me-1"></i> Back to Website
                         </a>
                     </div>
 
-                    @if (TempData["SuccessMessage"] != null)
-                    {
-                        <div class="alert alert-success py-2 px-3 small mb-3 d-flex align-items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
-                            <span>@TempData["SuccessMessage"]</span>
-                        </div>
-                    }
-
                     @if (TempData["ErrorMessage"] != null)
                     {
-                        <div class="alert alert-danger py-2 px-3 small mb-3 d-flex align-items-center gap-2">
-                            <i class="bi bi-exclamation-triangle-fill text-danger fs-5"></i>
+                        <div class="alert alert-danger py-1 px-2 small mb-2 d-flex align-items-center gap-2" style="font-size: 0.78rem;">
+                            <i class="bi bi-exclamation-triangle-fill text-danger"></i>
                             <span>@TempData["ErrorMessage"]</span>
                         </div>
                     }
 
-                    <div class="text-center mb-4">
-                        <div class="d-inline-flex justify-content-center align-items-center bg-primary-custom text-white rounded-circle shadow-sm mb-2" style="width: 52px; height: 52px;">
-                            <i class="bi bi-envelope-check-fill fs-3"></i>
+                    <!-- Email & Status Card -->
+                    <div class="p-2 px-3 bg-surface rounded-3 border border-secondary border-opacity-25 mb-3 text-center">
+                        <div class="d-flex align-items-center justify-content-center gap-2 mb-1">
+                            <i class="bi bi-envelope-check-fill text-primary"></i>
+                            <span class="small text-muted" style="font-size: 0.78rem;">Code sent to:</span>
+                            <span class="fw-bold text-white" style="font-size: 0.85rem;">@Model.Email</span>
                         </div>
-                        <p class="text-muted small mb-1">
-                            A 6-digit verification code has been dispatched to:
-                        </p>
-                        <div class="fw-bold text-white fs-6 mb-2">
-                            <code>@Model.Email</code>
-                        </div>
-
-                        <!-- Live 1-Minute Countdown Badge -->
-                        @if (Model.IsLocked)
-                        {
-                            <div class="alert alert-danger py-2 px-3 small mb-0 rounded-pill">
-                                <i class="bi bi-shield-lock-fill me-1"></i> Resend locked for <strong>@Model.LockRemainingMinutes min</strong> (2-hour limit).
-                            </div>
-                        }
-                        else
-                        {
-                            <div id="otpTimerWrapper">
-                                <span id="otpCountdownBadge" class="badge @(Model.RemainingSeconds > 0 ? "bg-warning bg-opacity-25 text-warning border border-warning" : "bg-danger bg-opacity-25 text-danger border border-danger") px-3 py-2 rounded-pill fs-7">
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            @if (Model.IsLocked)
+                            {
+                                <span class="badge bg-danger bg-opacity-25 text-danger border border-danger px-2 py-1 rounded-pill" style="font-size: 0.72rem;">
+                                    <i class="bi bi-shield-lock-fill me-1"></i> Resend locked for @Model.LockRemainingMinutes min (2h limit)
+                                </span>
+                            }
+                            else
+                            {
+                                <span id="otpCountdownBadge" class="badge @(Model.RemainingSeconds > 0 ? "bg-warning bg-opacity-25 text-warning border border-warning" : "bg-danger bg-opacity-25 text-danger border border-danger") px-2 py-1 rounded-pill" style="font-size: 0.72rem;">
                                     <i class="bi bi-clock-history me-1"></i>
                                     <span id="countdownText">
-                                        @(Model.RemainingSeconds > 0 ? $"Code expires in: {Model.RemainingSeconds}s" : "Code expired. Please request a new code.")
+                                        @(Model.RemainingSeconds > 0 ? $"Expires in: {Model.RemainingSeconds}s" : "Code expired")
                                     </span>
                                 </span>
-                            </div>
-                        }
+                                <span class="text-muted" style="font-size: 0.72rem;">
+                                    (Resend @Model.ResendAttemptsUsed/2 used)
+                                </span>
+                            }
+                        </div>
                     </div>
 
                     <!-- OTP Submission Form -->
@@ -73,55 +63,44 @@
                         @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="Email" />
                         <input type="hidden" asp-for="ReturnUrl" />
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small mb-3"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-1 px-2 small mb-2" style="font-size: 0.75rem;"></div>
 
                         <div class="mb-3 text-center">
-                            <label asp-for="OtpCode" class="form-label small fw-semibold text-muted mb-2"></label>
+                            <label asp-for="OtpCode" class="form-label small fw-semibold text-muted mb-1" style="font-size: 0.8rem;">Enter 6-Digit Code</label>
                             <input asp-for="OtpCode" 
-                                   class="form-control form-control-lg text-center fw-black fs-2 border-0 rounded-3 shadow-inner text-primary" 
+                                   class="form-control text-center fw-black fs-2 border-0 rounded-3 shadow-inner text-primary py-2" 
                                    maxlength="6" 
                                    autofocus 
                                    autocomplete="one-time-code" 
                                    placeholder="------" 
-                                   style="letter-spacing: 14px; font-family: monospace;" />
-                            <span asp-validation-for="OtpCode" class="text-danger small mt-1 d-block" style="font-size: 0.75rem;"></span>
+                                   style="letter-spacing: 12px; font-family: monospace;" />
+                            <span asp-validation-for="OtpCode" class="text-danger small mt-1 d-block" style="font-size: 0.72rem;"></span>
                         </div>
 
-                        <button type="submit" class="btn btn-primary-custom btn-lg w-100 fw-bold py-2 mb-3 rounded-pill shadow">
+                        <button type="submit" class="btn btn-primary-custom w-100 fw-bold py-2 mb-2 rounded-pill shadow" style="font-size: 0.9rem;">
                             <i class="bi bi-check2-circle me-1"></i> Verify &amp; Activate Account
                         </button>
                     </form>
 
-                    <!-- Resend Section with Attempt Tracking -->
-                    <div class="text-center pt-3 border-top border-secondary border-opacity-25">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="small text-muted" style="font-size: 0.78rem;">
-                                Resend attempts: <strong>@Model.ResendAttemptsUsed of 2</strong> used
-                            </span>
-                            @if (!Model.IsLocked && Model.ResendAttemptsUsed >= 2)
-                            {
-                                <span class="badge bg-danger bg-opacity-25 text-danger small">Last attempt</span>
-                            }
-                        </div>
-
-                        <form asp-controller="Account" asp-action="ResendOtp" method="post">
+                    <!-- Resend & Actions Row -->
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top border-secondary border-opacity-25">
+                        <form asp-controller="Account" asp-action="ResendOtp" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="email" value="@Model.Email" />
                             <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
 
                             <button type="submit" 
                                     id="resendBtn" 
-                                    class="btn btn-outline-custom btn-sm rounded-pill px-4 py-2 w-100" 
+                                    class="btn btn-outline-custom btn-sm rounded-pill px-3 py-1" 
+                                    style="font-size: 0.78rem;" 
                                     @(Model.RemainingSeconds > 0 || Model.IsLocked ? "disabled" : "")>
-                                <i class="bi bi-arrow-clockwise me-1"></i> Resend Verification Code
+                                <i class="bi bi-arrow-clockwise me-1"></i> Resend Code
                             </button>
                         </form>
 
-                        <div class="mt-3">
-                            <a asp-controller="Account" asp-action="Register" class="text-muted small text-decoration-none hover-white" style="font-size: 0.78rem;">
-                                <i class="bi bi-pencil-square me-1"></i> Wrong email address? Register again
-                            </a>
-                        </div>
+                        <a asp-controller="Account" asp-action="Register" class="text-muted small text-decoration-none hover-white" style="font-size: 0.78rem;">
+                            <i class="bi bi-pencil-square me-1"></i> Change Email
+                        </a>
                     </div>
                 </div>
             </div>
@@ -138,8 +117,8 @@
                     <h2 class="fw-bold text-white mb-2">
                         "Secure, transparent, and direct community action."
                     </h2>
-                    <p class="text-white-50 small mb-3" style="max-width: 580px;">
-                        Email verification ensures every member in our humanitarian community is genuine, protecting funds, volunteer rosters, and emergency ground interventions.
+                    <p class="text-white-50 small mb-0" style="max-width: 580px;">
+                        Email verification protects funds, volunteer rosters, and emergency ground interventions.
                     </p>
                 </div>
             </div>
@@ -161,13 +140,10 @@
                 const interval = setInterval(function () {
                     secondsLeft--;
                     if (secondsLeft > 0) {
-                        const mins = Math.floor(secondsLeft / 60);
-                        const secs = secondsLeft % 60;
-                        const formatted = (mins > 0 ? (mins + ":" + (secs < 10 ? "0" : "") + secs) : (secs + "s"));
-                        if (countdownText) countdownText.innerText = "Code expires in: " + formatted;
+                        if (countdownText) countdownText.innerText = "Expires in: " + secondsLeft + "s";
                     } else {
                         clearInterval(interval);
-                        if (countdownText) countdownText.innerText = "Code expired. Please request a new code.";
+                        if (countdownText) countdownText.innerText = "Code expired";
                         if (countdownBadge) {
                             countdownBadge.classList.remove("bg-warning", "text-warning", "border-warning");
                             countdownBadge.classList.add("bg-danger", "text-danger", "border-danger");

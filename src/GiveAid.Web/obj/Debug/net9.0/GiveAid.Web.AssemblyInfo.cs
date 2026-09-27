@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GiveAid.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84b5594011fe52fdc3dd05880b4f8195124ab180")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ccf7102cd902c4d4750ba35b31933f25fad1e88")]
 [assembly: System.Reflection.AssemblyProductAttribute("GiveAid.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GiveAid.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

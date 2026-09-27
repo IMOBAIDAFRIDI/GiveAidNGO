@@ -160,7 +160,6 @@ public class AccountController : Controller
             }
         });
 
-        TempData["SuccessMessage"] = $"A 6-digit verification code has been dispatched to {cleanEmail}. Valid for 1 minute.";
         return RedirectToAction(nameof(VerifyEmailOtp), new { email = cleanEmail });
     }
 
@@ -374,7 +373,6 @@ public class AccountController : Controller
             }
         });
 
-        TempData["SuccessMessage"] = $"A new verification code has been dispatched to {cleanEmail}. (Resend {resendAttempt} of 2 used)";
         return RedirectToAction(nameof(VerifyEmailOtp), new { email = cleanEmail, returnUrl });
     }
 

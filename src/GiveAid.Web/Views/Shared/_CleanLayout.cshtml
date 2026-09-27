@@ -18,9 +18,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="bg-base min-vh-100">
-    <main role="main">
-        <partial name="_FlashMessage" />
+<body class="bg-base min-vh-100 overflow-hidden">
+    <main role="main" class="h-100">
         @RenderBody()
     </main>
 
