@@ -25,6 +25,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<ContactInfo> ContactInfos => Set<ContactInfo>();
     public DbSet<Invitation> Invitations => Set<Invitation>();
     public DbSet<AdminActivityLog> AdminActivityLogs => Set<AdminActivityLog>();
+    public DbSet<EmailVerificationOtp> EmailVerificationOtps => Set<EmailVerificationOtp>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -284,6 +285,19 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
                 .WithMany(u => u.AdminActivityLogs)
                 .HasForeignKey(al => al.AdminUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // EmailVerificationOtp
+        builder.Entity<EmailVerificationOtp>(entity =>
+        {
+            entity.ToTable("EmailVerificationOtps");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Email).HasMaxLength(256).IsRequired();
+            entity.Property(e => e.OtpCode).HasMaxLength(10).IsRequired();
+            entity.Property(e => e.ExpiresAt).HasColumnType("datetime2");
+            entity.Property(e => e.LockedUntil).HasColumnType("datetime2");
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime2");
+            entity.HasIndex(e => e.Email);
         });
     }
 }
