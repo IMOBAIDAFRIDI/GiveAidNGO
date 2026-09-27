@@ -147,4 +147,20 @@ document.addEventListener('DOMContentLoaded', () => {
             updateThemeIcon(newTheme);
         });
     });
+
+    // 6. Floating Back to Top Button Handler
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 350) {
+                backToTopBtn.classList.remove('d-none');
+            } else {
+                backToTopBtn.classList.add('d-none');
+            }
+        }, { passive: true });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 });

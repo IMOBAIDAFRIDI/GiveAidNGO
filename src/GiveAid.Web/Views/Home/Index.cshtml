@@ -5,76 +5,212 @@
     var partners = ViewBag.Partners as List<Partner> ?? new();
 }
 
-<!-- Hero Section with GSAP Animations and High-Res Backdrop -->
-<section class="hero-banner text-center text-lg-start">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-7">
-                <span class="badge bg-secondary-custom px-3 py-2 text-uppercase fw-semibold mb-3 rounded-pill">
-                    <i class="bi bi-geo-alt-fill me-1"></i> Grassroots Humanitarian Mission
-                </span>
-                <h1 class="gsap-hero-title mb-3">Empowering Communities, Protecting Human Dignity</h1>
-                <p class="gsap-hero-subtitle lead text-muted mb-4 pe-lg-5">
-                    GIVE-AID delivers direct interventions in education, primary healthcare, clean water, and disaster relief. We bridge the gap between compassionate donors and verified community projects.
-                </p>
-                <div class="gsap-hero-actions d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                    <a class="btn btn-secondary-custom btn-lg d-flex align-items-center gap-2 shadow rounded-pill px-4" asp-controller="Donation" asp-action="Index">
-                        <i class="bi bi-heart-fill"></i> Donate to Active Causes
-                    </a>
-                    <a class="btn btn-outline-custom btn-lg rounded-pill px-4" asp-controller="Programme" asp-action="Index">
-                        Explore Programmes
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-5 text-center">
-                <div class="p-4 p-md-5 rounded-4 shadow-2xl backdrop-blur hero-transparency-card">
-                    <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
-                        <div class="p-3 rounded-circle text-warning fs-2 hero-shield-badge">
-                            <i class="bi bi-shield-check"></i>
+<!-- ==========================================================================
+     1. Hero Section: Multi-Slide Dynamic Carousel with Transparent Glass Card
+     ========================================================================== -->
+<section class="position-relative overflow-hidden">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="6500">
+        <!-- Slide Indicators -->
+        <div class="hero-indicators-custom">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+
+        <div class="carousel-inner">
+            <!-- Slide 1: Education & Community Dignity -->
+            <div class="carousel-item active hero-carousel-item" style="background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1600&auto=format&fit=crop');">
+                <div class="container hero-carousel-content">
+                    <div class="row align-items-center g-5">
+                        <div class="col-lg-7 text-center text-lg-start">
+                            <span class="badge bg-secondary-custom px-3 py-2 text-uppercase fw-semibold mb-3 rounded-pill shadow-sm">
+                                <i class="bi bi-geo-alt-fill me-1"></i> Grassroots Humanitarian Mission
+                            </span>
+                            <h1 class="gsap-hero-title mb-3 fw-black display-5">Empowering Communities, Protecting Human Dignity</h1>
+                            <p class="gsap-hero-subtitle lead text-muted mb-4 pe-lg-5 fs-6">
+                                GIVE-AID delivers direct interventions in education, primary healthcare, clean water, and disaster relief. We bridge the gap between compassionate donors and verified community projects.
+                            </p>
+                            <div class="gsap-hero-actions d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                                <a class="btn btn-secondary-custom btn-lg btn-donate-pulse d-flex align-items-center gap-2 shadow rounded-pill px-4" asp-controller="Donation" asp-action="Index">
+                                    <i class="bi bi-heart-fill text-danger"></i> Donate to Active Causes
+                                </a>
+                                <a class="btn btn-outline-custom btn-lg rounded-pill px-4" asp-controller="Programme" asp-action="Index">
+                                    Explore Programmes
+                                </a>
+                            </div>
                         </div>
-                        <div class="text-start">
-                            <h5 class="fw-bold mb-0 hero-card-title">100% Relational Transparency</h5>
-                            <small class="text-muted">Direct SQL-Audited Fund Allocation</small>
+                        <div class="col-lg-5 text-center">
+                            <div class="p-4 p-md-5 rounded-4 shadow-2xl backdrop-blur hero-transparency-card">
+                                <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+                                    <div class="p-3 rounded-circle text-warning fs-2 hero-shield-badge">
+                                        <i class="bi bi-shield-check"></i>
+                                    </div>
+                                    <div class="text-start">
+                                        <h5 class="fw-bold mb-0 hero-card-title">100% Relational Transparency</h5>
+                                        <small class="text-muted">Direct SQL-Audited Fund Allocation</small>
+                                    </div>
+                                </div>
+                                <hr class="my-3 hero-card-hr">
+                                <p class="text-muted small mb-4">
+                                    Every single dollar contributed directly funds verified on-ground operations, educational toolkits, solar water pumps, and emergency field rations.
+                                </p>
+                                <a asp-controller="About" asp-action="Index" class="btn btn-outline-custom w-100 fw-bold rounded-pill shadow-sm">
+                                    Read Our Impact Story
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <hr class="my-3 hero-card-hr">
-                    <p class="text-muted small mb-4">
-                        Every single dollar contributed directly funds verified on-ground operations, educational toolkits, solar water pumps, and emergency field rations.
-                    </p>
-                    <a asp-controller="About" asp-action="Index" class="btn btn-outline-custom w-100 fw-bold rounded-pill shadow-sm">
-                        Read Our Impact Story
-                    </a>
+                </div>
+            </div>
+
+            <!-- Slide 2: Solar Clean Water Initiative -->
+            <div class="carousel-item hero-carousel-item" style="background-image: url('https://images.unsplash.com/photo-1541252260730-0412e8e2108e?q=80&w=1600&auto=format&fit=crop');">
+                <div class="container hero-carousel-content">
+                    <div class="row align-items-center g-5">
+                        <div class="col-lg-7 text-center text-lg-start">
+                            <span class="badge bg-primary-custom text-white px-3 py-2 text-uppercase fw-semibold mb-3 rounded-pill shadow-sm">
+                                <i class="bi bi-droplet-fill me-1"></i> Clean Water &amp; Sanitation Mission
+                            </span>
+                            <h1 class="mb-3 fw-black display-5">Clean Safe Drinking Water for 100+ Remote Villages</h1>
+                            <p class="lead text-muted mb-4 pe-lg-5 fs-6">
+                                Solar-powered water wells eliminate hours of daily walking for children and mothers, wiping out waterborne illnesses and bringing sustainable life to barren lands.
+                            </p>
+                            <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                                <a class="btn btn-secondary-custom btn-lg btn-donate-pulse d-flex align-items-center gap-2 shadow rounded-pill px-4" asp-controller="Donation" asp-action="Index">
+                                    <i class="bi bi-heart-fill text-danger"></i> Fund a Water Well
+                                </a>
+                                <a class="btn btn-outline-custom btn-lg rounded-pill px-4" asp-controller="Programme" asp-action="Index">
+                                    Explore Water Projects
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 text-center">
+                            <div class="p-4 p-md-5 rounded-4 shadow-2xl backdrop-blur hero-transparency-card">
+                                <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+                                    <div class="p-3 rounded-circle text-primary fs-2 hero-shield-badge">
+                                        <i class="bi bi-droplet-half"></i>
+                                    </div>
+                                    <div class="text-start">
+                                        <h5 class="fw-bold mb-0 hero-card-title">Sustainable Infrastructure</h5>
+                                        <small class="text-muted">Solar &amp; Filtration Maintenance</small>
+                                    </div>
+                                </div>
+                                <hr class="my-3 hero-card-hr">
+                                <p class="text-muted small mb-4">
+                                    We do not just dig wells; we establish community water management committees and ongoing water quality testing to guarantee clean water for generations.
+                                </p>
+                                <a asp-controller="Donation" asp-action="Index" class="btn btn-primary-custom w-100 fw-bold rounded-pill shadow-sm">
+                                    Sponsor a Village Well
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Emergency Disaster & Medical Camps -->
+            <div class="carousel-item hero-carousel-item" style="background-image: url('https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=1600&auto=format&fit=crop');">
+                <div class="container hero-carousel-content">
+                    <div class="row align-items-center g-5">
+                        <div class="col-lg-7 text-center text-lg-start">
+                            <span class="badge bg-danger text-white px-3 py-2 text-uppercase fw-semibold mb-3 rounded-pill shadow-sm">
+                                <i class="bi bi-heart-pulse-fill me-1"></i> 24/7 Rapid Disaster &amp; Health Relief
+                            </span>
+                            <h1 class="mb-3 fw-black display-5">Immediate Crisis Relief &amp; Free Health Interventions</h1>
+                            <p class="lead text-muted mb-4 pe-lg-5 fs-6">
+                                When floods and crises strike, our volunteer caravan arrives with warm meals, emergency rations, and clinical diagnostics in under 48 hours.
+                            </p>
+                            <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                                <a class="btn btn-secondary-custom btn-lg btn-donate-pulse d-flex align-items-center gap-2 shadow rounded-pill px-4" asp-controller="Donation" asp-action="Index">
+                                    <i class="bi bi-heart-fill text-danger"></i> Support Emergency Relief
+                                </a>
+                                <a class="btn btn-outline-custom btn-lg rounded-pill px-4" asp-controller="Account" asp-action="Register">
+                                    Join Volunteer Caravan
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 text-center">
+                            <div class="p-4 p-md-5 rounded-4 shadow-2xl backdrop-blur hero-transparency-card">
+                                <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+                                    <div class="p-3 rounded-circle text-danger fs-2 hero-shield-badge">
+                                        <i class="bi bi-lightning-charge-fill"></i>
+                                    </div>
+                                    <div class="text-start">
+                                        <h5 class="fw-bold mb-0 hero-card-title">48-Hour Rapid Deploy</h5>
+                                        <small class="text-muted">On-Ground Emergency Teams</small>
+                                    </div>
+                                </div>
+                                <hr class="my-3 hero-card-hr">
+                                <p class="text-muted small mb-4">
+                                    Emergency field rations, medical trauma kits, and hygiene essentials dispatched with zero bureaucratic friction directly to displaced families.
+                                </p>
+                                <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-custom w-100 fw-bold rounded-pill shadow-sm">
+                                    Connect with Field Team
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carousel Navigation Controls -->
+        <button class="carousel-control-prev-custom" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" aria-label="Previous slide">
+            <i class="bi bi-chevron-left fs-5"></i>
+        </button>
+        <button class="carousel-control-next-custom" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" aria-label="Next slide">
+            <i class="bi bi-chevron-right fs-5"></i>
+        </button>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     2. Impact Stats Strip with Dedicated Glowing Icons & Live Telemetry Badge
+     ========================================================================== -->
+<section class="stats-strip">
+    <div class="container text-center">
+        <div class="mb-3">
+            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-semibold small d-inline-flex align-items-center gap-2">
+                <span class="spinner-grow spinner-grow-sm text-success" style="width: 0.5rem; height: 0.5rem;"></span> Live Relational Database Telemetry
+            </span>
+        </div>
+
+        <div class="row g-3 g-md-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="stat-card-inner">
+                    <div class="mb-2 fs-3 text-primary"><i class="bi bi-people-fill"></i></div>
+                    <div class="stat-num counter-val" data-target="@ViewBag.TotalLivesImpacted">0</div>
+                    <div class="text-muted fw-bold small text-uppercase mt-2">Lives Impacted</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card-inner">
+                    <div class="mb-2 fs-3 text-warning"><i class="bi bi-cash-stack"></i></div>
+                    <div class="stat-num counter-val" data-target="@ViewBag.TotalDonationsRaised" data-currency="true">0</div>
+                    <div class="text-muted fw-bold small text-uppercase mt-2">Relief Funds Raised</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card-inner">
+                    <div class="mb-2 fs-3 text-info"><i class="bi bi-geo-alt-fill"></i></div>
+                    <div class="stat-num counter-val" data-target="@ViewBag.TotalProgrammesCount">0</div>
+                    <div class="text-muted fw-bold small text-uppercase mt-2">Active Field Missions</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card-inner">
+                    <div class="mb-2 fs-3 text-danger"><i class="bi bi-heart-pulse-fill"></i></div>
+                    <div class="stat-num counter-val" data-target="@ViewBag.ActiveVolunteersCount">0</div>
+                    <div class="text-muted fw-bold small text-uppercase mt-2">Community Volunteers</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Impact Stats Strip (Animated Counters via GSAP) -->
-<section class="stats-strip">
-    <div class="container">
-        <div class="row g-4 text-center">
-            <div class="col-6 col-md-3 stat-item">
-                <div class="stat-num counter-val" data-target="@ViewBag.TotalLivesImpacted">0</div>
-                <div class="text-muted fw-bold small text-uppercase mt-2">Lives Impacted</div>
-            </div>
-            <div class="col-6 col-md-3 stat-item">
-                <div class="stat-num counter-val" data-target="@ViewBag.TotalDonationsRaised" data-currency="true">0</div>
-                <div class="text-muted fw-bold small text-uppercase mt-2">Relief Funds Raised</div>
-            </div>
-            <div class="col-6 col-md-3 stat-item">
-                <div class="stat-num counter-val" data-target="@ViewBag.TotalProgrammesCount">0</div>
-                <div class="text-muted fw-bold small text-uppercase mt-2">Active Field Missions</div>
-            </div>
-            <div class="col-6 col-md-3 stat-item">
-                <div class="stat-num counter-val" data-target="@ViewBag.ActiveVolunteersCount">0</div>
-                <div class="text-muted fw-bold small text-uppercase mt-2">Community Volunteers</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Active Causes Section with High-Res Image Cards & Interactive Tab Filter -->
+<!-- ==========================================================================
+     3. Active Causes Section with 1-Click Quick Donation Chips
+     ========================================================================== -->
 <section class="py-5" style="background-color: var(--bg-base);">
     <div class="container py-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
@@ -117,6 +253,9 @@
                             <span class="badge bg-secondary-custom position-absolute top-0 start-0 m-3 shadow-sm rounded-pill">
                                 Active Appeal
                             </span>
+                            <span class="badge bg-dark bg-opacity-75 text-white position-absolute bottom-0 end-0 m-3 rounded-pill small">
+                                @percent% Funded
+                            </span>
                         </div>
                         <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
                             <div>
@@ -130,7 +269,15 @@
                                     <span class="text-muted">Goal: $@cause.TargetAmount.ToString("N0")</span>
                                 </div>
                                 <div class="progress rounded-pill mb-3" style="height: 10px;">
-                                    <div class="progress-bar rounded-pill" role="progressbar" style="width: @percent%;" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated rounded-pill" role="progressbar" style="width: @percent%;" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+
+                                <!-- 1-Click Quick Donation Chips -->
+                                <div class="d-flex gap-2 mb-3">
+                                    <a asp-controller="Donation" asp-action="Index" asp-route-causeId="@cause.Id" asp-route-amount="25" class="quick-chip-btn flex-fill text-center" title="Quick Donate $25">$25</a>
+                                    <a asp-controller="Donation" asp-action="Index" asp-route-causeId="@cause.Id" asp-route-amount="50" class="quick-chip-btn flex-fill text-center" title="Quick Donate $50">$50</a>
+                                    <a asp-controller="Donation" asp-action="Index" asp-route-causeId="@cause.Id" asp-route-amount="100" class="quick-chip-btn flex-fill text-center" title="Quick Donate $100">$100</a>
+                                    <a asp-controller="Donation" asp-action="Index" asp-route-causeId="@cause.Id" asp-route-amount="250" class="quick-chip-btn flex-fill text-center" title="Quick Donate $250">$250</a>
                                 </div>
 
                                 <a class="btn btn-primary-custom w-100 d-flex justify-content-center align-items-center gap-2 rounded-pill" 
@@ -146,7 +293,129 @@
     </div>
 </section>
 
-<!-- Featured Programmes Section with Real Image Cards -->
+<!-- ==========================================================================
+     4. NEW: "How GIVE-AID Works: 3 Steps to Direct Transparent Impact"
+     ========================================================================== -->
+<section class="py-5" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+    <div class="container py-4">
+        <div class="text-center mx-auto mb-5" style="max-width: 680px;">
+            <span class="badge bg-primary-light text-primary-custom px-3 py-1 fw-bold text-uppercase rounded-pill">Radical Transparency</span>
+            <h2 class="fw-bold mt-2 mb-2 text-white">How Your Contribution Creates Change</h2>
+            <p class="text-muted">A direct, traceable model engineered to eliminate intermediate administrative overhead.</p>
+        </div>
+        <div class="row g-4">
+            <!-- Step 1 -->
+            <div class="col-lg-4">
+                <div class="custom-card p-4 h-100 position-relative shadow-sm">
+                    <span class="fs-1 fw-bold text-primary opacity-25 position-absolute top-0 end-0 m-3" style="font-size: 3rem !important;">01</span>
+                    <div class="p-3 bg-primary-light text-primary-custom rounded-3 d-inline-block mb-3 fs-3">
+                        <i class="bi bi-search-heart"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-white">Select a Verified Appeal</h5>
+                    <p class="text-muted small mb-0">Browse field-verified grassroots needs in primary healthcare, clean water wells, rural schools, and emergency disaster relief.</p>
+                </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="col-lg-4">
+                <div class="custom-card p-4 h-100 position-relative shadow-sm">
+                    <span class="fs-1 fw-bold text-primary opacity-25 position-absolute top-0 end-0 m-3" style="font-size: 3rem !important;">02</span>
+                    <div class="p-3 bg-primary-light text-primary-custom rounded-3 d-inline-block mb-3 fs-3">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-white">100% Direct Fund Routing</h5>
+                    <p class="text-muted small mb-0">Every cent is recorded in our SQL audit ledger and deployed directly to purchase concrete supplies, medicines, and educational toolkits.</p>
+                </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="col-lg-4">
+                <div class="custom-card p-4 h-100 position-relative shadow-sm">
+                    <span class="fs-1 fw-bold text-primary opacity-25 position-absolute top-0 end-0 m-3" style="font-size: 3rem !important;">03</span>
+                    <div class="p-3 bg-primary-light text-primary-custom rounded-3 d-inline-block mb-3 fs-3">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-white">Track Geospatial Proof</h5>
+                    <p class="text-muted small mb-0">Donors receive verified field photos, GPS project coordinates, and live milestone updates inside their personal Member Dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     5. NEW: Interactive Donation Impact Calculator ("See What Your Gift Can Do")
+     ========================================================================== -->
+<section class="py-5" style="background-color: var(--bg-base);">
+    <div class="container py-4">
+        <div class="custom-card p-4 p-lg-5 shadow-lg">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-bold rounded-pill mb-2">Impact Estimator</span>
+                    <h2 class="fw-bold text-white mb-3">See Exactly What Your Donation Achieves</h2>
+                    <p class="text-muted mb-4">
+                        We believe donors have the right to know the precise tangible output of every contribution. Select a donation tier to preview the on-ground humanitarian outcome:
+                    </p>
+                    <div class="d-flex flex-wrap gap-2 mb-4" id="impactTierButtons">
+                        <button type="button" class="btn btn-outline-custom active rounded-pill px-3 py-2 fw-bold impact-btn" 
+                                data-amount="25" 
+                                data-title="Emergency Nutrition Package" 
+                                data-desc="Provides 2 weeks of high-nutrient essential food staples (flour, pulses, oil, milk) for a vulnerable family of 5." 
+                                data-icon="bi-basket-fill" 
+                                data-metric="1 Vulnerable Family Fed For 2 Weeks">
+                            $25 Nutrition Pack
+                        </button>
+                        <button type="button" class="btn btn-outline-custom rounded-pill px-3 py-2 fw-bold impact-btn" 
+                                data-amount="50" 
+                                data-title="Complete School Toolkit" 
+                                data-desc="Equips 3 underprivileged students with complete sets of uniforms, textbooks, backpacks, and stationary supplies." 
+                                data-icon="bi-backpack-fill" 
+                                data-metric="3 Students Fully Equipped">
+                            $50 Education Kit
+                        </button>
+                        <button type="button" class="btn btn-outline-custom rounded-pill px-3 py-2 fw-bold impact-btn" 
+                                data-amount="100" 
+                                data-title="Solar Community Well Tap" 
+                                data-desc="Funds deep borehole drilling and stainless tap connections providing clean, bacteria-free water for 50+ villagers." 
+                                data-icon="bi-droplet-fill" 
+                                data-metric="50+ Villagers with Safe Water">
+                            $100 Clean Water
+                        </button>
+                        <button type="button" class="btn btn-outline-custom rounded-pill px-3 py-2 fw-bold impact-btn" 
+                                data-amount="250" 
+                                data-title="Mobile Emergency Medical Kit" 
+                                data-desc="Supplies clinical diagnostics, antiseptic dressings, antibiotics, and first-response trauma kits for mobile field camps." 
+                                data-icon="bi-hospital-fill" 
+                                data-metric="100+ Clinical Treatments">
+                            $250 Medical Relief
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-4 rounded-4 bg-surface border border-secondary border-opacity-25 shadow-sm text-center text-lg-start">
+                        <div class="d-flex align-items-center gap-3 mb-3 justify-content-center justify-content-lg-start">
+                            <div class="p-3 bg-primary-custom text-white rounded-circle fs-3" id="impactIcon">
+                                <i class="bi bi-basket-fill"></i>
+                            </div>
+                            <div>
+                                <h4 class="fw-bold mb-0 text-white" id="impactTitle">Emergency Nutrition Package</h4>
+                                <span class="badge bg-primary-light text-primary-custom fw-bold rounded-pill" id="impactMetric">1 Vulnerable Family Fed For 2 Weeks</span>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4" id="impactDesc">
+                            Provides 2 weeks of high-nutrient essential food staples (flour, pulses, oil, milk) for a vulnerable family of 5.
+                        </p>
+                        <a id="impactDonateBtn" href="/donation?amount=25" class="btn btn-secondary-custom btn-lg w-100 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-heart-fill text-danger"></i> Donate <span id="impactAmountDisplay">$25</span> Towards This Impact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     6. Featured Programmes Section with Real Image Cards
+     ========================================================================== -->
 <section class="py-5" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
     <div class="container py-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
@@ -200,7 +469,9 @@
     </div>
 </section>
 
-<!-- Community Trust Testimonials in Sleek Dark Cards -->
+<!-- ==========================================================================
+     7. Community Trust Testimonials in Sleek Cards
+     ========================================================================== -->
 <section class="py-5" style="background-color: var(--bg-base);">
     <div class="container py-4 text-center">
         <span class="badge bg-secondary-custom px-3 py-1 text-uppercase fw-semibold mb-2 rounded-pill">Community Voices</span>
@@ -262,7 +533,9 @@
     </div>
 </section>
 
-<!-- Partners Strip -->
+<!-- ==========================================================================
+     8. Partners Strip
+     ========================================================================== -->
 <section class="py-5" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-subtle);">
     <div class="container py-3 text-center">
         <h6 class="text-uppercase text-muted fw-bold mb-4" style="letter-spacing: 0.1em;">Trusted By Leading Humanitarian Alliances</h6>
@@ -280,7 +553,9 @@
     </div>
 </section>
 
-<!-- Volunteer CTA Strip with Radiant Dark Backdrop -->
+<!-- ==========================================================================
+     9. Volunteer CTA Strip with Glowing Radiant Backdrop
+     ========================================================================== -->
 <section class="py-5 text-center page-header-banner">
     <div class="container py-4">
         <h2 class="fw-bold text-white mb-3">Ready to Make a Lasting Difference?</h2>
@@ -301,6 +576,7 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Category Filter for Causes
             const filterButtons = document.querySelectorAll('.cause-filter-btn');
             const causeItems = document.querySelectorAll('.cause-item');
 
@@ -323,6 +599,37 @@
                     });
                 });
             });
+
+            // Interactive Impact Calculator Tiers
+            const impactButtons = document.querySelectorAll('.impact-btn');
+            const impactIcon = document.getElementById('impactIcon');
+            const impactTitle = document.getElementById('impactTitle');
+            const impactMetric = document.getElementById('impactMetric');
+            const impactDesc = document.getElementById('impactDesc');
+            const impactDonateBtn = document.getElementById('impactDonateBtn');
+            const impactAmountDisplay = document.getElementById('impactAmountDisplay');
+
+            if (impactButtons.length > 0) {
+                impactButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        impactButtons.forEach(b => b.classList.remove('active', 'btn-primary-custom'));
+                        btn.classList.add('active');
+
+                        const amount = btn.dataset.amount;
+                        const title = btn.dataset.title;
+                        const desc = btn.dataset.desc;
+                        const iconClass = btn.dataset.icon;
+                        const metric = btn.dataset.metric;
+
+                        if (impactIcon) impactIcon.innerHTML = `<i class="bi ${iconClass}"></i>`;
+                        if (impactTitle) impactTitle.textContent = title;
+                        if (impactMetric) impactMetric.textContent = metric;
+                        if (impactDesc) impactDesc.textContent = desc;
+                        if (impactAmountDisplay) impactAmountDisplay.textContent = `$${amount}`;
+                        if (impactDonateBtn) impactDonateBtn.href = `/donation?amount=${amount}`;
+                    });
+                });
+            }
         });
     </script>
 }

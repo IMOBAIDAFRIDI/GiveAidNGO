@@ -34,7 +34,7 @@
     --admin-topbar-bg: #0b1120;
     --admin-content-bg: #080c15;
 
-    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* ==========================================================================
@@ -1366,4 +1366,195 @@ p, span, li, label {
 .back-home-link:hover {
     color: var(--primary);
     transform: translateX(-2px);
+}
+
+/* ==========================================================================
+   Advanced UI Enhancements: Carousel, Floating Elements, Pulse Animations
+   ========================================================================== */
+
+/* 1. Pulse Animation for Donate Button */
+@keyframes donateGlowPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    }
+}
+
+.btn-donate-pulse {
+    animation: donateGlowPulse 2.2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+/* 2. Hero Carousel Controls & Indicators */
+.hero-carousel-item {
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    padding: 5.5rem 0 6.5rem 0;
+}
+
+/* Light mode directional overlay for each slide */
+[data-bs-theme="light"] .hero-carousel-item {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+[data-bs-theme="light"] .hero-carousel-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.88) 0%, rgba(248, 250, 252, 0.72) 50%, rgba(241, 245, 249, 0.45) 100%);
+    z-index: 1;
+}
+
+/* Dark mode directional overlay for each slide */
+.hero-carousel-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(6, 11, 20, 0.88) 0%, rgba(6, 11, 20, 0.65) 50%, rgba(6, 11, 20, 0.40) 100%);
+    z-index: 1;
+}
+
+.hero-carousel-content {
+    position: relative;
+    z-index: 2;
+}
+
+.carousel-control-prev-custom,
+.carousel-control-next-custom {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    z-index: 5;
+    opacity: 0.8;
+}
+
+[data-bs-theme="light"] .carousel-control-prev-custom,
+[data-bs-theme="light"] .carousel-control-next-custom {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-control-prev-custom:hover,
+.carousel-control-next-custom:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.08);
+}
+
+.carousel-control-prev-custom { left: 1rem; }
+.carousel-control-next-custom { right: 1rem; }
+
+.hero-indicators-custom {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 5;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.hero-indicators-custom button {
+    width: 28px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: none;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+[data-bs-theme="light"] .hero-indicators-custom button {
+    background-color: rgba(15, 23, 42, 0.25);
+}
+
+.hero-indicators-custom button.active {
+    width: 48px;
+    background-color: var(--primary);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+}
+
+/* 3. Floating Back to Top Button */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.back-to-top-btn:hover {
+    transform: translateY(-4px) scale(1.08);
+}
+
+/* 4. Stat Items Elevated */
+.stat-card-inner {
+    padding: 1.25rem 0.75rem;
+    border-radius: 14px;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.stat-card-inner:hover {
+    transform: translateY(-3px);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+/* 5. Quick Donation Chips on Cards */
+.quick-chip-btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    border: 1px solid var(--border-light);
+    color: var(--text-main);
+    background: transparent;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.quick-chip-btn:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff !important;
+    transform: translateY(-1px);
+}
+
+[data-bs-theme="light"] .quick-chip-btn {
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+[data-bs-theme="light"] .quick-chip-btn:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff !important;
 }

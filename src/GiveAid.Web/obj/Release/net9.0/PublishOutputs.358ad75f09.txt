@@ -1,4 +1,5 @@
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\GiveAid.Web.exe
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\publish\web.config
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\web.config
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\web.config
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\web.config
@@ -25,6 +26,11 @@ C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publi
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\GiveAid.Web.deps.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\GiveAid.Web.runtimeconfig.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\GiveAid.Web.staticwebassets.endpoints.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\publish\appsettings.Development.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\publish\appsettings.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\publish\GiveAid.Web.deps.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\publish\GiveAid.Web.runtimeconfig.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\publish\publish\publish\publish\publish\GiveAid.Web.staticwebassets.endpoints.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\GiveAid.Web.dll
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\GiveAid.Web.runtimeconfig.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\publish\GiveAid.Web.pdb

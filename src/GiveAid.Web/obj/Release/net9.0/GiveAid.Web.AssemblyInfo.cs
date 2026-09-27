@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GiveAid.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+78aa10d9e3918459029e731012147aac52ebb32d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9264f07bb0ad05243c0ce1f767c1298432af946")]
 [assembly: System.Reflection.AssemblyProductAttribute("GiveAid.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GiveAid.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
