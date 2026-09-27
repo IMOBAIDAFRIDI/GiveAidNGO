@@ -1,4 +1,7 @@
 @using GiveAid.Web.Models.Enums
+@using Microsoft.EntityFrameworkCore
+@inject GiveAid.Web.Data.ApplicationDbContext DbContext
+
 
 <!-- Top Announcement & Contact Bar -->
 <div class="top-bar py-1 d-none d-lg-block bg-dark text-white border-bottom border-secondary border-opacity-25" style="font-size: 0.82rem;">
@@ -52,46 +55,55 @@
                     </a>
                 </li>
 
-                <!-- About Us Dropdown with 7 Sections -->
+                <!-- Dynamic About Us Dropdown -->
+                @{
+                    var navAboutSections = await DbContext.AboutSections
+                        .Where(a => a.IsActive)
+                        .OrderBy(a => a.SortOrder)
+                        .AsNoTracking()
+                        .ToListAsync();
+                }
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle fw-semibold px-3 text-nowrap" href="#" role="button" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle fw-semibold px-3 text-nowrap" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         About Us
                     </a>
-                    <ul class="dropdown-menu shadow-lg border-0 rounded-3 mt-2 p-2" style="min-width: 250px;">
+                    <ul class="dropdown-menu shadow-lg border-0 rounded-3 mt-2 p-2" style="min-width: 270px; max-height: 480px; overflow-y: auto;">
                         <li><h6 class="dropdown-header text-uppercase small fw-bold text-primary-custom">Our Organization</h6></li>
-                        <li>
-                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="what-we-do">
-                                <i class="bi bi-compass text-primary"></i> What We Do
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="our-mission">
-                                <i class="bi bi-bullseye text-primary"></i> Our Mission &amp; Vision
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="our-team">
-                                <i class="bi bi-people text-primary"></i> Leadership &amp; Team
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="our-achievements">
-                                <i class="bi bi-trophy text-primary"></i> Our Achievements
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="our-supporters">
-                                <i class="bi bi-stars text-primary"></i> Our Supporters
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="career-with-us">
-                                <i class="bi bi-briefcase text-primary"></i> Career With Us
-                            </a>
-                        </li>
+                        @if (navAboutSections != null && navAboutSections.Any())
+                        {
+                            @foreach (var sec in navAboutSections)
+                            {
+                                var iconClass = sec.Slug?.ToLowerInvariant() switch
+                                {
+                                    "what-we-do" => "bi bi-compass",
+                                    "our-mission" => "bi bi-bullseye",
+                                    "our-team" => "bi bi-people",
+                                    "our-achievements" => "bi bi-trophy",
+                                    "our-supporters" => "bi bi-stars",
+                                    "career-with-us" => "bi bi-briefcase",
+                                    "emergency-mobile-clinics" => "bi bi-hospital",
+                                    "emergency-relief-caravans" => "bi bi-truck",
+                                    "test-disaster-outreach" => "bi bi-activity",
+                                    _ => "bi bi-bookmark-heart"
+                                };
+                                <li>
+                                    <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="@sec.Slug">
+                                        <i class="@iconClass text-primary"></i> <span>@sec.Title</span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li>
+                                <a class="dropdown-item py-2 rounded d-flex align-items-center gap-2" asp-controller="About" asp-action="Index">
+                                    <i class="bi bi-info-circle text-primary"></i> <span>About GIVE-AID</span>
+                                </a>
+                            </li>
+                        }
                         <li><hr class="dropdown-divider my-1"></li>
                         <li>
-                            <a class="dropdown-item py-2 rounded fw-bold text-primary-custom d-flex align-items-center gap-2" asp-controller="About" asp-action="Index">
+                            <a class="dropdown-item py-2 rounded fw-bold text-primary-custom d-flex align-items-center gap-2" asp-controller="About" asp-action="Index" asp-route-slug="">
                                 <i class="bi bi-book-half"></i> Read Full Impact Story
                             </a>
                         </li>

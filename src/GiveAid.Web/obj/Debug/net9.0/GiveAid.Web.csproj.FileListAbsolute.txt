@@ -260,6 +260,11 @@ C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\GiveAid.Web.deps.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\GiveAid.Web.runtimeconfig.json
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\GiveAid.Web.staticwebassets.endpoints.json
-C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Debug\net9.0\compressed\phywmvup1r-4ggytnhruc.gz
 C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Debug\net9.0\compressed\zbonmdlq2c-49dxjlzgim.gz
-C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\publish\web.config
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\publish\appsettings.Development.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\publish\appsettings.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\publish\GiveAid.Web.deps.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\publish\GiveAid.Web.runtimeconfig.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\bin\Debug\net9.0\publish\publish\publish\publish\publish\publish\GiveAid.Web.staticwebassets.endpoints.json
+C:\Users\Ubaid\.gemini\antigravity\scratch\GiveAid\src\GiveAid.Web\obj\Debug\net9.0\compressed\phywmvup1r-u7ur47alfo.gz

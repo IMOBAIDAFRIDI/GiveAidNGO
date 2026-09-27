@@ -50,6 +50,9 @@
                         <td class="small">@(img.UploadedByUser?.FullName ?? "Admin")</td>
                         <td class="small text-muted">@img.CreatedAt.ToString("dd MMM yyyy")</td>
                         <td class="text-end text-nowrap">
+                            <a href="@img.ImagePath" target="_blank" class="btn btn-sm btn-outline-info me-1" title="View Full Image">
+                                <i class="bi bi-eye me-1"></i> View
+                            </a>
                             <a asp-area="Admin" asp-controller="Gallery" asp-action="Edit" asp-route-id="@img.Id" class="btn btn-sm btn-outline-secondary me-1">
                                 <i class="bi bi-pencil me-1"></i> Edit
                             </a>
