@@ -33,6 +33,10 @@ public static class DatabaseSeeder
 
         // 2. Admin User
         var adminEmail = "admin@giveaid.org";
+        // Production: set ADMIN_PASSWORD (env) so the admin password is private.
+        // Local dev without it falls back to the demo password.
+        var configuredAdminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD")?.Trim();
+        var adminPassword = string.IsNullOrEmpty(configuredAdminPassword) ? "A@dmin123" : configuredAdminPassword;
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)
         {
@@ -53,7 +57,7 @@ public static class DatabaseSeeder
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
-            var res = await userManager.CreateAsync(adminUser, "A@dmin123");
+            var res = await userManager.CreateAsync(adminUser, adminPassword);
             if (res.Succeeded)
             {
                 await userManager.AddToRoleAsync(adminUser, SystemRoles.Admin);
@@ -61,8 +65,14 @@ public static class DatabaseSeeder
         }
         else
         {
-            var resetToken = await userManager.GeneratePasswordResetTokenAsync(adminUser);
-            await userManager.ResetPasswordAsync(adminUser, resetToken, "A@dmin123");
+            // Only change an existing admin's password when ADMIN_PASSWORD is
+            // explicitly configured and differs; never reset it to a public default.
+            if (!string.IsNullOrEmpty(configuredAdminPassword)
+                && !await userManager.CheckPasswordAsync(adminUser, configuredAdminPassword))
+            {
+                var resetToken = await userManager.GeneratePasswordResetTokenAsync(adminUser);
+                await userManager.ResetPasswordAsync(adminUser, resetToken, configuredAdminPassword);
+            }
             if (!await userManager.IsInRoleAsync(adminUser, SystemRoles.Admin))
             {
                 await userManager.AddToRoleAsync(adminUser, SystemRoles.Admin);
