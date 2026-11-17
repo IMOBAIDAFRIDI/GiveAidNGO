@@ -17,7 +17,7 @@ if (!string.IsNullOrEmpty(port))
 // 1. Configure Database Connection
 //    Production: DATABASE_URL = postgresql://user:pass@host/db?sslmode=require (Neon)
 //    Local:      ConnectionStrings:DefaultConnection (SQL Server LocalDB)
-var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL")?.Trim();
 var usePostgres = !string.IsNullOrWhiteSpace(databaseUrl);
 var connectionString = usePostgres
     ? PostgresUrlToConnectionString(databaseUrl!)
