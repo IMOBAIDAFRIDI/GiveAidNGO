@@ -57,7 +57,18 @@ public static class DatabaseSeeder
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
-            var res = await userManager.CreateAsync(adminUser, adminPassword);
+            IdentityResult res;
+            if (string.IsNullOrEmpty(configuredAdminPassword))
+            {
+                res = await userManager.CreateAsync(adminUser, adminPassword);
+            }
+            else
+            {
+                // Generated secrets (e.g. Render's) may not match the complexity
+                // rules, so hash the configured value directly.
+                adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, configuredAdminPassword);
+                res = await userManager.CreateAsync(adminUser);
+            }
             if (res.Succeeded)
             {
                 await userManager.AddToRoleAsync(adminUser, SystemRoles.Admin);
@@ -70,8 +81,9 @@ public static class DatabaseSeeder
             if (!string.IsNullOrEmpty(configuredAdminPassword)
                 && !await userManager.CheckPasswordAsync(adminUser, configuredAdminPassword))
             {
-                var resetToken = await userManager.GeneratePasswordResetTokenAsync(adminUser);
-                await userManager.ResetPasswordAsync(adminUser, resetToken, configuredAdminPassword);
+                adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, configuredAdminPassword);
+                await userManager.UpdateSecurityStampAsync(adminUser);
+                await userManager.UpdateAsync(adminUser);
             }
             if (!await userManager.IsInRoleAsync(adminUser, SystemRoles.Admin))
             {
