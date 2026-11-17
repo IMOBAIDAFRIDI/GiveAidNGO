@@ -14,7 +14,12 @@ public static class DatabaseSeeder
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
 
-        await context.Database.MigrateAsync();
+        // SQL Server (local) uses the EF migrations in /Migrations.
+        // PostgreSQL (production on Neon) creates the schema straight from the model.
+        if (context.Database.IsNpgsql())
+            await context.Database.EnsureCreatedAsync();
+        else
+            await context.Database.MigrateAsync();
 
         // 1. Roles
         string[] roles = [SystemRoles.Admin, SystemRoles.Member];

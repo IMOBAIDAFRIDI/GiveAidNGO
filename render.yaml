@@ -1,0 +1,14 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# New → Blueprint → pick this repo. Render asks for the values marked sync: false.
+services:
+  - type: web
+    name: giveaid-ngo
+    runtime: docker
+    plan: free
+    envVars:
+      # Neon → Dashboard → Connection string (postgresql://…?sslmode=require)
+      - key: DATABASE_URL
+        sync: false
+      # Optional: Gmail app password for OTP / notification emails
+      - key: SmtpSettings__Password
+        sync: false

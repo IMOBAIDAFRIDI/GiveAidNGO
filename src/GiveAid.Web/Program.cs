@@ -9,14 +9,43 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Hosting platforms (Render, Railway…) pass the port to listen on in $PORT.
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // 1. Configure Database Connection
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//    Production: DATABASE_URL = postgresql://user:pass@host/db?sslmode=require (Neon)
+//    Local:      ConnectionStrings:DefaultConnection (SQL Server LocalDB)
+var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+var usePostgres = !string.IsNullOrWhiteSpace(databaseUrl);
+var connectionString = usePostgres
+    ? PostgresUrlToConnectionString(databaseUrl!)
+    : builder.Configuration.GetConnectionString("DefaultConnection")
+      ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+if (usePostgres)
+{
+    // Keep DateTime behaviour identical to SQL Server (no UTC-kind enforcement).
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+}
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(connectionString);
+    if (usePostgres)
+        options.UseNpgsql(connectionString);
+    else
+        options.UseSqlServer(connectionString);
     options.ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+});
+
+// Behind Render's proxy: trust X-Forwarded-Proto so HTTPS/cookies work.
+builder.Services.Configure<Microsoft.AspNetCore.Builder.ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor
+                             | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
 });
 
 // 2. Configure ASP.NET Core Identity with Integer Primary Keys
@@ -79,6 +108,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 // 5. Middleware Pipeline
+app.UseForwardedHeaders();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -104,3 +134,23 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+// postgresql://user:pass@host:port/db?sslmode=require → Npgsql keyword string
+static string PostgresUrlToConnectionString(string url)
+{
+    var uri = new Uri(url);
+    var userInfo = uri.UserInfo.Split(':', 2);
+    var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+    var sslMode = query["sslmode"] ?? "require";
+    return new Npgsql.NpgsqlConnectionStringBuilder
+    {
+        Host = uri.Host,
+        Port = uri.Port > 0 ? uri.Port : 5432,
+        Username = Uri.UnescapeDataString(userInfo[0]),
+        Password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : null,
+        Database = uri.AbsolutePath.TrimStart('/'),
+        SslMode = Enum.TryParse<Npgsql.SslMode>(sslMode, true, out var mode) ? mode : Npgsql.SslMode.Require,
+        Pooling = true,
+        MaxPoolSize = 10,
+    }.ConnectionString;
+}

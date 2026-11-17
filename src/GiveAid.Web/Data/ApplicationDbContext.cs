@@ -299,5 +299,22 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             entity.Property(e => e.CreatedAt).HasColumnType("datetime2");
             entity.HasIndex(e => e.Email);
         });
+
+        // The model above uses SQL Server column types. When running on
+        // PostgreSQL, translate them to their Postgres equivalents.
+        if (Database.IsNpgsql())
+        {
+            foreach (var property in builder.Model.GetEntityTypes().SelectMany(t => t.GetProperties()))
+            {
+                var columnType = property.GetColumnType();
+                if (columnType is null) continue;
+                if (columnType.Equals("datetime2", StringComparison.OrdinalIgnoreCase))
+                    property.SetColumnType("timestamp without time zone");
+                else if (columnType.StartsWith("nvarchar(max)", StringComparison.OrdinalIgnoreCase))
+                    property.SetColumnType("text");
+                else if (columnType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase))
+                    property.SetColumnType("varchar" + columnType[8..]);
+            }
+        }
     }
 }
